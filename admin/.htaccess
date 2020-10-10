@@ -1,0 +1,18 @@
+RewriteEngine on
+
+# Force SSL
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
+
+# Prevent CI index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /admin.php?$1 [L]
+
+# Prevent user access to the CI system folder.
+RewriteCond %{REQUEST_URI} ^system.*
+RewriteRule ^(.*)$ /index.php?/$1 [L] 
+
+# Prevent user access to the CI application folder
+RewriteCond %{REQUEST_URI} ^site.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
