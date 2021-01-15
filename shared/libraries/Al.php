@@ -39,9 +39,21 @@ class Al
 
 	public function sidebar()
 	{
+		$limit = 5;
+		$start = mysql_date( time() - (60*60*24*7) );
+		$end = mysql_date();
+		$ids = $this->ci->reporting->top_articles($start, $end, ['limit'=>$limit]);
 		$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image,sc_value,sc_name,sc_id';
 		$where = array( 'at_enabled'=>1, 'sc_value !='=>'about', 'at_date_posted <'=>$this->time );
-		$args = array( 'where'=>$where, 'sort'=>'at_hits desc', 'limit'=>5, 'select'=>$select );
+		$args = array( 'where'=>$where, 'limit'=>$limit, 'select'=>$select );
+		if( !empty($ids) ){
+			$args['where_in'] = [ 'at_id'=>$ids ];
+			$s = implode( ",", $ids );
+			$args['sort'] = "FIELD( `at_id`, {$s} )";
+		}
+		else{
+			$args['sort'] = 'at_hits desc';
+		}
 		$this->ci->data['popular_articles'] = $this->ci->article_model->get_articles($args);
 
 		$where = array( 'at_permalink'=>1, 'at_segment'=>'about', 'at_enabled'=>1 );
