@@ -17,7 +17,7 @@
 			$data = ['visitors'=>0, 'new_visitors'=>0,
 				'pageviews'=>['total'=>0,'average_load_duration'=>0, 'min_load_duration'=>0, 'max_load_duration'=>0],
 				'sessions'=>[ 'total'=>0, 'average_duration'=>0, 'bounce_rate', 'pageviews'=>0 ],
-				'top10pages'=>[]
+				'top10pages'=>[], 'devices'=>[]
 			];
 			//Total Visits
 			$this->ana->where( 'vs_last_updated >=', $start );
@@ -28,6 +28,21 @@
 			$this->ana->where( 'vs_date_created >=', $start );
 			$this->ana->where( 'vs_date_created <=', $end );
 			$data['new_visitors'] = $this->ana->count_all('visitors');
+
+			//Device Visits
+			$this->ana->select('count(vs_id) as total, vs_device_type as device', null, false);
+			$this->ana->where( 'vs_last_updated >=', $start );
+			$this->ana->where( 'vs_last_updated <=', $end );
+			$this->ana->group_by('device');
+			$this->ana->order_by('device');
+			$r = $this->ana->get('visitors');
+			if($r->num_rows()>0){
+				$d = $r->result_array();
+				foreach($d as $v){
+					$k = $v['device'] ? $v['device'] : 'other';
+					$data['devices'][$k] =$v['total'];
+				}
+			}
 
 			//Pageviews
 			$this->ana->where( 'pv_start_time >=', $start );
@@ -65,7 +80,7 @@
 				$data['sessions']['bounces'] = $bounces;
 
 				// average pageviews per session
-				$data['sessions']['pageviews'] = floor($data['pageviews']['total'] / $total_sessions);
+				$data['sessions']['pageviews'] = $total_sessions ? floor($data['pageviews']['total'] / $total_sessions) : 0;
 			}
 
 			// top 5 articles
