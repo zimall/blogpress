@@ -83,7 +83,7 @@
                             <?php foreach( $ana_summary['top10pages'] as $k=>$v ):?>
                             <tr>
                                 <td class="text"><?php echo $k+1;?></td>
-                                <td class="text"><?php echo anchor( $v['pv_url'], $v['pv_title'], ['target'=>'_blank'] );?></td>
+                                <td class="text"><?php echo anchor( $v['pv_url'], $v['pv_title'], ['target'=>'_blank','title'=>$v['pv_uri']] );?></td>
                                 <td class="numbers"><?php echo $v['viewed'];?></td>
                                 <td class="numbers"><?php echo pretty_time($v['pv_duration']*1);?></td>
                             </tr>
