@@ -52,7 +52,7 @@
                                     <td class="numbers"><?php echo pretty_time($ana_summary['sessions']['average_duration']*1);?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text">Bounce Rate</td><td class="numbers"><?php echo ($ana_summary['sessions']['bounce_rate']*100),'%';?></td>
+                                    <td class="text">Bounce Rate</td><td class="numbers"><?php echo round($ana_summary['sessions']['bounce_rate']*100,1),'%';?></td>
                                 </tr>
                                 <tr>
                                     <td class="text">Page views per session</td><td class="numbers"><?php echo $ana_summary['sessions']['pageviews'];?></td>
