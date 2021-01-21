@@ -155,7 +155,8 @@ jQuery(function($){
 	$( "a[rel=popover]" ).popover();
 
 	$('#user-popover').popover();
-	        
+	$('[data-toggle="tooltip"]').tooltip();
+
 	        /**
 	         * Sets active and expands menu items based on id of body tag of current page
 	         * e.g. <body id="body-index-page"> will result in the menu item with the id="navigation-index-page" having the 

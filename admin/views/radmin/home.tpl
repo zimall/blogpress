@@ -34,12 +34,12 @@
 									<td class="text">Total Visitors</td><td class="numbers"><?php echo $ana_summary['visitors'];?></td>
 								</tr>
 								<tr>
-									<td class="text">New / Returning Visitors</td>
-                                    <td class="numbers"><?php echo $ana_summary['new_visitors'],' / ',$ana_summary['visitors']-$ana_summary['new_visitors'];?></td>
+									<td class="text">New Visitors</td>
+                                    <td class="numbers"><?php echo $ana_summary['new_visitors'];?></td>
 								</tr>
-                                <!--<tr>-->
-                                <!--    <td class="text">Returning Visitors</td><td class="numbers">--><?php //echo $ana_summary['visitors']-$ana_summary['new_visitors'];?><!--</td>-->
-                                <!--</tr>-->
+                                <tr>
+                                    <td class="text">Returning Visitors</td><td class="numbers"><?php echo $ana_summary['visitors']-$ana_summary['new_visitors'];?></td>
+                                </tr>
 								<tr>
 									<td class="text">Page Views</td><td class="numbers"><?php echo $ana_summary['pageviews']['total'];?></td>
 								</tr>
@@ -60,18 +60,32 @@
                                 <tr>
                                     <td class="text">Page views per session</td><td class="numbers"><?php echo $ana_summary['sessions']['pageviews'];?></td>
                                 </tr>
-                            <?php foreach($ana_summary['devices'] as $name=>$d):?>
+                                <?php $classes=['success','info','warning','danger'];$i=$n=0?>
                                 <tr>
-                                    <td class="text"><?php echo ucwords($name);?></td>
-                                    <td class="numbers"><?php echo $ana_summary['visitors'] ? round(($d*100)/$ana_summary['visitors'],1) : 0?>%</td>
+                                    <td class="text">Devices</td>
+                                    <td class="text">
+                                        <div class="progress">
+                                            <?php foreach($ana_summary['devices'] as $name=>$d):
+                                                $n++; $i = $n%4;
+                                                $s = $n%2 ? 'progress-bar-striped':'';
+                                                $p = $ana_summary['visitors'] ? round(($d*100)/$ana_summary['visitors'],1) : 0;?>
+                                                <div class="progress-bar progress-bar-<?php echo $classes[$i],' ',$s;?>" style="width: <?=$p;?>%"
+                                                    data-toggle="tooltip" data-placement="top" title="<?php echo ucwords($name),' ',$p;?>%">
+                                                    <span class="sr-only"><?php echo ucwords($name),' ',$p;?>%</span>
+                                                </div>
+                                            <?php endforeach;?>
+                                        </div>
+                                    </td>
                                 </tr>
-                            <?php endforeach;?>
 							</tbody>
 						</table>
 					</div>
 			
 					<div class="col-sm-7">
-						<h4 class="title">Top 10 Pages</h4>
+						<h4 class="title">Top 10 Pages- Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
+                                <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
+                            </a>&nbsp;&nbsp;&nbsp;
+                        </h4>
 						<div class="squiggly-border"></div>
                         <table class="table table-index">
                             <thead>
