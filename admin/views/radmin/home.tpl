@@ -66,11 +66,12 @@
                                     <td class="text">
                                         <div class="progress">
                                             <?php foreach($ana_summary['devices'] as $name=>$d):
-                                                $n++; $i = $n%4;
-                                                $s = $n%2 ? 'progress-bar-striped':'';
+                                                $i = $n%4;
+	                                            $s = $n%2 ? 'progress-bar-striped':'';
+	                                            $n++;
                                                 $p = $ana_summary['visitors'] ? round(($d*100)/$ana_summary['visitors'],1) : 0;?>
                                                 <div class="progress-bar progress-bar-<?php echo $classes[$i],' ',$s;?>" style="width: <?=$p;?>%"
-                                                    data-toggle="tooltip" data-placement="top" title="<?php echo ucwords($name),' ',$p;?>%">
+                                                    data-toggle="tooltip" data-placement="top" data-trigger="hover focus click" title="<?php echo ucwords($name),' ',$p;?>%">
                                                     <span class="sr-only"><?php echo ucwords($name),' ',$p;?>%</span>
                                                 </div>
                                             <?php endforeach;?>
