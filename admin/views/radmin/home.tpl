@@ -60,7 +60,7 @@
                                 <tr>
                                     <td class="text">Page views per session</td><td class="numbers"><?php echo $ana_summary['sessions']['pageviews'];?></td>
                                 </tr>
-                                <?php $classes=['success','info','warning','danger'];$i=$n=0?>
+                                <?php $classes=['success','danger','info','warning'];$i=$n=0?>
                                 <tr>
                                     <td class="text">Devices</td>
                                     <td class="text">
