@@ -14,6 +14,8 @@ let sendB = function (state){
     formData.append('referrer', document.referrer);
     formData.append('title', document.title);
     formData.append('origin', window.location.origin);
+    let t = system_time ? system_time : 0;
+    formData.append('start_time', t);
     // Send the beacon
     let status = navigator.sendBeacon(url, formData);
     // Log the data and result

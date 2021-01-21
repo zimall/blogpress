@@ -17,7 +17,9 @@
 			
 					<div class="col-sm-5">
 						<h4 class="title">
-                            Recent Activity&nbsp;- Last <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>&nbsp;&nbsp;&nbsp; <a href="#ana_days" data-toggle="modal" class="btn btn-default btn-xs"><span class="radmin radmin-pencil"></span></a>
+                            Recent Activity&nbsp;- Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
+                                <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
+                            </a>&nbsp;&nbsp;&nbsp;
                         </h4>
 					<div class="squiggly-border"></div>
 						<table class="table table-index">
@@ -32,24 +34,25 @@
 									<td class="text">Total Visitors</td><td class="numbers"><?php echo $ana_summary['visitors'];?></td>
 								</tr>
 								<tr>
-									<td class="text">New Visitors</td><td class="numbers"><?php echo $ana_summary['new_visitors'];?></td>
+									<td class="text">New / Returning Visitors</td>
+                                    <td class="numbers"><?php echo $ana_summary['new_visitors'],' / ',$ana_summary['visitors']-$ana_summary['new_visitors'];?></td>
 								</tr>
-                                <tr>
-                                    <td class="text">Returning Visitors</td><td class="numbers"><?php echo $ana_summary['visitors']-$ana_summary['new_visitors'];?></td>
-                                </tr>
+                                <!--<tr>-->
+                                <!--    <td class="text">Returning Visitors</td><td class="numbers">--><?php //echo $ana_summary['visitors']-$ana_summary['new_visitors'];?><!--</td>-->
+                                <!--</tr>-->
 								<tr>
 									<td class="text">Page Views</td><td class="numbers"><?php echo $ana_summary['pageviews']['total'];?></td>
 								</tr>
                                 <tr>
                                     <td class="text">Average Page Load Time</td>
-                                    <td class="numbers"><?php echo pretty_time($ana_summary['pageviews']['average_load_duration']*1 );?></td>
+                                    <td class="numbers"><?php echo pretty_time($ana_summary['pageviews']['average_load_duration']*1, 'human' );?></td>
                                 </tr>
                                 <tr>
                                     <td class="text">Total Sessions</td><td class="numbers"><?php echo $ana_summary['sessions']['total'];?></td>
                                 </tr>
                                 <tr>
                                     <td class="text">Average Session Duration</td>
-                                    <td class="numbers"><?php echo pretty_time($ana_summary['sessions']['average_duration']*1);?></td>
+                                    <td class="numbers"><?php echo pretty_time($ana_summary['sessions']['average_duration']*1, 'human');?></td>
                                 </tr>
                                 <tr>
                                     <td class="text">Bounce Rate</td><td class="numbers"><?php echo round($ana_summary['sessions']['bounce_rate']*100,1),'%';?></td>

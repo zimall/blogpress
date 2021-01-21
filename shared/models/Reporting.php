@@ -10,6 +10,8 @@
 			parent::__construct();
 			$this->load->library('user_agent');
 			$this->ana = $this->load->database('analytics', TRUE);
+			$CI =& get_instance();
+			$CI->ana =& $this->ana;
 			$this->load->helper('date');
 		}
 
@@ -22,12 +24,12 @@
 			//Total Visits
 			$this->ana->where( 'vs_last_updated >=', $start );
 			$this->ana->where( 'vs_last_updated <=', $end );
-			$data['visitors'] = $this->ana->count_all('visitors');
+			$data['visitors'] = $this->ana->count_all_results('visitors');
 
 			// New Visits
 			$this->ana->where( 'vs_date_created >=', $start );
 			$this->ana->where( 'vs_date_created <=', $end );
-			$data['new_visitors'] = $this->ana->count_all('visitors');
+			$data['new_visitors'] = $this->ana->count_all_results('visitors');
 
 			//Device Visits
 			$this->ana->select('count(vs_id) as total, vs_device_type as device', null, false);

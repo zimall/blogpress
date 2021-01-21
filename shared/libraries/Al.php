@@ -13,6 +13,7 @@ class Al
 		$this->ci->data['section'] = 'index';
 		$this->ci->data['innertitle'] = 'Site Pages and Articles';
 		$this->time = time();
+		$this->ci->data['system_time'] = $this->time;
 	}
 
 	public function index()

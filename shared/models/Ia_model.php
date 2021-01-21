@@ -68,10 +68,11 @@
 			$uri_len = strlen($uri);
 			if( $len>0 && substr( $uri, -$len ) === $suffix ) $uri = substr( $uri, 0, $uri_len-$len );
 			$date = mysql_date();
+			$start_time = isset($beacon['start_time']) && $beacon['start_time'] ? mysql_date($beacon['start_time']) : mysql_date();
 			$data = [
 				'pv_user'=>$visitor_id,
 				'pv_session'=>$session_id,
-				'pv_start_time'=>$date,
+				'pv_start_time'=>$start_time,
 				'pv_loaded_time'=>$date,
 				'pv_last_updated'=>$date,
 				'pv_load_duration'=>0,
