@@ -60,11 +60,26 @@
                                 <tr>
                                     <td class="text">Page views per session</td><td class="numbers"><?php echo $ana_summary['sessions']['pageviews'];?></td>
                                 </tr>
-                                <?php $classes=['success','danger','info','warning'];$i=$n=0?>
+                                <?php
+                                    $classes=['success','danger','info','warning'];
+                                    $i=$n=0;
+                                    $btns = [ 'desktop'=>'screen', 'mobile'=>'mobile', 'robot'=>'android', 'other'=>'question' ];
+                                    ?>
                                 <tr>
-                                    <td class="text">Devices</td>
+                                    <td class="text">Devices (%)
+                                        <div class="btn-group btn-group-xs" role="group">
+                                            <?php foreach($ana_summary['devices'] as $name=>$d):
+                                                $i = $n++%4;
+                                                $c = isset( $btns[$name] ) ? $btns[$name] : $btns['other'];
+                                            ?>
+                                                <button type="button" class="btn btn-<?php echo $classes[$i];?>" data-toggle="tooltip" data-placement="top" data-trigger="hover focus click" title="<?php echo ucwords($name);?>">
+                                                    &nbsp;<span class="radmin radmin-<?php echo $c;?>"></span>&nbsp;
+                                                </button>
+                                            <?php endforeach; $n=0;?>
+                                        </div>
+                                    </td>
                                     <td class="text">
-                                        <div class="progress">
+                                        <div class="progress hidden-xs hidden-sm">
                                             <?php foreach($ana_summary['devices'] as $name=>$d):
                                                 $i = $n%4;
 	                                            $s = $n%2 ? 'progress-bar-striped':'';
@@ -72,9 +87,19 @@
                                                 $p = $ana_summary['visitors'] ? round(($d*100)/$ana_summary['visitors'],1) : 0;?>
                                                 <div class="progress-bar progress-bar-<?php echo $classes[$i],' ',$s;?>" style="width: <?=$p;?>%"
                                                     data-toggle="tooltip" data-placement="top" data-trigger="hover focus click" title="<?php echo ucwords($name),' ',$p;?>%">
-                                                    <span class="sr-only"><?php echo ucwords($name),' ',$p;?>%</span>
+                                                    <span class="sr-only"><?php echo ucwords($name)?> </span><span><?php echo $p>14?$p:'';?></span>
                                                 </div>
-                                            <?php endforeach;?>
+                                            <?php endforeach; $n=0;?>
+                                        </div>
+                                        <div class="visible-xs visible-sm">
+		                                    <?php foreach($ana_summary['devices'] as $name=>$d):
+			                                    $i = $n++%4;
+			                                    $p = $ana_summary['visitors'] ? round(($d*100)/$ana_summary['visitors'],1) : 0;
+			                                    ?>
+                                                <button type="button" class="btn btn-<?php echo $classes[$i];?> btn-xs" data-toggle="tooltip" data-placement="top" data-trigger="hover focus click" title="<?php echo ucwords($name);?>">
+	                                                <?php echo $p;?>%
+                                                </button>
+		                                    <?php endforeach; $n=0;?>
                                         </div>
                                     </td>
                                 </tr>
