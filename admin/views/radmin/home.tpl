@@ -87,11 +87,12 @@
                                                 $p = $ana_summary['visitors'] ? round(($d*100)/$ana_summary['visitors'],1) : 0;?>
                                                 <div class="progress-bar progress-bar-<?php echo $classes[$i],' ',$s;?>" style="width: <?=$p;?>%"
                                                     data-toggle="tooltip" data-placement="top" data-trigger="hover focus click" title="<?php echo ucwords($name),' ',$p;?>%">
-                                                    <span class="sr-only"><?php echo ucwords($name)?> </span><span><?php echo $p>14?$p:'';?></span>
+                                                    <span class="sr-only"><?php echo ucwords($name).' '; echo $p>14?'':$p;?></span>
+                                                    <span><?php echo $p>14?$p:'';?></span>
                                                 </div>
                                             <?php endforeach; $n=0;?>
                                         </div>
-                                        <div class="visible-xs visible-sm">
+                                        <div class="hidden-md hidden-lg">
 		                                    <?php foreach($ana_summary['devices'] as $name=>$d):
 			                                    $i = $n++%4;
 			                                    $p = $ana_summary['visitors'] ? round(($d*100)/$ana_summary['visitors'],1) : 0;
