@@ -64,7 +64,7 @@
 					$total = $total ? $total : 1;
 					foreach($hosts as $k => $v) {
 						$p = ($v['sessions'] / $total) * 100;
-						if($p < 3) {
+						if($p < 30) {
 							$other += ($v['sessions'] * 1);
 							unset( $hosts[$k] );
 						}
@@ -195,22 +195,27 @@
 			return $ids;
 		}
 
-		function fix_ss_hosts($host='other'){
+		function fix_ss_hosts($host='other', $exact=true){
 			$n = 0;
 			$unknown = [];
 			$this->ana->select('ss_id, ss_referrer');
 			if($host=='other') $this->ana->where('ss_host IS NULL');
-			else $this->ana->where('ss_host',$host);
+			else{
+				$exact ? $this->ana->where('ss_host',$host) : $this->ana->like( 'ss_host', $host );
+			}
 			$this->ana->where('ss_referrer !=', 'direct');
 			$r = $this->ana->get('sessions');
 			if($r->num_rows()>0){
 				$data = $r->result_array();
 				foreach($data as $k=>$v){
 					$parts = parse_url($v['ss_referrer']);
-					$host = empty($parts['host']) ? 'unknown' : $parts['host'];
-					if($host=='unknown') $unknown[$v['ss_referrer']] = $parts;
+					$new_host = empty($parts['host']) ? 'unknown' : $parts['host'];
+					if($new_host=='unknown') $unknown[$v['ss_referrer']] = $parts;
+					if(strlen($new_host>40)) {
+						$new_host = preg_replace("/^[a-z0-9]{32}\./", '', $new_host);
+					}
 					$this->ana->where('ss_id', $v['ss_id']);
-					$this->ana->update( 'sessions', ['ss_host'=>$host] );
+					$this->ana->update( 'sessions', ['ss_host'=>$new_host] );
 					$n++;
 				}
 			}

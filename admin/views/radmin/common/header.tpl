@@ -48,10 +48,8 @@
 	<div class="col-sm-12">&nbsp;</div>
 
 	<div class="col-sm-12 top-stats">
+        <!--<span class="close" id="hide-top-stats" title="Hide buttons">&times;</span>-->
 			<ul class="top-nav-boxes">
-				<li class="top-stats-arrow" title="Hide Top Stats" id="hide-top-stats">
-					<?php echo img( array( 'src'=>"{$views}img/chevron-left.png", 'alt'=>'Hide Top Stats' ) );?>
-				</li>
 				<li class="first">
 					<?php echo anchor( 'home', '<i class="radmin-home"></i> <span>Home</span>' );?>
 				</li>
@@ -64,12 +62,15 @@
 				<li>
 					<?php echo anchor( 'articles/new_article', '<i class="radmin-pencil"></i> <span>New Article</span>' );?>
 				</li>
-				<li id="color-switcher-control">
+				<li dummy-id="color-switcher-control">
 					<?php echo anchor( 'settings', '<i class="radmin-cog"></i> <span>Settings</span>' );?>
 				</li>
-				<li id="color-switcher-control">
+				<li dummy-id="color-switcher-control">
 					<?php echo anchor( 'users', '<i class="radmin-user-2"></i> <span>Users</span>' );?>
 				</li>
+                <li class="top-stats-arrow " title="Hide Top Stats" id="hide-top-stats">
+					<?php echo img( array( 'src'=>"{$views}img/chevron-left.png", 'alt'=>'Hide Top Stats' ) );?>
+                </li>
 			</ul>
 
 			<!--

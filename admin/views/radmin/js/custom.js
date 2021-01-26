@@ -162,7 +162,7 @@ function productFancyBox() {
 					re.forEach( function (item){
 						let p = (item.sessions/total)*100;
 						p = p.toFixed(1);
-						body += '<tr><th>'+item.host+'</th><td>'+item.sessions+'</td><td>'+p+'%</td></tr>';
+						body += '<tr><th class="truncate-left">'+item.host+'</th><td>'+item.sessions+'</td><td>'+p+'%</td></tr>';
 					});
 					$('#'+target+' .modal-body table tbody').html(body);
 				}
@@ -235,16 +235,16 @@ jQuery(function($){
 			}
 			
 			//display the color-switcher and change theme (plus anything with comments of //used in theming logic )
-			position_color_switcher(true);
-			switcher_div.show();
+			// position_color_switcher(true);
+			// switcher_div.show();
 			
-			switcher_control.on('click', toggle_color_switcher);
+			// switcher_control.on('click', toggle_color_switcher);
 			
-			$(window).resize(function() {
+			/*$(window).resize(function() {
 				switcher_div.hide();
 			});
 			
-			$('.color-switcher-color').bind('click', set_theme_url);
+			$('.color-switcher-color').bind('click', set_theme_url);*/
 
 	$(".theme_color").change( function(e){
 		$("#theme_color").css( 'background-color', $(this).val() );
@@ -514,11 +514,5 @@ jQuery(function($){
 		let e = button.data('end') // Extract info from data-* attributes
 		get_other_traffic_sources(s,e,'ana_other_traffic_sources');
 	})
-
-	if( window.innerWidth < 800 ){
-		$('#navbar-menu').removeClass('navbar-inverse');
-		$('#navbar-menu').addClass('navbar-default');
-		console.log(window.innerWidth)
-	}
 	
 });

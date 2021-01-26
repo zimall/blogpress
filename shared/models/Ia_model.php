@@ -125,8 +125,11 @@
 		{
 			$ref = empty($beacon['referrer']) ? 'direct' : $beacon['referrer'];
 			if($ref!='direct'){
-				$parts = parse_url($ref);
-				$host = empty($parts['host']) ? 'unknown' : $parts['host'];
+				$host = parse_url($ref, PHP_URL_HOST);
+				$host = $host ? $host : 'unknown';
+				if(strlen($host)>40){
+					$host = preg_replace( "/^[a-z0-9]{32}\./", '', $host );
+				}
 			}
 			else $host = 'direct';
 			$data = [

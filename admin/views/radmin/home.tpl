@@ -148,8 +148,8 @@
                     <table class="table table-index">
                         <thead>
                         <tr>
-                            <th>Description</th>
-                            <th>Number</th>
+                            <th>Source</th>
+                            <th>Sessions</th>
                             <th>Percentage</th>
                         </tr>
                         </thead>

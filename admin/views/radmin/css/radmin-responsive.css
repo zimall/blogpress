@@ -203,8 +203,8 @@
 @media (max-width: 480px) { 
 
 	body {
-		padding: 0 0 0 10px;
-		width: 470px;
+		padding: 0;
+		width: 100%;
 	}
 	
 	.hero-unit {
@@ -233,8 +233,9 @@
 	}
 	
 	footer.black-gradient {
-		margin-left: -20px;
-		margin-right: -20px;	
+		/*margin-left: -20px;
+		margin-right: -20px;	*/
+		margin-left: 0;
 	}
 
 

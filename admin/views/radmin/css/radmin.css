@@ -623,6 +623,7 @@ div.top-stats {
 
 ul.top-nav-boxes {
 	margin-left: 0;
+	padding: 0;
 }
 
 ul.top-nav-boxes li, div.color-switcher {
@@ -688,8 +689,8 @@ ul.top-nav-boxes li a span {
 
 ul.top-nav-boxes li.top-stats-arrow {
 	position: relative;
-	top: -19px;
-	left: -22px;
+	top: -24px;
+	left: 0px;
 	z-index: 10;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
@@ -1318,3 +1319,12 @@ ul.left-menu li.active {
 	width: 0;
 }
 
+.truncate-left {
+	direction: rtl;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/*white-space: nowrap;*/
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
