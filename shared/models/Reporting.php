@@ -211,7 +211,7 @@
 					$parts = parse_url($v['ss_referrer']);
 					$new_host = empty($parts['host']) ? 'unknown' : $parts['host'];
 					if($new_host=='unknown') $unknown[$v['ss_referrer']] = $parts;
-					if(strlen($new_host>40)) {
+					if(strlen($new_host)>0) {
 						$new_host = preg_replace("/^[a-z0-9]{32}\./", '', $new_host);
 					}
 					$this->ana->where('ss_id', $v['ss_id']);
