@@ -20,7 +20,7 @@ class PC
 			'style_dir'  => APPNAME.'/views/'.$this->theme.'/css/',
 			'cache_dir'  => APPNAME.'/asset_cache/',
 			'combine'    => TRUE,
-			'dev'        => TRUE
+			'dev'        => ENVIRONMENT=='development'?true:false
 		);
 		$this->ci->carabiner->config($carabiner_config);
 
@@ -48,7 +48,7 @@ class PC
 			'script_dir'  => APPNAME.'/views/'.$this->theme.'/js/',
 			'cache_dir'  => APPNAME.'/asset_cache/',
 			'combine'    => TRUE,
-			'dev'        => TRUE
+			'dev'        => ENVIRONMENT=='development'?true:false
 		);
 		$this->ci->sc->config($sc_config);
 
