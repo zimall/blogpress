@@ -29,8 +29,8 @@
 			<tr>
 				<th>#</th>
 				<th>Image</th>
-				<th>Title / Section</th>
-				<th>Summary</th>
+				<th class="hidden-xs hidden-sm">Title / Section</th>
+				<th class="hidden-xs">Summary</th>
 				<th>Options</th>
 			</tr>
 		</thead>
@@ -56,19 +56,22 @@
 							$img = array( 'src'=>$file, 'class'=>'thumbnail' );
 							echo anchor( $link, img($img), 'target="_blank"' );
 						?>
+                        <strong class="hidden-md hidden-lg"><?php echo $v['at_title'];?></strong>
 					</td>
-					<td>
+					<td class="hidden-xs hidden-sm">
 						<strong><?php echo $v['at_title'];?></strong>
 						<br>
 						<?php echo $v['sc_name'];?>
 					</td>
-					<td>
-						<?php echo $v['at_summary'];?>
-						<br>
-						<strong>Posted: </strong><?php echo date( 'd M Y, H:i', $v['at_date_posted'] );?>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<strong>Updated: </strong><?php echo date( 'd M Y, H:i', $v['at_date_updated'] );?>
-						&nbsp;&nbsp;&nbsp;&nbsp;
+					<td class="hidden-xs">
+                        <span class="hidden-sm">
+                            <?php echo $v['at_summary'];?>
+                            <br>
+                            <strong>Posted: </strong><?php echo date( 'd M Y, H:i', $v['at_date_posted'] );?>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>Updated: </strong><?php echo date( 'd M Y, H:i', $v['at_date_updated'] );?>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
 						Read by: <strong><?php echo $v['at_hits'];?></strong>
 					</td>
 					<td>
