@@ -64,7 +64,7 @@
 					$total = $total ? $total : 1;
 					foreach($hosts as $k => $v) {
 						$p = ($v['sessions'] / $total) * 100;
-						if($p < 30) {
+						if($p < 2.5) {
 							$other += ($v['sessions'] * 1);
 							unset( $hosts[$k] );
 						}
