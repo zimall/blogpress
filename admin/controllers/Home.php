@@ -20,6 +20,11 @@ class Home extends CI_Controller
 		$this->load->view( "{$this->data['theme']}/home.tpl", $this->data );
 	}
 
+	public function fix_session_hosts($host='other'){
+		$d = $this->reporting->fix_ss_hosts($host);
+		echo json_encode($d);
+	}
+
 	public function about()
 	{
 		$this->data['section'] = 'template';

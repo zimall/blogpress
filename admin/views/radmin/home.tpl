@@ -21,7 +21,7 @@
                                 <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
                             </a>&nbsp;&nbsp;&nbsp;
                         </h4>
-					<div class="squiggly-border"></div>
+					    <div class="squiggly-border"></div>
 						<table class="table table-index">
 							<thead>
 								<tr>
@@ -109,7 +109,7 @@
 					</div>
 			
 					<div class="col-sm-7">
-						<h4 class="title">Top 10 Pages- Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
+						<h4 class="title">Top 10 Pages - Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
                                 <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
                             </a>&nbsp;&nbsp;&nbsp;
                         </h4>
@@ -124,7 +124,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach( $ana_summary['top10pages'] as $k=>$v ):?>
+                            <?php foreach( $ana_summary['top_pages'] as $k=>$v ):?>
                             <tr>
                                 <td class="text"><?php echo $k+1;?></td>
                                 <td class="text"><?php echo anchor( $v['pv_url'], $v['pv_title'], ['target'=>'_blank','title'=>$v['pv_uri']] );?></td>
@@ -137,7 +137,36 @@
 					</div>
 			
 					<div class="col-sm-12">&nbsp;</div>
-				
+
+                <div class="col-sm-5">
+                    <h4 class="title">
+                        Traffic Sources&nbsp;- Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
+                            <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
+                        </a>&nbsp;&nbsp;&nbsp;
+                    </h4>
+                    <div class="squiggly-border"></div>
+                    <table class="table table-index">
+                        <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Number</th>
+                            <th>Percentage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach($ana_summary['sources'] as $source):
+                            $t = $ana_summary['sessions']['total'] ? $ana_summary['sessions']['total'] : 1;
+                            $p = round( ($source['sessions']/$t)*100, 1 );
+                            ?>
+                            <tr>
+                                <td class="text"><?php echo $source['host']?></td>
+                                <td class="numbers"><?php echo $source['sessions'];?></td>
+                                <td class="numbers"><?php echo $p;?>%</td>
+                            </tr>
+                        <?php endforeach;?>
+                        </tbody>
+                    </table>
+                </div>
 			
 					<div class="col-sm-12">&nbsp;</div>
 			

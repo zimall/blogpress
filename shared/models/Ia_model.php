@@ -120,9 +120,15 @@
 			return $session['ss_id'];
 		}
 
+		// ALTER TABLE `ana_sessions` ADD `ss_host` VARCHAR(255) NULL AFTER `ss_referrer`;
 		function create_session( $visitor_id, $beacon )
 		{
 			$ref = empty($beacon['referrer']) ? 'direct' : $beacon['referrer'];
+			if($ref!='direct'){
+				$parts = parse_url($ref);
+				$host = empty($parts['host']) ? 'unknown' : $parts['host'];
+			}
+			else $host = 'direct';
 			$data = [
 				'ss_user'=>$visitor_id,
 				'ss_created'=>mysql_date(),
@@ -130,6 +136,7 @@
 				'ss_duration'=>0,
 				'ss_ip'=>$this->input->ip_address(),
 				'ss_referrer'=>$ref,
+				'ss_host'=>$host,
 				'ss_status'=>1
 			];
 			$this->ana->insert( 'sessions', $data );
