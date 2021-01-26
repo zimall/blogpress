@@ -16,6 +16,8 @@ class Home extends CI_Controller
 		$this->data['ana_days'] = $d = $this->input->get('days') ? $this->input->get('days') : 7;
 		$start = mysql_date( time() - (60*60*24*$d) );
 		$end = mysql_date();
+		$this->data['ana_start'] = $start;
+		$this->data['ana_end'] = $end;
 		$this->data['ana_summary'] = $this->reporting->summary( $start, $end );
 		$this->load->view( "{$this->data['theme']}/home.tpl", $this->data );
 	}

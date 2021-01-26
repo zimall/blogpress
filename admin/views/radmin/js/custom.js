@@ -144,6 +144,49 @@ function productFancyBox() {
 		});
 	}
 
+	function get_other_traffic_sources(start_date, end_date, target){
+		let href = window.location.origin + '/admin/ajax/get_other_traffic_sources';
+		let data = { start:start_date, end:end_date };
+		$.ajax({
+			type: "GET",
+			url: href,
+			data: data,
+			dataType: 'json',
+			timeout: 60000,
+			success: function(re)
+			{
+				if( re && Array.isArray(re) ){
+					let body = '';
+					let total = re.reduce( (accumulator, currentValue) => accumulator + (currentValue.sessions*1), 0 );
+					total = total?total:1;
+					re.forEach( function (item){
+						let p = (item.sessions/total)*100;
+						p = p.toFixed(1);
+						body += '<tr><th>'+item.host+'</th><td>'+item.sessions+'</td><td>'+p+'%</td></tr>';
+					});
+					$('#'+target+' .modal-body table tbody').html(body);
+				}
+				else{
+					msg = create_error('Unable to fetch data');
+					let tr = '<tr><td colspan="3">'+msg+'</td>';
+					$('#'+target+' .modal-body table tbody').html(tr);
+				}
+			},
+			error: function (e){
+				msg = create_error('Unable to fetch data', e);
+				let tr = '<tr><td colspan="3">'+msg+'</td>';
+				$('#'+target+' .modal-body table tbody').html(tr);
+			}
+		});
+	}
+
+	function create_error(msg,title=false){
+		let div = '<div class="alert alert-warning">';
+		if(title) div += '<h3>'+title+'</h3>';
+		div += msg+'</div>';
+		return div;
+	}
+
 /**
 *  Jquery Load Event
 *
@@ -464,5 +507,12 @@ jQuery(function($){
 		files.track_number.value = db.track_number.value;
 		files.playtime_string.value = db.playtime_string.value;
 	});
+
+	$('#ana_other_traffic_sources').on('show.bs.modal', function (event) {
+		let button = $(event.relatedTarget) // Button that triggered the modal
+		let s = button.data('start') // Extract info from data-* attributes
+		let e = button.data('end') // Extract info from data-* attributes
+		get_other_traffic_sources(s,e,'ana_other_traffic_sources');
+	})
 	
 });

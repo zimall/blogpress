@@ -159,7 +159,16 @@
                             $p = round( ($source['sessions']/$t)*100, 1 );
                             ?>
                             <tr>
-                                <td class="text"><?php echo $source['host']?></td>
+                                <td class="text">
+                                    <?php echo $source['host'];
+                                        if($source['host']=='other'):
+                                    ?>
+                                    <a href="#ana_other_traffic_sources" data-toggle="modal" data-target="#ana_other_traffic_sources"
+                                        data-start="<?php echo $ana_start;?>" data-end="<?php echo $ana_end;?>">
+                                        <span class="radmin radmin-new-tab"></span>
+                                    </a>
+                                    <?php endif;?>
+                                </td>
                                 <td class="numbers"><?php echo $source['sessions'];?></td>
                                 <td class="numbers"><?php echo $p;?>%</td>
                             </tr>
@@ -206,6 +215,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="document.getElementById('ana_days_form').submit()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ana_other_traffic_sources" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Internal Analytics - Traffic Sources</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Source</th><th>Sessions</th><th>Percentage</th></tr>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

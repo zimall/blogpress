@@ -21,6 +21,13 @@ class Ajax extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function get_other_traffic_sources(){
+		$start = $this->input->get('start');
+		$end = $this->input->get('end');
+		$data = $start && $end ? $this->reporting->get_traffic_sources($start,$end,false) : [];
+		echo json_encode($data);
+	}
+
 	public function get_make()
 	{
 		$this->load->model('list_model');
