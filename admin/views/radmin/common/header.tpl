@@ -43,61 +43,11 @@
 </head>
 
 <body id="body-<?php if(isset($nav_element)) echo $nav_element; else echo 'index';?>">
-
-
-	
-	<nav class="navbar navbar-inverse black-gradient" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<?php echo anchor( 'home', '<span class="rad">Site</span> Admin', 'class="navbar-brand brand"' );?>
-		</div>
-
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse navbar-ex1-collapse">
-			<ul class="nav navbar-nav navbar-right">
-				<form class="navbar-form navbar-left" style="min-width:220px;" role="search">
-					<div style="max-width:200px;" class="row">
-						<div class="input-group input-group-sm">
-							<input type="text" class="form-control">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="button">Go!</button>
-							</span>
-						</div><!-- /input-group -->
-					</div><!-- /.col-lg-6 -->
-				</form>
-				<li>
-					<?php echo anchor( base_url(), 'Site' );?>
-				</li>
-				<li>
-					<?php echo anchor( base_url(), '<span class="glyphicon glyphicon-share-alt"></span>', 'target="_blank"' );?>
-				</li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<?php echo "{$user_data['first_name']} {$user_data['last_name']}"?> <b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="<?php echo home_url('account');?>">My Account</a></li>
-						<?php if($this->flexi_auth->is_privileged('Run Debug Mode')):?>
-							<li><a href="?toggle_debug_mode=1"><?php echo $this->pc->debug_status()?></a></li>
-						<?php endif;?>
-						<li class="divider"></li>
-						<li><?php echo anchor( home_url('account/logout'), 'Logout');?></li>
-					</ul>
-				</li>
-			</ul>
-		</div><!-- /.navbar-collapse -->
-	</nav>
-
+	<?php $this->load->view("$theme/common/menu.tpl");?>
 
 	<div class="col-sm-12">&nbsp;</div>
 
-	<div class="col-sm-12 hidden-phone hidden-tablet top-stats">
+	<div class="col-sm-12 top-stats">
 			<ul class="top-nav-boxes">
 				<li class="top-stats-arrow" title="Hide Top Stats" id="hide-top-stats">
 					<?php echo img( array( 'src'=>"{$views}img/chevron-left.png", 'alt'=>'Hide Top Stats' ) );?>
@@ -136,7 +86,6 @@
 			
 	</div>
 	<div class="col-sm-12">&nbsp;</div>
-	<div class="col-sm-1">&nbsp;</div>
-	<div class="col-sm-10">
+	<div class="col-sm-10 col-sm-offset-1">
 		<?php $this->load->view("$theme/common/error.tpl");?>
 	</div>

@@ -106,12 +106,29 @@
 @media (max-width: 767px) { 
 
 	div.container-fluid.content-wrapper {
-		padding-right: 17px;
+		padding-right: 0;
+		width: 100%;
+
+	}
+
+	div.container-fluid.main-container > div.col-lg-12{
+		padding: 0;
+		margin: 0;
+	}
+
+	ul.top-nav-boxes li a {
+		padding: 5px 10px 5px 10px;
+		min-width: 90px;
+	}
+
+	ul.top-nav-boxes li {
+		margin-top: 15px;
 	}
 	
 	div.sidebar-nav {
-		width: 47px;
+		/*width: 47px;*/
 		text-align: center;
+		display: none;
 	}
 	
 	ul.left-menu li {
@@ -176,8 +193,8 @@
 	}
 	
 	footer.black-gradient {
-		margin-left: -20px;
-		margin-right: -20px;	
+		/*margin-left: -20px;*/
+		/*margin-right: -20px;	*/
 	}
 
 }

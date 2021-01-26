@@ -514,5 +514,11 @@ jQuery(function($){
 		let e = button.data('end') // Extract info from data-* attributes
 		get_other_traffic_sources(s,e,'ana_other_traffic_sources');
 	})
+
+	if( window.innerWidth < 800 ){
+		$('#navbar-menu').removeClass('navbar-inverse');
+		$('#navbar-menu').addClass('navbar-default');
+		console.log(window.innerWidth)
+	}
 	
 });

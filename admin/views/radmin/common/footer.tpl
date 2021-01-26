@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');?>
-<footer class="black-gradient">
+<footer class="black-gradient row-fluid">
 	<div class="square-turtle col-sm-6">
 		<p>
 			2012 - <?php echo date('Y');?> &copy; All rights reserved &nbsp;&nbsp;&nbsp;&nbsp;
@@ -7,7 +7,7 @@
 		</p>
 	</div>
 	<div class="col-sm-6" style="text-align:right">
-		<a class="brand" href="<?php echo base_url();?>">
+		<a class="brand" href="<?php echo site_url('home');?>">
 			<span class="rad">Site</span> Admin
 		</a>
 	</div>

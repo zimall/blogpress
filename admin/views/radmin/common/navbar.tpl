@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');?>
-<div class="sidebar-nav">
+<div class="sidebar-nav hidden-xs hidden-sm">
 	<ul class="nav nav-stacked left-menu" id="navigation">
 		<li id="navigation-index">
 			<?php echo anchor( 'home',
