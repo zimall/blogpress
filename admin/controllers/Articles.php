@@ -20,6 +20,41 @@ class Articles extends CI_Controller
 		$this->al->index();
 	}
 
+	public function search()
+	{
+		$q = trim($this->input->get('q'));
+		$q = strip_tags($q);
+		$q = $this->security->xss_clean($q);
+		$this->data['search_term'] = $q;
+		if( is_string($q) && strlen($q)>0 )
+		{
+			$this->pc->page_control( 'search', 10 );
+			$like = [ 'at_keywords'=>$q, 'at_summary'=>$q, 'sc_name'=>$q ]; //'at_section'=>5
+			$like = [ "CONCAT(at_title,at_keywords,at_summary,sc_name)"=>$q ];
+			$order = [ "FIELD(at_title, '$q')", "FIELD(at_keywords, '$q')", "FIELD(at_summary, '$q')", "FIELD(sc_name, '$q')", 'at_date_posted desc' ];
+			$count = array( 'like'=>$like, 'count'=>1 );
+			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
+
+			$args = array_merge( $paginate, [ 'like'=>$like, 'sort'=>$order ] );
+			$articles = $this->article_model->get_articles( $args );
+			foreach( $articles as $k=>$v ){
+				$s = '<span style="background-color: gold">'.$q.'</span>';
+				$articles[$k]['at_title'] = str_ireplace( $q, $s, $v['at_title'] );
+				$articles[$k]['at_summary'] = str_ireplace( $q, $s, $v['at_summary'] );
+				$articles[$k]['sc_name'] = str_ireplace( $q, $s, $v['sc_name'] );
+			}
+			$this->data['articles'] = $articles;
+			$this->data['section'] = 'index';
+			$this->data['innertitle'] = "Search: ".$q;
+			$this->load->view("{$this->data['theme']}/articles.tpl", $this->data );
+		}
+		else
+		{
+			sem( 'You need to type something in the search box.' );
+			redirect( 'articles/index' );
+		}
+	}
+
 	public function new_article()
 	{
 		$this->_process_form();

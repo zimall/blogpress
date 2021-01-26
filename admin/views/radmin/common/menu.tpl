@@ -90,13 +90,13 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
                 <li class="hidden-xs hidden-sm">
-                    <form class="navbar-form navbar-left" style="min-width:220px;" role="search">
+                    <form class="navbar-form navbar-left" style="min-width:220px;" role="search" action="/admin/articles/search" method="get">
                         <div style="max-width:200px;" class="row">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control">
+                                <input type="search" name="q" class="form-control" value="<?php echo isset($search_term)?$search_term:'';?>">
                                 <span class="input-group-btn">
-								<button class="btn btn-default" type="button">Go!</button>
-							</span>
+                                    <button class="btn btn-default" type="submit"><span class="radmin radmin-search"></span></button>
+                                </span>
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-6 -->
                     </form>
@@ -123,12 +123,12 @@
 </nav>
 
 <div class="col-xs-12">
-    <form class="form form-horizontal hidden-md hidden-lg" role="search">
+    <form class="form form-horizontal hidden-md hidden-lg" role="search" action="/admin/articles/search" method="get">
         <div class="row">
             <div class="input-group input-group-lg">
-                <input type="text" class="form-control">
+                <input type="search" name="q" class="form-control" value="<?php echo isset($search_term)?$search_term:'';?>">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="radmin radmin-search"></span></button>
+                    <button class="btn btn-default" type="submit"><span class="radmin radmin-search"></span></button>
                 </span>
             </div><!-- /input-group -->
         </div><!-- /.col-lg-6 -->

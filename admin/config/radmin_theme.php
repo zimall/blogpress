@@ -29,6 +29,7 @@ $config['pagination']['num_tag_open'] = '<li>';
 $config['pagination']['num_tag_close'] = '</li>';
 $config['pagination']['next_link'] = 'more &raquo;';
 $config['pagination']['prev_link'] = '&laquo; prev';
+$config['pagination']['reuse_query_string'] = true;
 
-/* End of file bootstrap_theme.php */
+	/* End of file bootstrap_theme.php */
 /* Location: ./myadmin/config/bootstrap_theme.php */

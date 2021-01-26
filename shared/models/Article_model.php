@@ -326,7 +326,7 @@ class Article_Model extends CI_Model
 		return $error;
 	}
 
-	public function get_articles($args=array())
+	public function get_articles($args=[])
 	{
 		if(! isset($args['table']) ) $args['table'] = 'articles';
 		if(! isset($args['select']) ) $args['select'] = FALSE;
@@ -406,7 +406,7 @@ class Article_Model extends CI_Model
 			if( is_array( $sort ) )
 			{
 				foreach( $sort as $k=>$v )
-					$this->db->order_by($k,$v);
+					is_numeric($k) ? $this->db->order_by($v) : $this->db->order_by($k,$v);
 			}
 			else $this->db->order_by($args['sort']);
 		}

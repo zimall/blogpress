@@ -7,11 +7,11 @@ class Pages extends CI_Controller
 	{
 		parent::__construct();
 		$this->authorize->validate_user();
-		$this->data['menu'] = 'projects';
+		$this->data['menu'] = 'pages';
 		$this->load->model('article_model');
 		$this->load->library('al');
 		$this->al->sidebar();
-		$this->data['title'] = 'Projects';
+		$this->data['title'] = 'Search';
 		$this->data['section'] = 'items';
 		
 	}
@@ -68,10 +68,12 @@ class Pages extends CI_Controller
 		{
 			$this->pc->page_control( 'search', 10 );
 			$like = array( 'at_keywords'=>$q ); //'at_section'=>5
+			$like = [ "CONCAT(at_title,at_keywords,at_summary,sc_name)"=>$q ];
+			$order = [ "FIELD(at_title, '$q')", "FIELD(at_keywords, '$q')", "FIELD(at_summary, '$q')", "FIELD(sc_name, '$q')", 'at_date_posted desc' ];
 			$count = array( 'like'=>$like, 'count'=>1 );
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
 			
-			$args = array_merge( $paginate, array( 'like'=>$like, 'sort'=>'at_date_posted desc' ) );
+			$args = array_merge( $paginate, array( 'like'=>$like, 'sort'=>$order ) );
 			$this->data['articles'] = $articles = $this->article_model->get_articles( $args );
 				
 				$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image';
@@ -95,13 +97,14 @@ class Pages extends CI_Controller
 				$this->data['tags'] = array_unique($tags1);
 
 			$this->data['section'] = 'items';
-			$this->data['innertitle'] = "Search: ".$q;
+			$this->data['innertitle'] = $this->data['title'] = "Search: ".$q;
 			$this->load->view("{$this->data['theme']}/pages.tpl", $this->data );
 		}
 		else
 		{
-			sem( 'You need to type something in the search box.' );
-			redirect( 'news' );
+			sem( 'You need to type something in the search box. '.$q.'.' );
+			redirect('home/recent');
+			//echo 'ok';
 		}
 	}
 
