@@ -11,11 +11,9 @@
 	<ul class="breadcrumb">
 		<li>
 			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
-			<span class="divider">/</span>
 		</li>
 		<li>
 			<?php echo anchor( 'articles', '<i class="radmin-icon radmin-clipboard-2"></i>Articles' );?>
-			<span class="divider">/</span>
 		</li>
 		<li class="active">
 			<i class="radmin-icon radmin-file-word"></i> New Article
@@ -59,8 +57,10 @@
 					<label class="col-sm-3 control-label">Section</label>
 					<div class="col-sm-8">
 						<select class="form-control" name="section">
-							<?php foreach($sections as $k=>$v):?>
-								<option value="<?php echo $v['sc_id']?>"><?php echo $v['sc_name']?></option>
+							<?php foreach($sections as $k=>$v):
+                                $s = $this->input->post('section') == $v['sc_id'] ? 'selected="selected"':'';
+                                ?>
+								<option value="<?php echo $v['sc_id']?>" <?php echo $s;?>><?php echo $v['sc_name']?></option>
 							<?php endforeach;?>
 						</select>
 					</div>
@@ -181,7 +181,9 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3">Submit</label>
 					<div class="col-sm-9" style="text-align:right;">
-						<?php echo anchor( 'articles', 'Cancel', 'class="btn btn-default"' );?>
+						<?php $u = uri_string();
+						    $u = preg_replace( "/\/new(_article)?$/", '', $u );
+                            echo anchor( $u, 'Cancel', 'class="btn btn-default"' );?>
 						<button type="submit" name="submit" value="1" class="btn btn-primary">Submit</button>
 						<input type="hidden" name="form_name" value="article">
 						<input type="hidden" name="form_type" value="insert">

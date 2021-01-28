@@ -11,11 +11,11 @@
 	<ul class="breadcrumb">
 		<li>
 			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
-			<span class="divider">/</span>
+
 		</li>
 		<li>
 			<?php echo anchor( current_url(), '<i class="radmin-icon radmin-user"></i>User Accounts' );?>
-			<span class="divider">/</span>
+
 		</li>
 		<li class="active">
 			<i class="radmin-icon radmin-pencil"></i> Update Account

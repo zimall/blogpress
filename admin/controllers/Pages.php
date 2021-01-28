@@ -18,10 +18,86 @@ class Pages extends CI_Controller
 		$this->data['innertitle'] = 'Site Pages';
 	}
 
-	public function index()
+	public function index2( $page_id )
 	{
-		$this->_process_form('pages');
-		$this->pc->page_control('pages_list' );
+		$this->data['page'] = $page = $this->article_model->get_section($page_id);
+		if(!empty($page)) {
+			if($continue) {
+				$this->_process_form($page['sc_value']);
+				$this->pc->page_control($page['sc_value'].'_list' );
+				$continue = $this->_process_get();
+
+				$this->data['nav_element'] = 'articles';
+				$this->data['section'] = 'index';
+				$this->pc->page_control('pages', 10);
+				$where = array('at_section' => $page['sc_id']);
+				$count = array('where' => $where, 'count' => 1);
+				$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
+				$args = array_merge($paginate, array('where' => $where, 'sort' => 'at_id desc'));
+				$this->data['articles'] = $this->article_model->get_articles($args);
+				$this->data['title'] = $page['sc_name'];
+				$this->data['innertitle'] = $page['sc_name'];
+				$this->data['menu'] = $page['sc_value'];
+				//$this->load->view("{$this->data['theme']}/articles.tpl", $this->data);
+			}
+			$this->load->view( "{$this->data['theme']}/articles.tpl", $this->data );
+		}
+		else redirect(site_url("articles/search") . "?q={$page_id}");
+	}
+
+	public function index($page_id, $option='')
+	{
+		$this->data['page'] = $page = $this->article_model->get_section($page_id);
+		if(empty($page)) redirect(site_url("articles/search") . "?q={$page_id}");
+
+		$this->data['section'] = 'index';
+		$this->data['title'] = $page['sc_name'];
+		$this->data['segment'] = $page['sc_value'];
+		$this->data['innertitle'] = $page['sc_name'];
+
+		$this->al->_process_form($page['sc_value']);
+		$this->pc->page_control($page['sc_value'].'_list', 10 );
+		$continue = $this->al->_process_get();
+
+		if( $option == 'new' )
+		{
+			$this->data['section'] = 'new_article';
+			$this->data['ckeditor'] = TRUE;
+			$this->data['scripts'][] = 'ajaxupload';
+			$this->data['scripts'][] = 'images';
+			$this->data['sections'] = $this->article_model->get_sections();
+			$_POST['section'] = $page_id;
+			$continue = FALSE;
+			$this->data['innertitle'] = 'New Article';
+		}
+
+		if($continue)
+		{
+			$where = array( 'at_section'=>$page['sc_id'] );
+			$count = array( 'where'=>$where, 'count'=>1 );
+
+			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
+			$args = array_merge( $paginate, array( 'where'=>$where, 'sort'=>'at_id desc' ) );
+			$this->data['articles'] = $this->article_model->get_articles( $args );
+
+			if( $option == 'edit' )
+			{
+				$this->data['ckeditor'] = TRUE;
+				$this->data['scripts'][] = 'ajaxupload';
+				$this->data['scripts'][] = 'images';
+				$this->data['sections'] = $this->article_model->get_sections();
+				$this->data['innertitle'] = 'Edit Article';
+			}
+			//else $this->data['section'] = 'leadership';
+		}
+		$this->load->view( "{$this->data['theme']}/articles.tpl", $this->data );
+	}
+
+	public function categories()
+	{
+		$this->data['innertitle'] = "Article Categories";
+		$this->_process_form('pages/categories');
+		$this->pc->page_control('pages_list', 20 );
 		$continue = $this->_process_get();
 		
 		if($continue)
@@ -35,7 +111,7 @@ class Pages extends CI_Controller
 			$args = array_merge($args, $count);
 			$this->data['nav_element'] = 'articles';
 			$this->data['pages'] = $this->pages_model->get_pages( $args );
-			$this->data['section'] = 'index';
+			$this->data['section'] = 'categories';
 		}
 		
 		$this->load->view( "{$this->data['theme']}/pages.tpl", $this->data );
@@ -238,6 +314,21 @@ class Pages extends CI_Controller
 						redirect( $r );
 				}
 			}
+			elseif( $name=="page" && $action=='insert' )
+			{
+				$this->form_validation->set_rules( 'title', 'Category Name', 'required' );
+				if( $this->form_validation->run() )
+				{
+					$error = $this->pages_model->update_page();
+					sem($error);
+					if(!$r) $r = current_url();
+					if( !$error['error'] )
+						redirect( $r );
+					else{
+						$_GET['action'] = 'add_category';
+					}
+				}
+			}
 			elseif( $name == 'article' && $action == 'insert' )
 			{
 				$this->form_validation->set_rules( 'text', 'Article Body', 'required' );
@@ -394,11 +485,11 @@ class Pages extends CI_Controller
 		$action = $this->input->get('action');
 		if( $action )
 		{
-			if( $action=='add_user' )
+			if( $action=='add_category' )
 			{
-				$this->data['add_user'] = TRUE;
-				$this->data['innertitle'] = 'Add User';
-				$this->data['groups'] = $this->user_model->get_groups();
+				$this->data['sections'] = $this->pages_model->get_pages( ['where'=>[ 'sc_enabled'=>1 ] ] );
+				$this->data['section'] = 'add_category';
+				$this->data['innertitle'] = 'Add new category';
 				$continue = FALSE;
 			}
 			elseif( $action=='edit_page' )

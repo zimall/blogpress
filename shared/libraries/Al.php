@@ -38,6 +38,28 @@ class Al
 		$this->ci->load->view( "{$this->ci->data['theme']}/articles.tpl", $this->ci->data );
 	}
 
+	public function featured()
+	{
+		$this->_process_form();
+		$this->ci->pc->page_control('featured', 10 );
+		$continue = $this->_process_get();
+
+		if($continue)
+		{
+			$count = [ 'count'=>TRUE, 'where'=>['at_featured'=>1] ];
+			$function = 'get_articles';
+			$paginate = $this->ci->pc->paginate($count, $function, 'article_model');
+
+			$args = array( 'start'=>$paginate['start'], 'limit'=>$paginate['limit'], 'sort'=>'at_date_posted desc' );
+			$count['count'] = NULL;
+			$args = array_merge($args, $count);
+
+			$this->ci->data['articles'] = $this->ci->article_model->get_articles( $args );
+		}
+		$this->ci->data['innertitle'] = 'Featured Articles';
+		$this->ci->load->view( "{$this->ci->data['theme']}/articles.tpl", $this->ci->data );
+	}
+
 	public function sidebar()
 	{
 		$limit = 5;

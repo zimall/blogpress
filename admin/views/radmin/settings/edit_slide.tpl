@@ -11,11 +11,11 @@
 	<ul class="breadcrumb">
 		<li>
 			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
-			<span class="divider">/</span>
+
 		</li>
 		<li>
 			<?php echo anchor( 'settings', '<i class="radmin-icon radmin-cog"></i>Settings' );?>
-			<span class="divider">/</span>
+
 		</li>
 		<li class="active">
 			<i class="radmin-icon radmin-picture"></i> Banner Slide

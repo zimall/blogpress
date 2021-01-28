@@ -22,7 +22,7 @@ class Users extends CI_Controller
 		);
 		//$this->session->unset_userdata('filter_settings');
 		$this->_process_form();
-		$this->pc->page_control('user_list', json_encode($filter) );
+		$this->pc->page_control('users', 10, json_encode($filter) );
 		$continue = $this->_process_get();
 		
 		if($continue)

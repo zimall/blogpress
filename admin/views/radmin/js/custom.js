@@ -513,6 +513,14 @@ jQuery(function($){
 		let s = button.data('start') // Extract info from data-* attributes
 		let e = button.data('end') // Extract info from data-* attributes
 		get_other_traffic_sources(s,e,'ana_other_traffic_sources');
-	})
+	});
+
+	$('.change_per_page a').click(function (e){
+		e.preventDefault();
+		let a = $(e.target);
+		let v = a.text();
+		$('#change_per_page').val(v);
+		$('#change_per_page_form').submit();
+	});
 	
 });

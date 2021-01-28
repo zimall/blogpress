@@ -13,17 +13,23 @@
 					<i style="color:brown;" class="radmin-icon radmin-clipboard-2"></i>
 				</span>
 				<span class="hidden-tablet hidden-phone">Site Pages</span>
-				<span class="badge pull-right hidden-tablet hidden-phone">2</span>
+				<span class="badge pull-right hidden-tablet hidden-phone">3</span>
 			</a>
 			<div id="articles" class="accordion-body collapse">
 				<ul class="nav nav-stacked submenu">
 					<li><br></li>
 					<li>
-						<?php echo anchor( 'pages',
+						<?php echo anchor( 'pages/categories',
 							'<span class="box"> <i class="radmin-icon radmin-book"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Page Manager</span>'
+							'<span class="hidden-tablet hidden-phone">Article Categories</span>'
 						);?>
 					</li>
+                    <li>
+						<?php echo anchor( 'articles/featured',
+							'<span class="box"> <i class="radmin-icon radmin-star"></i> </span>'.
+							'<span class="hidden-tablet hidden-phone">Featured Articles</span>'
+						);?>
+                    </li>
 					<li class="submenu-last">
 						<?php echo anchor( 'articles',
 							'<span class="box"> <i class="radmin-icon radmin-user"></i> </span>'.
@@ -123,7 +129,7 @@
 					<i style="color:brown;" class="radmin-icon radmin-cog"></i>
 				</span>
 				<span class="hidden-tablet hidden-phone">Settings</span>
-				<span class="badge pull-right hidden-tablet hidden-phone">1</span>
+				<span class="badge pull-right hidden-tablet hidden-phone">2</span>
 			</a>
 			<div id="collapse-settings" class="accordion-body collapse">
 				<ul class="nav nav-stacked submenu">

@@ -255,14 +255,24 @@ class Pages_Model extends CI_Model
 			'sc_parent' => $parent,
 			'sc_enabled' => $this->input->post('enabled'),
 		);
-		
-		$this->db->where( 'sc_id', $id );
-		$e = $this->db->update('sections', $data);
-		
+
+		if($id) {
+			$this->db->where('sc_id', $id);
+			$e = $this->db->update('sections', $data);
+		}
+		else{
+
+			$this->db->where( 'sc_value', $data['sc_value'] );
+			$n = $this->db->count_all_results('sections');
+			if($n>0){
+				return [ 'error'=>true, 'error_msg'=>'Unable to add new category. A category with the same URI String already exists' ];
+			}
+			$e = $this->db->insert( 'sections', $data );
+		}
+
 		if($e)
 		{
-			
-			$routes = [
+			/*$routes = [
 				$segment=>'pages/index/'.$id,
 				"{$segment}/page"=>'pages/index/'.$id,
 				"{$segment}/page/(.+)"=>"pages/index/{$id}/".'$1',
@@ -286,9 +296,10 @@ class Pages_Model extends CI_Model
 					"{$old_value['sc_value']}/(:num)", "{$old_value['sc_value']}/(:num)/.+", 
 				];
 			}
-			else $old_keys = FALSE;
+			else $old_keys = FALSE;*/
 			
-			return $this->update_routes( $routes, $old_keys );
+			//return $this->update_routes( $routes, $old_keys );
+			return $this->rewrite_routes();
 		}
 		return $error;
 	}
@@ -342,6 +353,64 @@ class Pages_Model extends CI_Model
 
 		if( $e!==FALSE ) return array( 'error'=>FALSE, 'error_msg'=>'Page updated successfully' );
 		else return array( 'error'=>TRUE, 'error_msg'=>'Could not update page settings' );
+	}
+
+	public function rewrite_routes(){
+		$e = false;
+		// get sections
+		$this->db->select('sc_id,sc_value');
+		$this->db->where('sc_enabled',1);
+		$this->db->order_by('sc_menu asc');
+		$r = $this->db->get('sections');
+		if( $r->num_rows()>0 ){
+			$rows = $r->result_array();
+			$routes = "<?php defined('BASEPATH') OR exit('No direct script access allowed');\n";
+			foreach($rows as $k=>$v){
+				$routes .= "\$route['{$v['sc_value']}'] = 'pages/index/{$v['sc_id']}';\n";
+				$routes .= "\$route['{$v['sc_value']}/new'] = 'pages/index/{$v['sc_id']}/new';\n";
+				$routes .= "\$route['{$v['sc_value']}/page'] = 'pages/index/{$v['sc_id']}';\n";
+				$routes .= "\$route['{$v['sc_value']}/page/(.+)'] = 'pages/index/{$v['sc_id']}/\$1';\n";
+				$routes .= "\$route['{$v['sc_value']}/(:num)'] = 'pages/article/{$v['sc_id']}/\$1';\n";
+				$routes .= "\$route['{$v['sc_value']}/(:num)/.+'] = 'pages/article/{$v['sc_id']}/\$1';\n";
+			}
+
+			try {
+				if(defined('SITEPATH')) {
+					$folder = SITEPATH . "config/" . ENVIRONMENT . "/";
+					$path = $folder."routes.php";
+					if( !is_writable($folder) ) throw new Exception("The directory {$folder} is not writable");
+
+					$file = fopen($path, "w");
+					if (! $file) {
+						throw new Exception("Could not open the file {$path} for writing");
+					}
+					$e = file_put_contents($path, $routes);
+					fclose($file);
+					$site_path = SITEPATH;
+				} else {
+					$site_path = '';
+				}
+
+				if(defined('APPPATH') && defined('APPNAME') && $site_path != APPPATH) {
+					$folder = APPPATH . "config/" . ENVIRONMENT . "/";
+					$path = $folder."routes.php";
+					if( !is_writable($folder) ) throw new Exception("The directory {$folder} is not writable");
+
+					$data = str_replace("route['", "route['" . APPNAME . "/", $routes);
+					$file = fopen($path, "w");
+					if (! $file) {
+						throw new Exception("Could not open the file {$path} for writing");
+					}
+					$e = file_put_contents($path, $data);
+					fclose($file);
+				}
+			}
+			catch(Exception $e){
+				return[ 'error'=>true, 'error_msg'=>$e->getMessage() ];
+			}
+		}
+		if( $e!==FALSE ) return array( 'error'=>FALSE, 'error_msg'=>'Page routes updated successfully' );
+		else return array( 'error'=>TRUE, 'error_msg'=>'Could not update page routes' );
 	}
 
 	public function get_pages($args=[])

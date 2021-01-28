@@ -62,9 +62,13 @@ class PC
 			'theme'=>$this->theme, 'section' => 'login', 'error_msg'=>'',
 			'theme_scripts'=>$this->theme_scripts, 'views'=>APPNAME."/views/{$this->theme}/"
 		);
-		
+		$this->ci->data['menu'] = $this->get_menu();
 	}
 
+	public function get_menu(){
+		$this->ci->load->model('pages_model');
+		return $this->ci->pages_model->get_pages(['select'=>'sc_name as title, sc_value as segment', 'where'=>['sc_enabled'=>1,'sc_parent'=>0]]);
+	}
 
 	public function debug_status()
 	{
@@ -185,22 +189,19 @@ class PC
 	 * @param string $filter_settings contains jason encoded rules used for selecting records in database 
 	 */
 	
-	public function page_control($table, $filter_settings=FALSE)
+	public function page_control($table, $per=10, $filter_settings=false)
 	{
-		$per = $this->ci->input->post($table.'_per_page');
-		if($per===FALSE OR $per=='' OR $per==0)
-			$per = $this->ci->input->cookie($this->ci->config->item('cookie_prefix').$table.'_per_page');
-		if($per===FALSE  OR $per=='' OR $per==0)
-			$per = 10;
+		$p = $changed = $this->ci->input->post('per_page');
+		if(!$p) $p = $this->ci->input->cookie($this->ci->config->item('cookie_prefix').$table.'_per_page');
+		$per = $p && is_numeric($p) ? $p : $per;
 
-			$cookie = array(
-				'name'   => 'per_page',
-				'value'  => $per,
-				'expire' => '60000',
-				'secure' => FALSE
-			);
-			if($this->ci->input->set_cookie($cookie));
-			//else echo 'cooking failed';
+		$cookie = array(
+			'name'   => $table.'_per_page',
+			'value'  => $per,
+			'expire' => '60000',
+			'secure' => FALSE
+		);
+		if( ! $this->ci->input->set_cookie($cookie) ) log_message( 'warning', 'Unable to set pagination cookie' );
 		$this->ci->data['per'] = $per;
 		
 		/************* SORT ********************/
@@ -275,9 +276,12 @@ class PC
 			}
 		}
 		
-		if( $this->ci->input->post('per_page') || $this->ci->input->post('sort') )
-			redirect( current_url() );
-		
+		if( $this->ci->input->post('per_page') || $this->ci->input->post('sort') ) {
+			$c = full_url();
+			$c = preg_replace( "/page\/\d*/", '', $c );
+			$c = str_replace( '/.', '.', $c );
+			redirect($c);
+		}
 	}
 
 	/**
@@ -293,7 +297,7 @@ class PC
 		$keys = array(); $values = array();
 		$assoc = array( 'page'=>FALSE, 'view'=>FALSE, 'filter'=>FALSE, 'name'=>FALSE, 'parent'=>FALSE );
 		$pos = strpos( $url, '/_' )+1;
-		$posp = strpos( $url, '/page' )+1;
+		$posp = strpos( $url.'/', '/page/' )+1;
 		if( ($pos !== FALSE && $pos>3) )
 		{
 			$argstring = substr( $url, $pos+1 );		//get string of arguments
@@ -318,7 +322,7 @@ class PC
 			
 			$data['segment'] = substr_replace( $url, '', $pos-1  );
 			
-			$pag = strpos($url, '/page');
+			$pag = strpos($url.'/', '/page/');
 			
 			if( $pag!==FALSE & $pag>0 ){
 				$data['args'] = substr_replace( $url, '', $pag );
@@ -352,7 +356,7 @@ class PC
 				}
 				
 			}
-			$pag = strpos($url, '/page');
+			$pag = strpos($url.'/', '/page/');
 			
 			if( $pag!==FALSE & $pag>0 ){
 				$data['args'] = substr_replace( $url, '', $pag );

@@ -11,15 +11,24 @@
 	<ul class="breadcrumb">
 		<li>
 			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
-			<span class="divider">/</span>
 		</li>
 		<li>
 			<?php echo anchor( 'users', '<i class="radmin-icon radmin-user-3"></i>User Accounts' );?>
-			<span class="divider">/</span>
+			
 		</li>
 		<li class="active">
 			<i class="radmin-icon radmin-user"></i> View All
 		</li>
+        <li class="pull-right dropdown">
+            <a href="#" data-toggle="dropdown"><?php echo $per;?> items <span class="caret"></span></a> per page
+            <ul class="dropdown-menu change_per_page">
+                <li><a href="#">5</a></li>
+                <li><a href="#">10</a></li>
+                <li><a href="#">20</a></li>
+                <li><a href="#">50</a></li>
+                <li><a href="#">100</a></li>
+            </ul>
+        </li>
 	</ul>
 </div> <!-- end of span12 -->
 

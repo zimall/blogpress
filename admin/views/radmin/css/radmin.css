@@ -479,6 +479,11 @@ a.navbar-link:hover  {
 	padding-right: 5px;
 }
 
+.navbar .dropdown-menu>li>a{
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
 a.user-info {
 	font-weight: bold;
 }
@@ -607,12 +612,17 @@ ul.left-menu li ul.submenu li span.box {
 /* Breadcrumbs */
 
 ul.breadcrumb li {
-	margin-bottom: 5px;
+	margin-bottom: 3px;
+	margin-top: 3px;
 }
 
 
 ul.breadcrumb i.radmin-icon {
 	margin-bottom: -4px;
+}
+
+.breadcrumb>li+li.dropdown:before {
+	content: "";
 }
 
 /* Top Navigation Boxes */

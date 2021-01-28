@@ -11,11 +11,11 @@
 	<ul class="breadcrumb">
 		<li>
 			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
-			<span class="divider">/</span>
+
 		</li>
 		<li>
 			<?php echo anchor( 'orders', '<i class="radmin-icon radmin-home"></i>Orders' );?>
-			<span class="divider">/</span>
+
 		</li>
 		<li class="active">
 			<i class="radmin-icon radmin-user"></i> View All

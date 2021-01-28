@@ -21,6 +21,16 @@
 		<li class="active">
 			<i class="radmin-icon radmin-user"></i> User Privileges
 		</li>
+        <li class="pull-right dropdown">
+            <a href="#" data-toggle="dropdown"><?php echo $per;?> items <span class="caret"></span></a> per page
+            <ul class="dropdown-menu change_per_page">
+                <li><a href="#">5</a></li>
+                <li><a href="#">10</a></li>
+                <li><a href="#">20</a></li>
+                <li><a href="#">50</a></li>
+                <li><a href="#">100</a></li>
+            </ul>
+        </li>
 	</ul>
 </div> <!-- end of span12 -->
 

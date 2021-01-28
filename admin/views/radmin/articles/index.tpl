@@ -3,6 +3,14 @@
 <div class="col-sm-12">
 	<h2 class="welcome">
 		<span class="text-info"><?php echo $innertitle?></span>
+        <span class="pull-right">
+            <?php
+                $u = uri_string();
+                $u = preg_replace( "/page[^s]\/?\d*\/?$/", '', $u );
+                $u = $u.'/new';
+                $u = str_replace( '//', '/', $u );
+                echo anchor( $u, 'New Article', ['class'=>'btn btn-sm btn-default'] );?>
+        </span>
 	</h2>
 </div>
 
@@ -18,6 +26,16 @@
 		<li class="active">
 			<i class="radmin-icon radmin-clipboard-2"></i> <?php echo $innertitle?>
 		</li>
+        <li class="pull-right dropdown">
+            <a href="#" data-toggle="dropdown"><?php echo $per;?> items <span class="caret"></span></a> per page
+            <ul class="dropdown-menu change_per_page">
+                <li><a href="#">5</a></li>
+                <li><a href="#">10</a></li>
+                <li><a href="#">20</a></li>
+                <li><a href="#">50</a></li>
+                <li><a href="#">100</a></li>
+            </ul>
+        </li>
 	</ul>
 </div> <!-- end of span12 -->
 

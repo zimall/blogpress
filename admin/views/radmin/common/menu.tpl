@@ -28,12 +28,18 @@
 		                    <?php echo anchor( 'articles/new_article', '<i class="radmin-pencil"></i> <span>New Article</span>' );?>
                         </li>
                         <li>
-		                    <?php echo anchor( 'pages',
+		                    <?php echo anchor( 'pages/categories',
 			                    '<span class="box"> <i class="radmin-icon radmin-book"></i> </span>'.
-			                    '<span>Page Manager</span>'
+			                    '<span>Article Categories</span>'
 		                    );?>
                         </li>
-                        <li class="submenu-last">
+                        <li>
+		                    <?php echo anchor( 'articles/featured',
+			                    '<span class="box"> <i class="radmin-icon radmin-star"></i> </span>'.
+			                    '<span>Featured Articles</span>'
+		                    );?>
+                        </li>
+                        <li>
 		                    <?php echo anchor( 'articles',
 			                    '<span class="box"> <i class="radmin-icon radmin-user"></i> </span>'.
 			                    '<span>All Articles</span>'
@@ -41,6 +47,22 @@
                         </li>
                     </ul>
                 </li>
+                <?php if( isset($menu) && is_array($menu) && !empty($menu) ):?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="box"><i class="radmin-icon radmin-clipboard-2"></i></span>
+                        <span>Categories</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <?php foreach($menu as $v):;?>
+                        <li>
+							<?php echo anchor( $v['segment'], '<i class="radmin-arrow-right-5"></i>&nbsp;&nbsp;<span>'.$v['title'].'</span>' );?>
+                        </li>
+                        <?php endforeach;?>
+                    </ul>
+                </li>
+                <?php endif;?>
                 <li>
 					<?php echo anchor( 'about/index',
 						'<span class="box"> <i class="radmin-icon radmin-briefcase"></i> </span>'.

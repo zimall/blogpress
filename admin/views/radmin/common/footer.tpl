@@ -23,6 +23,9 @@
 <form class="hidden" action="<?php echo current_url()?>" method="get" id="refresh"></form>
 
 <?php
+    echo form_open(full_url(), 'id="change_per_page_form"');
+    echo form_input([ 'name'=>'per_page', 'value'=>'', 'type'=>'hidden', 'id'=>'change_per_page' ]);
+    echo form_close();
 
 $this->carabiner->display('js');
 

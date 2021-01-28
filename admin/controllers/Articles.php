@@ -75,9 +75,9 @@ class Articles extends CI_Controller
 		$this->load->view( "{$this->data['theme']}/articles.tpl", $this->data );
 	}
 
-	public function news()
+	public function featured()
 	{
-		$this->al->news();
+		$this->al->featured();
 	}
 	public function services()
 	{
