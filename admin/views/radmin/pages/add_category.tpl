@@ -2,7 +2,7 @@
 
 <div class="col-sm-12">
 	<h2 class="welcome">
-		<span class="text-info">Add New SIte Category</span>
+		<span class="text-info">Add New Article Category</span>
 	</h2>
 </div>
 
@@ -13,10 +13,10 @@
 			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
 		</li>
 		<li>
-			<?php echo anchor( 'pages/categories', '<i class="radmin-icon radmin-book"></i>Site Pages' );?>
+			<?php echo anchor( 'pages/categories', '<i class="radmin-icon radmin-book"></i>Article Categories' );?>
 		</li>
 		<li class="active">
-			<i class="radmin-icon radmin-pencil"></i> Add Site New Site Category
+			<i class="radmin-icon radmin-pencil"></i> Add New Article Category
 		</li>
 	</ul>
 </div> <!-- end of span12 -->
@@ -28,7 +28,7 @@
 	<div class="col-sm-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Add Site New Site Category</h3>
+				<h3 class="panel-title">Add New Article Category</h3>
 			</div>
 			<div class="panel-body">
 				
@@ -79,8 +79,8 @@
 				<div class="col-md-6">
 				
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="enabled">Status:</label>
-						<div class="col-sm-9">
+						<label class="control-label col-sm-3 col-xs-6" for="enabled">Status:</label>
+						<div class="col-sm-9 col-xs-6">
 							<input type="hidden" name="enabled" value="0">
 							<label class="checkbox">
 								<?php if( $this->input->post('enabled') ) $c='checked';else $c='';?>

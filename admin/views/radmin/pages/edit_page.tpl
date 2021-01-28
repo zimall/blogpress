@@ -2,7 +2,7 @@
 
 <div class="col-sm-12">
 	<h2 class="welcome">
-		<span class="text-info">Edit SIte Page</span>
+		<span class="text-info">Edit Article Category</span>
 	</h2>
 </div>
 
@@ -13,10 +13,10 @@
 			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
 		</li>
 		<li>
-			<?php echo anchor( 'pages', '<i class="radmin-icon radmin-book"></i>Site Pages' );?>
+			<?php echo anchor( 'pages/categories', '<i class="radmin-icon radmin-book"></i>Article Categories' );?>
 		</li>
 		<li class="active">
-			<i class="radmin-icon radmin-pencil"></i> Edit Site Page
+			<i class="radmin-icon radmin-pencil"></i> Edit Article Category
 		</li>
 	</ul>
 </div> <!-- end of span12 -->
@@ -34,7 +34,7 @@
 				
 				<div class="col-md-6">
 					<div class="form-group">
-						<label class="control-label col-sm-3">Page Title/Name</label>
+						<label class="control-label col-sm-3">Category Title/Name</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" name="title" value="<?php echo $page['sc_name']?>" required>
 						</div>
@@ -79,8 +79,8 @@
 				<div class="col-md-6">
 				
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="enabled">Status:</label>
-						<div class="col-sm-9">
+						<label class="control-label col-sm-3 col-xs-6" for="enabled">Status:</label>
+						<div class="col-sm-9 col-xs-6">
 							<input type="hidden" name="enabled" value="0">
 							<label class="checkbox">
 								<?php if( $page['sc_enabled'] ) $c='checked';else $c='';?>

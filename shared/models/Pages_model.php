@@ -244,9 +244,15 @@ class Pages_Model extends CI_Model
 		
 		$old_value = $this->get_pages( ['select'=>'sc_value', 'id'=>$id ] );
 				
-		if( strlen($segment) < 5 )
-			$segment = url_title( $title, '-', TRUE );
-		$segment = url_title( $segment, '-', TRUE );
+		if( strlen($segment) < 5 ) {
+			$title = str_replace( '/', '__ignore__', $title );
+			$segment = url_title($title, '-', TRUE);
+		}
+		else{
+			$segment = str_replace( '/', '__ignore__', $segment );
+			$segment = url_title( $segment, '-', TRUE );
+		}
+		$segment = str_replace('__ignore__', '/', $segment);
 		
 		$data = array(
 			'sc_name' => $title,
