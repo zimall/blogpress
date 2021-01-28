@@ -215,7 +215,7 @@
 			<div class="panel-body">
 				<div class="control-group">
 					<div class="controls">
-						<textarea class="ckeditor1 col-sm-12" id="ckeditor1" rows="15" 
+						<textarea class="ckeditor1 col-sm-12 form-control" id="ckeditor1" rows="15"
 							placeholder="Start typing here..." name="text"><?php 
 							echo html_entity_decode($article['at_text']);?></textarea>
 					</div>
