@@ -42,7 +42,7 @@ class Home extends CI_Controller
 		
 		$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image,sc_value,sc_name,sc_id';
 		$where = array( 'at_featured'=>1, 'at_enabled'=>1, 'at_date_posted <'=>$this->time );
-		$args = array( 'where'=>$where, 'sort'=>'at_id desc', 'limit'=>5, 'select'=>$select );
+		$args = array( 'where'=>$where, 'sort'=>'at_date_posted desc', 'limit'=>5, 'select'=>$select );
 		$this->data['featured'] = $this->article_model->get_articles($args);
 		
 		$this->data['innertitle'] = 'Latest Posts';
@@ -66,7 +66,7 @@ class Home extends CI_Controller
 		
 		$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image,sc_value,sc_name,sc_id';
 		$where = array( 'at_featured'=>1, 'at_enabled'=>1, 'at_date_posted <'=>$this->time );
-		$args = array( 'where'=>$where, 'sort'=>'at_id desc', 'limit'=>5, 'select'=>$select );
+		$args = array( 'where'=>$where, 'sort'=>'at_date_posted desc', 'limit'=>5, 'select'=>$select );
 		$this->data['featured'] = $this->article_model->get_articles($args);
 		
 		$this->data['section'] = 'recent';
