@@ -115,8 +115,8 @@
 			<div class="panel-body">
 				
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="show_author">Author:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="show_author">Author:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="show_author" value="0">
 						<label class="checkbox">
 							<?php if( $article['at_show_author'] ) $c='checked';else $c='';?>
@@ -125,8 +125,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="permalink">Permanent Link:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="permalink">Permanent Link:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="permalink" value="0">
 						<label class="checkbox">
 							<?php if( $article['at_permalink'] ) $c='checked';else $c='';?>
@@ -135,8 +135,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="show_image">Main Image:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="show_image">Main Image:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="show_image" value="0">
 						<label class="checkbox">
 							<?php if( $article['at_show_main_image'] ) $c='checked';else $c='';?>
@@ -145,8 +145,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="enabled">Status:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="enabled">Status:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="enabled" value="0">
 						<label class="checkbox">
 							<?php if( $article['at_enabled'] ) $c='checked';else $c='';?>
@@ -155,8 +155,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="private">Private:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="private">Private:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="private" value="0">
 						<label class="checkbox">
 							<?php if( $article['at_private'] ) $c='checked';else $c='';?>
@@ -165,8 +165,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="featured">Featured:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="featured">Featured:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="featured" value="0">
 						<label class="checkbox">
 							<?php if( $article['at_featured'] ) $c='checked';else $c='';?>
@@ -190,8 +190,8 @@
 				</div>
 				
 				<div class="form-group">
-					<label class="control-label col-sm-3">Submit</label>
-					<div class="col-sm-9" style="text-align:right;">
+					<label class="control-label col-xs-3">Submit</label>
+					<div class="col-xs-9" style="text-align:right;">
 						<?php echo anchor( current_url(), 'Cancel', 'class="btn btn-default"' );?>
 						<button type="submit" name="submit" value="1" class="btn btn-primary">Submit</button>
 						<input type="hidden" name="form_name" value="article">

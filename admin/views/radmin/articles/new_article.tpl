@@ -110,8 +110,8 @@
 			<div class="panel-body">
 				
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="show_author">Author:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="show_author">Author:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="show_author" value="0">
 						<label class="checkbox">
 							<input id="show_author" type="checkbox" name="show_author" value="1"> Show Author
@@ -119,8 +119,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="permalink">Permanent Link:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="permalink">Permanent Link:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="permalink" value="0">
 						<label class="checkbox">
 							<input id="permalink" type="checkbox" name="permalink" value="1"> Yes
@@ -128,26 +128,26 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="show_image">Main Image:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="show_image">Main Image:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="show_image" value="0">
 						<label class="checkbox">
-							<input id="show_image" type="checkbox" name="show_image" value="1"> Show in Article
+							<input id="show_image" type="checkbox" name="show_image" value="1" checked> Show in Article
 						</label>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="enabled">Status:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="enabled">Status:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="enabled" value="0">
 						<label class="checkbox">
-							<input id="enabled" type="checkbox" name="enabled" value="1"> Published
+							<input id="enabled" type="checkbox" name="enabled" value="1" checked> Published
 						</label>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="private">Private:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="private">Private:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="private" value="0">
 						<label class="checkbox">
 							<input id="private" type="checkbox" name="private" value="1"> Yes
@@ -155,8 +155,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="featured">Featured:</label>
-					<div class="col-sm-9">
+					<label class="control-label col-xs-3" for="featured">Featured:</label>
+					<div class="col-xs-9">
 						<input type="hidden" name="featured" value="0">
 						<label class="checkbox">
 							<input id="featured" type="checkbox" name="featured" value="1"> Yes
@@ -179,8 +179,8 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-3">Submit</label>
-					<div class="col-sm-9" style="text-align:right;">
+					<label class="control-label col-xs-3">Submit</label>
+					<div class="col-xs-9" style="text-align:right;">
 						<?php $u = uri_string();
 						    $u = preg_replace( "/\/new(_article)?$/", '', $u );
                             echo anchor( $u, 'Cancel', 'class="btn btn-default"' );?>
