@@ -9,6 +9,9 @@ $route['read/page/(.+)'] = 'read/list/$1';
 $route['page'] = 'home/index';
 $route['page/(.+)'] = 'home/index';
 
+// manual override about page
+$route['about'] = 'about/index';
+
 $route['default_controller'] = 'home';
 $route['404_override'] = 'read/index';
 $route['translate_uri_dashes'] = FALSE;
