@@ -38,8 +38,11 @@ class Al
 		$this->ci->load->view( "{$this->ci->data['theme']}/articles.tpl", $this->ci->data );
 	}
 
-	public function featured()
+	public function featured($option=false)
 	{
+
+		if($option && $option=='new') return $this->new_article();
+
 		$this->_process_form();
 		$this->ci->pc->page_control('featured', 10 );
 		$continue = $this->_process_get();
