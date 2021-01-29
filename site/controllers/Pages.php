@@ -47,6 +47,7 @@ class Pages extends CI_Controller
 				$this->data['title'] = $this->data['article']['at_title'];
 				$this->data['description'] = $this->data['article']['at_summary'];
 				$this->data['keywords'] = $this->data['article']['at_keywords'];
+				$this->data['menu'] = $this->data['article']['sc_value'];
 			}
 			$this->data['section'] = 'article';
 			$this->load->view("{$this->data['theme']}/pages.tpl", $this->data );

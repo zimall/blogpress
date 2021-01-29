@@ -81,6 +81,8 @@ class Settings_Model extends CI_Model
 		if(isset($settings['activate_theme']))
 		{
 			unset($settings['activate_theme']);
+			$e = $this->set_theme(['site_theme'=>$name]);
+			sem($e);
 		}
 		//$p = print_r($settings,TRUE);
 
@@ -315,6 +317,34 @@ class Settings_Model extends CI_Model
 		return array( 'error'=>TRUE, 'error_msg'=>"Could not update banner, please check your data and try again" );
 	}
 
+
+	public function set_theme($data){
+		$admin = isset($data['admin_theme']) ? $data['admin_theme'] : $this->config->item('admin_theme');
+		$site =  isset($data['site_theme']) ? $data['site_theme'] : $this->config->item('site_theme');
+		$string = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');\n";
+		$string .= "\$config['site_theme'] = '{$site}';\n";
+		$string .= "\$config['admin_theme'] = '{$admin}';\n";
+		$e = false;
+		try {
+			if(defined('SHAREDPATH')) {
+				$folder = SHAREDPATH . "config/" . ENVIRONMENT . "/";
+				$path = $folder."themes.php";
+				if( !is_writable($folder) ) throw new Exception("The directory {$folder} is not writable");
+
+				$file = fopen($path, "w");
+				if (! $file) {
+					throw new Exception("Could not open the file {$path} for writing");
+				}
+				$e = file_put_contents($path, $string);
+				fclose($file);
+			}
+		}
+		catch(Exception $e){
+			return[ 'error'=>true, 'error_msg'=>$e->getMessage() ];
+		}
+		if( $e!==FALSE ) return array( 'error'=>FALSE, 'error_msg'=>'Active theme updated successfully' );
+		else return array( 'error'=>TRUE, 'error_msg'=>'Could not update active theme' );
+	}
 
 
 
