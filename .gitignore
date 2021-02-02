@@ -48,3 +48,4 @@ site/views/
 !/images/xl/index.html
 
 composer.lock
+/site/views/errors/
