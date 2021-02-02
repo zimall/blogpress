@@ -17,6 +17,14 @@ class Imagier
 		{
 			$this->output($image,$size);
 		}
+		elseif($this->ci->input->get('ext')){
+			$ext = $this->ci->input->get('ext');
+			$f = str_replace( '.webp', ".{$ext}", $image );
+			if( file_exists($f) && is_file($f) ) $this->save_webp( $f, 80, true );
+			else{
+				$this->ci->output->set_status_header(404);
+			}
+		}
 		else
 		{
 			$image = "images/articles/{$size}/placeholder.jpg";
@@ -166,8 +174,20 @@ class Imagier
 		{
 			$resize = $resize->resize(null, $fh, 'inside', 'down');
 		}
+		$e = $resize->saveToFile($save);
+		$this->save_webp($save);
+		return $e;
+	}
 
-		return $resize->saveToFile($save);
+	private function save_webp($file, $quality=80, $output=false){
+		$ext = pathinfo($file, PATHINFO_EXTENSION);
+		$f = str_replace( '.'.$ext, '.webp', $file );
+		if ($ext == 'jpeg' || $ext == 'jpg') $image = imagecreatefromjpeg($file);
+		elseif ($ext == 'gif') $image = imagecreatefromgif($file);
+		elseif ($ext == 'png') $image = imagecreatefrompng($file);
+		$e = imagewebp($image, $f, $quality);
+		if($output) imagewebp( $image, null, $quality );
+		else return $e;
 	}
 
 	private function output($file,$size='lg')
@@ -227,6 +247,7 @@ class Imagier
 
 	private function safe_file_name($str, $separator = '-', $lowercase = FALSE, $ext = '')
 	{
+		if($ext) $str = str_replace( ".{$ext}", "_0_{$ext}_0_", $str );
 		if ($separator === 'dash')
 		{
 			$separator = '-';
@@ -257,7 +278,7 @@ class Imagier
 		}
 
 		$name = trim(trim($str, $separator));
-		return str_replace($ext, ".{$ext}", $name);
+		return $ext ? str_replace("_0_{$ext}_0_", ".{$ext}", $name) : $name;
 	}
 
 	public function index()

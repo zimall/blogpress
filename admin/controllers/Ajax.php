@@ -137,18 +137,18 @@ class Ajax extends CI_Controller
 			else
 			{
 				$folder = realpath('./images/articles');
+				$sizes = [ 'xs','sm','md','lg','xl' ];
 				try{
-					if(file_exists($folder.'/xs/'.$file))
-						unlink( $folder.'/xs/'.$file);
-					if(file_exists($folder.'/sm/'.$file))
-						unlink( $folder.'/sm/'.$file);
-					if(file_exists($folder.'/md/'.$file))
-						unlink( $folder.'/md/'.$file);
-					if(file_exists($folder.'/lg/'.$file))
-						unlink( $folder.'/lg/'.$file);
-					if(file_exists($folder.'/xl/'.$file))
-						unlink( $folder.'/xl/'.$file);
-					
+					foreach($sizes as $s){
+						$webp = false;
+						$fp = "{$folder}/{$s}/{$file}";
+						if(file_exists($fp)) {
+							$ext = pathinfo($fp, PATHINFO_EXTENSION);
+							$webp = str_replace( ".{$ext}", '.webp', $fp );
+							unlink($fp);
+						}
+						if( $webp && file_exists($webp) ) unlink($webp);
+					}
 					echo json_encode( [ 'error'=>1 ] );
 				}
 				catch(Exception $e)

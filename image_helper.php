@@ -65,6 +65,7 @@ function simple_resize($file,$fw,$fh,$save)
 
 function transparent_bg( $file, $fw, $fh, $save, $blank )
 {
+	$wi = new WideImage();
 	$image = $wi->load($file);
 	$blank = $wi->load($blank);
 	$t1 = $image->resize($fw, null, 'inside', 'down');
@@ -91,6 +92,7 @@ function transparent_bg( $file, $fw, $fh, $save, $blank )
 
 function white_bg($file, $fw, $fh, $save)
 {
+	$wi = new WideImage();
 	$image = $wi->load($file);
 	$t1 = $image->resize($fw, null, 'inside', 'down');
 	$h = $t1->getHeight();

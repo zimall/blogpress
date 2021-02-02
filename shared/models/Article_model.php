@@ -48,24 +48,21 @@ class Article_Model extends CI_Model
 		if(!isset($args['at_image'])) return [ 'error'=>TRUE, 'error_msg'=>'The image path is required' ];
 		if( strlen($args['at_image'])>0 ); else return [ 'error'=>TRUE, 'error_msg'=>'Could not find the image to delete' ];
 		$folder = realpath('./images/articles/');
+		$sizes = [ 'xs','sm','md','lg','xl' ];
 		try
 		{
 			$e = '';
-			if(file_exists("{$folder}/xs/".$args['at_image'])) 
-				unlink("{$folder}/xs/".$args['at_image']);
-			else $e .= "{$folder}/xs/{$args['at_image']} does not exist <br>";
-			if(file_exists("{$folder}/sm/".$args['at_image'])) 
-				unlink("{$folder}/sm/".$args['at_image']);
-			else $e .= "{$folder}/sm/{$args['at_image']} does not exist <br>";
-			if(file_exists("{$folder}/md/".$args['at_image'])) 
-				unlink("{$folder}/md/".$args['at_image']);
-			else $e .= "{$folder}/md/{$args['at_image']} does not exist <br>";
-			if(file_exists("{$folder}/lg/".$args['at_image'])) 
-				unlink("{$folder}/lg/".$args['at_image']);
-			else $e .= "{$folder}/lg/{$args['at_image']} does not exist <br>";
-			if(file_exists("{$folder}/xl/".$args['at_image'])) 
-				unlink("{$folder}/xl/".$args['at_image']);
-			else $e .= "{$folder}/xl/{$args['at_image']} does not exist <br>";
+			foreach($sizes as $s){
+				$webp = false;
+				$fp = "{$folder}/{$s}/{$args['at_image']}";
+				if(file_exists($fp)) {
+					$ext = pathinfo($fp, PATHINFO_EXTENSION);
+					$webp = str_replace( ".{$ext}", '.webp', $fp );
+					unlink($fp);
+				}
+				else $e .= "{$fp} does not exist <br>";
+				if( $webp && file_exists($webp) ) unlink($webp);
+			}
 
 			$e .= "at_id = ".$args['at_id'];
 
@@ -111,11 +108,18 @@ class Article_Model extends CI_Model
 		if($args['im_id']<=0) return array('error'=>TRUE, 'error_msg'=>'Could not find the image to delete');
 		if( strlen($args['im_file'])>0 ); else return array('error'=>TRUE, 'error_msg'=>'Could not find the image to delete');
 		$folder = realpath('./images/articles/');
-		if(file_exists("{$folder}/xs/".$args['im_file'])) unlink("{$folder}/xs/".$args['im_file']);
-		if(file_exists("{$folder}/sm/".$args['im_file'])) unlink("{$folder}/sm/".$args['im_file']);
-		if(file_exists("{$folder}/md/".$args['im_file'])) unlink("{$folder}/md/".$args['im_file']);
-		if(file_exists("{$folder}/lg/".$args['im_file'])) unlink("{$folder}/lg/".$args['im_file']);
-		if(file_exists("{$folder}/xl/".$args['im_file'])) unlink("{$folder}/xl/".$args['im_file']);
+		$sizes = [ 'xs','sm','md','lg','xl' ];
+		foreach($sizes as $s){
+			$webp = false;
+			$fp = "{$folder}/{$s}/{$args['im_file']}";
+			if(file_exists($fp)) {
+				$ext = pathinfo($fp, PATHINFO_EXTENSION);
+				$webp = str_replace( ".{$ext}", '.webp', $fp );
+				unlink($fp);
+			}
+			else $e .= "{$fp} does not exist <br>";
+			if( $webp && file_exists($webp) ) unlink($webp);
+		}
 		
 		$this->db->where('gi_id',$args['im_id']);
 		$e = $this->db->delete('gallery_images');
