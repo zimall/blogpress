@@ -120,6 +120,7 @@
                                 <th>#</th>
                                 <th>Title</th>
                                 <th>Views</th>
+                                <th>Ave. load time</th>
                                 <th>Ave. time on page</th>
                             </tr>
                             </thead>
@@ -129,6 +130,7 @@
                                 <td class="text"><?php echo $k+1;?></td>
                                 <td class="text"><?php echo anchor( $v['pv_url'], $v['pv_title'], ['target'=>'_blank','title'=>$v['pv_uri']] );?></td>
                                 <td class="numbers"><?php echo $v['viewed'];?></td>
+                                <td class="numbers"><?php echo pretty_time($v['average_load_duration']*1,'human');?></td>
                                 <td class="numbers"><?php echo pretty_time($v['pv_duration']*1);?></td>
                             </tr>
                             <?php endforeach;?>

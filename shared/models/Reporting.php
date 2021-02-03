@@ -128,6 +128,7 @@
 			$this->ana->where( 'pv_start_time <=', $end );
 			$this->ana->select( "*, count(pv_id) as viewed", null, false );
 			$this->ana->select_avg( 'pv_duration' );
+			$this->ana->select_avg('pv_load_duration', 'average_load_duration');
 			$this->ana->group_by( 'pv_uri' );
 			$this->ana->order_by('viewed', 'desc');
 			$this->ana->order_by('pv_duration', 'desc');
