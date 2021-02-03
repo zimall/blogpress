@@ -121,34 +121,15 @@ class Authorize
 
 	private function forget_path($path='account')
 	{
-		$forget = array(
-			'login',
-			'login/register',
-			'login/forgotten_password',
-			'login/logout',
-			'account/address_book/add_address',
-			'account/add_address',
-			'account/address_book',
-			'account/fb_login',
-			'account/fb_register',
-			'account/subscribe',
-			'account/login',
-			'account/register',
-			'account/forgotten_password',
-			'account/activate_account',
-			'account/logout',
-			'fb/fb_login',
-			'fb/fb_register',
-			'fbstore/account/fb_login',
-			'fbstore/account/fb_register',
-			'fbstore/fb/fb_login',
-			'fbstore/fb/fb_register',
-			'shopping_cart/discount_coupon',
-			'shopping_cart/remove_coupon',
-			'images/fav.ico',
-			'favicon.ico',
-			'shop/quotation'
-		);
+		$forget = [
+			'login', 'login/register', 'login/forgotten_password', 'login/logout',
+			'account/address_book/add_address', 'account/add_address', 'account/address_book',
+			'account/fb_login', 'account/fb_register', 'account/subscribe', 'account/login', 'account/register',
+			'account/forgotten_password', 'account/activate_account', 'account/logout', 'fb/fb_login', 'fb/fb_register',
+			'fbstore/account/fb_login', 'fbstore/account/fb_register', 'fbstore/fb/fb_login', 'fbstore/fb/fb_register',
+			'shopping_cart/discount_coupon', 'shopping_cart/remove_coupon', 'images/fav.ico', 'favicon.ico', 'shop/quotation',
+			'ia', 'ia/index'
+		];
 		//$c = '/activate_account/';
 		if(in_array($path,$forget)) return TRUE;
 		//elseif( preg_match( $c, $path ) ) return FALSE;
