@@ -3,7 +3,8 @@
 	<div class="square-turtle col-sm-6">
 		<p>
 			2012 - <?php echo date('Y');?> &copy; All rights reserved &nbsp;&nbsp;&nbsp;&nbsp;
-			powered by <a href="http://www.bittechnologyz.com" target="_blank">Zimall Web Services</a>
+			powered by <a href="http://www.bittechnologyz.com" target="_blank">Zimall Web Services</a>&nbsp;&nbsp;<br>
+            Version <?php echo CI_VERSION;?>&nbsp;&nbsp; Page rendered in <strong>{elapsed_time}</strong> seconds.
 		</p>
 	</div>
 	<div class="col-sm-6" style="text-align:right">
