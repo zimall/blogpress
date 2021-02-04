@@ -46,6 +46,7 @@ class Home extends CI_Controller
 		$this->data['featured'] = $this->article_model->get_articles($args);
 		
 		$this->data['innertitle'] = 'Latest Posts';
+		$this->data['title'] = 'Home';
 
 		$this->load->view( "{$this->data['theme']}/home.tpl", $this->data );
 	}
@@ -70,7 +71,7 @@ class Home extends CI_Controller
 		$this->data['featured'] = $this->article_model->get_articles($args);
 		
 		$this->data['section'] = 'recent';
-		$this->data['innertitle'] = 'Latest Posts';
+		$this->data['innertitle'] = $this->data['title'] ='Latest Posts';
 
 		$this->load->view( "{$this->data['theme']}/home.tpl", $this->data );
 	}

@@ -186,6 +186,9 @@ class PC
 		elseif( $start>0 && ( $start+$config['per_page'] )>$config['total_rows'] )
 			$this->ci->data['current_rows'] = $config['total_rows'];
 		else $this->ci->data['current_rows'] = $config['per_page'];
+
+		if($start>0) $this->ci->data['current_page'] = floor($start/$config['per_page'] +1 );
+		else $this->ci->data['current_page'] = 1;
 		
 		return array( 'start'=>$start, 'limit'=>$config['per_page'] );
 	}
