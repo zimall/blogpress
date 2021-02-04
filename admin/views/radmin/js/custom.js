@@ -522,5 +522,34 @@ jQuery(function($){
 		$('#change_per_page').val(v);
 		$('#change_per_page_form').submit();
 	});
-	
+
+	let start_date = $('#ana_start').val();
+	let end_date = $('#ana_end').val();
+	start_date = start_date ? start_date : moment().startOf('day').subtract( 7, 'day' );
+	end_date = end_date ? end_date : moment().endOf('day');
+
+	$('.daterange').daterangepicker({
+		timePicker: true,
+		timePicker24Hour: true,
+		timePickerSeconds: true,
+		startDate: start_date,
+		endDate: end_date,
+		locale: {
+			format: 'DD MMM YYYY, HH:mm:ss'
+		},
+		alwaysShowCalendars: true,
+		ranges: {
+			'Today': [moment().startOf('day'), moment()],
+			'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().endOf('day').subtract(1, 'days')],
+			'Last 7 Days': [ moment().startOf('day').subtract(6, 'days'), moment().endOf('day') ],
+			'Last 14 Days': [ moment().startOf('day').subtract(13, 'days'), moment().endOf('day') ],
+			'Last 30 Days': [ moment().startOf('day').subtract(29, 'days'), moment().endOf('day') ],
+			'This Month': [moment().startOf('month'), moment()],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		}
+	});
+	$('.daterange').on('change', function(ev) {
+		$('#dateform').submit();
+	});
+
 });

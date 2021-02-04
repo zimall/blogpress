@@ -18,24 +18,34 @@
 			if($timestamp >= 86400){
 				$days = floor( $timestamp/86400 );
 				$timestamp = $timestamp%86400;
-				$time = $days==1 ? "1 Day, " : "$days Days, ";
+				$time = $days==1 ? "1 Day " : "$days Days ";
 			}
 
 			// hours: 1 hour = 60*60 = 3600
 			if($timestamp >= 3600 ){
 				$hours = floor($timestamp/3600);
 				$timestamp = $timestamp%3600;
-				$time .= $format=='clock' ? str_pad( "$hours", 2, '0', STR_PAD_LEFT ).':' : "{$hours}h " ;
+				if($hours>0) {
+					$time .= $format == 'clock' ? str_pad("$hours", 2, '0', STR_PAD_LEFT) . ':' : "{$hours}h ";
+				}
+				else{
+					$time .= $format == 'clock' ? str_pad("$hours", 2, '0', STR_PAD_LEFT) . ':' : "";
+				}
 			}
-			else $time .= $format=='clock' ?  "00:" : ($time ? "0h " : '');
+			else $time .= $format=='clock' ?  "00:" : '';
 
 			// minutes: 1 minute = 60*1 = 60
 			if($timestamp >= 60 ){
 				$minutes = floor($timestamp/60);
 				$timestamp = $timestamp%60;
-				$time .= $format=='clock' ? str_pad( "$minutes", 2, '0', STR_PAD_LEFT ).':' : "{$minutes}m ";
+				if($minutes>0) {
+					$time .= $format == 'clock' ? str_pad("$minutes", 2, '0', STR_PAD_LEFT) . ':' : "{$minutes}m ";
+				}
+				else{
+					$time .= $format == 'clock' ? str_pad("$minutes", 2, '0', STR_PAD_LEFT) . ':' : "";
+				}
 			}
-			else $time .= $format=='clock' ?  "00:" : ($time ? "0m " : '');
+			else $time .= $format=='clock' ?  "00:" : '';
 
 			// seconds
 			$seconds = number_format( $timestamp, 0 );
@@ -43,9 +53,16 @@
 				if( $timestamp < 1 ){
 					$ms = $timestamp*1000;
 					$ms = round($ms, 0);
-					$time .= $format == 'clock' ? "00 ({$ms}ms)" : "{$ms}ms";
+					if($ms>0) {
+						$time .= $format == 'clock' ? "00 ({$ms}ms)" : "{$ms}ms";
+					}
+					else{
+						$time .= $format == 'clock' ? "00 ({$ms}ms)" :( $time ? '' : "{$ms}ms");
+					}
 				}
-				else $time .= $format == 'clock' ? "0{$seconds}" : "{$seconds}s";
+				else{
+					$time .= $format == 'clock' ? "0{$seconds}" : "{$seconds}s";
+				}
 			}
 			else $time .= $format == 'clock' ? "{$seconds}" : "{$seconds}s";
 			return $time;

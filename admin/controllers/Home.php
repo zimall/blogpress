@@ -13,12 +13,32 @@ class Home extends CI_Controller
 
 	public function index()
 	{
-		$this->data['ana_days'] = $d = $this->input->get('days') ? $this->input->get('days') : 7;
-		$start = mysql_date( time() - (60*60*24*$d) );
-		$end = mysql_date();
-		$this->data['ana_start'] = $start;
-		$this->data['ana_end'] = $end;
-		$this->data['ana_summary'] = $this->reporting->summary( $start, $end );
+
+		$range = $this->input->get('daterange') ? $this->input->get('daterange') : false;
+		if($range){
+			$dates = explode( ' - ', $range );
+			$start = isset($dates[0]) ? strtotime($dates[0]) : false;
+			$end = isset($dates[1]) ? strtotime( $dates[1] ) : false;
+		}
+		else{
+			$start = time() - (60*60*24*7); // take 7 days by default
+			$end = time();
+		}
+
+		if( !$start || !$end ){
+			$start = time() - (60*60*24*7); // take 7 days by default
+			$end = time();
+		}
+
+		$this->data['ana_start'] = date( 'd M Y, H:i:s', $start );
+		$this->data['ana_end'] = date( 'd M Y, H:i:s', $end );
+		$my_start = mysql_date($start);
+		$my_end = mysql_date($end);
+
+		$add = ( date('d', $end+1) == date('d', $end) ) ? 0 : 1;
+
+		$this->data['ana_days'] = pretty_time( $end - $start+$add, 'human' );
+		$this->data['ana_summary'] = $this->reporting->summary( $my_start, $my_end );
 		$this->load->view( "{$this->data['theme']}/home.tpl", $this->data );
 	}
 

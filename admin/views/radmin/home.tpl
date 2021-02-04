@@ -17,9 +17,24 @@
 			
 					<div class="col-sm-5">
 						<h4 class="title">
-                            Recent Activity&nbsp;- Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
-                                <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
-                            </a>&nbsp;&nbsp;&nbsp;
+                            <form class="form-horizontal" method="get" id="dateform">
+                                <!--Recent Activity&nbsp;-->
+                                <!--- Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">-->
+                                <!--    <i class="radmin radmin-calendar"></i> --><?php //echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
+                                <!--</a>&nbsp;&nbsp;&nbsp;-->
+                                <!--<input type="text" name="datetimes" class="form-control input-xs daterange" />-->
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon">Recent Activity</span>
+                                    <input type="text" class="form-control daterange" name="daterange" aria-describedby="sizing-addon3">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">Go</button>
+                                    </span>
+                                </div>
+                            </form>
+                            <form class="hidden">
+                                <input type="hidden" name="ana_start" id="ana_start" value="<?php echo $ana_start?>">
+                                <input type="hidden" name="ana_end" id="ana_end" value="<?php echo $ana_end?>">
+                            </form>
                         </h4>
 					    <div class="squiggly-border"></div>
 						<table class="table table-index">
@@ -109,9 +124,7 @@
 					</div>
 			
 					<div class="col-sm-7">
-						<h4 class="title">Top 10 Pages - Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
-                                <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
-                            </a>&nbsp;&nbsp;&nbsp;
+						<h4 class="title">Top 10 Pages : <?php echo $ana_days;?>
                         </h4>
 						<div class="squiggly-border"></div>
                         <table class="table table-index">
@@ -142,9 +155,7 @@
 
                 <div class="col-sm-5">
                     <h4 class="title">
-                        Traffic Sources&nbsp;- Last <a href="#ana_days" data-toggle="modal" title="Set number of days to view">
-                            <i class="radmin radmin-calendar"></i> <?php echo $ana_days==1?'24 Hours':"{$ana_days} Days";?>
-                        </a>&nbsp;&nbsp;&nbsp;
+                        Traffic Sources&nbsp;: <?php echo $ana_days;?>
                     </h4>
                     <div class="squiggly-border"></div>
                     <table class="table table-index">

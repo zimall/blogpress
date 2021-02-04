@@ -8,9 +8,9 @@ $config['theme']['name'] = 'radmin';
 $config['theme']['description'] = 'Radmin Bootstrap 3.1.0';
 
 $config['theme']['styles'] = array( 'molle', 'bootstrap.min', 'bootstrap-toggle.min', 'icon-style', 'radmin', 'radmin-responsive', 
-	'radmin-plugins', 'bootstrap-datetimepicker.min' );
+	'radmin-plugins', 'bootstrap-datetimepicker.min', 'daterangepicker' );
 
-$config['theme']['scripts'] = array('bootstrap.min', 'bootstrap-toggle.min', 'jquery.cloneposition', 'theme', 'gallery', 'moment', 'bootstrap-datetimepicker.min', 'custom' );
+$config['theme']['scripts'] = array('bootstrap.min', 'bootstrap-toggle.min', 'jquery.cloneposition', 'theme', 'gallery', 'moment', 'bootstrap-datetimepicker.min', 'daterangepicker.min', 'custom' );
 
 //'flot/jquery.flot', 'flot/jquery.flot.resize', 'flot/jquery.flot.tooltip', 'charts', 'sparkline',
 
