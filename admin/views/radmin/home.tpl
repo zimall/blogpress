@@ -197,7 +197,96 @@
 						<div class="squiggly-border"></div>
 					</div>
 
-					<div class="col-sm-12">&nbsp;</div>
+					<div class="col-sm-12">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th><span class="radmin radmin-picture"></span></th>
+                                <th class="hidden-xs hidden-sm">Title / Section</th>
+                                <th class="hidden-xs">Summary</th>
+                                <th>Options</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+	                        <?php foreach($recent_articles as $k=>$v):?>
+                                <tr>
+                                    <td><?php echo $k+1;?></td>
+                                    <td>
+				                        <?php
+					                        if( $v['at_permalink'] )
+						                        $link = home_url($v['at_segment']);
+					                        else
+					                        {
+						                        $sections = explode( '/', $v['sc_value'] );
+						                        if( count($sections)>1 )
+							                        $link = home_url( "{$v['sc_value']}/{$v['at_id']}/{$v['at_segment']}" );
+						                        else
+							                        $link = home_url( "{$v['sc_value']}/{$v['at_id']}/{$v['at_segment']}" );
+					                        }
+					                        $try = "images/articles/xs/{$v['at_image']}";
+					                        if( strlen($v['at_image'])>3 && file_exists($try) ) $file = $try;
+					                        else $file = 'images/articles/xs/placeholder.jpg';
+					                        $img = array( 'src'=>$file, 'class'=>'thumbnail' );
+					                        echo anchor( $link, img($img), 'target="_blank"' );
+				                        ?>
+                                        <strong class="hidden-md hidden-lg"><?php echo $v['at_title'];?></strong>
+                                    </td>
+                                    <td class="hidden-xs hidden-sm">
+                                        <strong><?php echo $v['at_title'];?></strong>
+                                        <br>
+				                        <?php echo $v['sc_name'];?>
+                                    </td>
+                                    <td class="hidden-xs">
+                        <span class="hidden-sm">
+                            <?php echo $v['at_summary'];?>
+                            <br>
+                            <strong>Posted: </strong><?php echo date( 'd M Y, H:i', $v['at_date_posted'] );?>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>Updated: </strong><?php echo date( 'd M Y, H:i', $v['at_date_updated'] );?>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                                        Read by: <strong><?php echo $v['at_hits'];?></strong>
+                                    </td>
+                                    <td>
+				                        <?php echo anchor( current_url()."?action=edit_article&id={$v['at_id']}",
+					                        '<span class="radmin radmin-pencil"></span>',
+					                        'class="btn btn-xs btn-link" title="edit article"' );
+
+					                        $e = $v['at_enabled']?'radmin-checkbox':'radmin-checkbox-unchecked';
+					                        $et = $v['at_enabled']?'Disable':'Enable';
+
+					                        $f = $v['at_featured']?'radmin-star-3':'radmin-star';
+					                        $ft = $v['at_featured']?'Remove from featured':'Add to featured';
+
+					                        $p = $v['at_private']?'radmin-locked':'radmin-unlocked';
+					                        $pt = $v['at_private']?'Make Public':'Make Private';
+
+					                        echo anchor( current_url()."?action=toggle_state&p=enabled&v={$v['at_enabled']}&id={$v['at_id']}",
+						                        '<span class="radmin '.$e.'" style="font-size:13px;"></span>',
+						                        'title="'.$et.'" class="btn btn-link btn-xs"' );
+					                        echo anchor( current_url()."?action=toggle_state&p=featured&v={$v['at_featured']}&id={$v['at_id']}",
+						                        '<span class="radmin '.$f.'" style="font-size:15px;"></span>',
+						                        'title="'.$ft.'" class="btn btn-link btn-xs"' );
+					                        echo anchor( current_url()."?action=toggle_state&p=private&v={$v['at_private']}&id={$v['at_id']}",
+						                        '<span class="radmin '.$p.'" style="font-size:15px;"></span>',
+						                        'title="'.$pt.'" class="btn btn-link btn-xs"' );
+					                        echo anchor( current_url()."?action=delete_article&id={$v['at_id']}",
+						                        '<span class="radmin radmin-remove-3" style="color:red"></span>',
+						                        'title="Delete" class="btn btn-xs btn-link"' );
+					                        if( $v['sc_id']==11 )
+						                        echo '<br>'.anchor( "articles/gallery/{$v['at_id']}",
+								                        '<span class="radmin radmin-picture"></span> Gallery Images', 'class="btn btn-link"' );
+				                        ?>
+
+
+
+                                    </td>
+                                </tr>
+	                        <?php endforeach;?>
+                            </tbody>
+                        </table>
+                    </div>
 			
 					<div class="col-sm-12">&nbsp;</div>
 			</div>

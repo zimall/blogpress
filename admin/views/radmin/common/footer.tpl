@@ -7,10 +7,8 @@
             Version <?php echo CI_VERSION;?>&nbsp;&nbsp; Page rendered in <strong>{elapsed_time}</strong> seconds.
 		</p>
 	</div>
-	<div class="col-sm-6" style="text-align:right">
-		<a class="brand" href="<?php echo site_url('home');?>">
-			<span class="rad">Site</span> Admin
-		</a>
+	<div class="square-turtle col-sm-6" style="text-align:right">
+        <p><a class="brand" href="<?php echo site_url('home');?>">Site<span class="rad">Admin</span></a></p>
 	</div>
 </footer>
 

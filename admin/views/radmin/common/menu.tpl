@@ -8,7 +8,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<?php echo anchor( 'home', '<span class="rad">Site</span> Admin', 'class="navbar-brand brand"' );?>
+			<?php echo anchor( 'home', 'Site<span class="rad">Admin</span>', 'class="navbar-brand brand"' );?>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
