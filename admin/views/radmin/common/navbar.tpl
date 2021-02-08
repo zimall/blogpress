@@ -13,7 +13,7 @@
 					<i style="color:brown;" class="radmin-icon radmin-clipboard-2"></i>
 				</span>
 				<span class="hidden-tablet hidden-phone">Site Pages</span>
-				<span class="badge pull-right hidden-tablet hidden-phone">3</span>
+				<span class="badge pull-right hidden-tablet hidden-phone">5</span>
 			</a>
 			<div id="articles" class="accordion-body collapse">
 				<ul class="nav nav-stacked submenu">
@@ -28,6 +28,18 @@
 						<?php echo anchor( 'articles/featured',
 							'<span class="box"> <i class="radmin-icon radmin-star"></i> </span>'.
 							'<span class="hidden-tablet hidden-phone">Featured Articles</span>'
+						);?>
+                    </li>
+                    <li>
+						<?php echo anchor( 'articles/published',
+							'<span class="box"> <i class="radmin-icon radmin-checkbox"></i> </span>'.
+							'<span>Published Articles</span>'
+						);?>
+                    </li>
+                    <li>
+						<?php echo anchor( 'articles/unpublished',
+							'<span class="box"> <i class="radmin-icon radmin-checkbox-partial"></i> </span>'.
+							'<span>Unpublished Articles</span>'
 						);?>
                     </li>
 					<li class="submenu-last">

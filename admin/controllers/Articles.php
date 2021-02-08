@@ -84,8 +84,19 @@ class Articles extends CI_Controller
 
 	public function featured($option=false)
 	{
-		$this->al->featured($option);
+		$this->al->other($option, ['at_featured'=>1], 'Featured Articles' );
 	}
+
+	public function published($option=false)
+	{
+		$this->al->other($option, ['at_enabled'=>1], 'Published Articles');
+	}
+
+	public function unpublished($option=false)
+	{
+		$this->al->other($option, ['at_enabled'=>0], 'Unpublished Articles');
+	}
+
 	public function services()
 	{
 		$this->al->services();

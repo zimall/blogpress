@@ -24,7 +24,7 @@
                                 <!--</a>&nbsp;&nbsp;&nbsp;-->
                                 <!--<input type="text" name="datetimes" class="form-control input-xs daterange" />-->
                                 <div class="input-group input-group-sm">
-                                    <span class="input-group-addon">Recent Activity</span>
+                                    <span class="input-group-addon">Recent Activity </span>
                                     <input type="text" class="form-control daterange" name="daterange" aria-describedby="sizing-addon3">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="submit">Go</button>

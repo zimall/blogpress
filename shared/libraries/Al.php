@@ -38,18 +38,18 @@ class Al
 		$this->ci->load->view( "{$this->ci->data['theme']}/articles.tpl", $this->ci->data );
 	}
 
-	public function featured($option=false)
+	public function other($option=false, $where=[], $title='')
 	{
 
 		if($option && $option=='new') return $this->new_article();
 
 		$this->_process_form();
-		$this->ci->pc->page_control('featured', 10 );
+		$this->ci->pc->page_control('other', 10 );
 		$continue = $this->_process_get();
 
 		if($continue)
 		{
-			$count = [ 'count'=>TRUE, 'where'=>['at_featured'=>1] ];
+			$count = [ 'count'=>TRUE, 'where'=>$where];
 			$function = 'get_articles';
 			$paginate = $this->ci->pc->paginate($count, $function, 'article_model');
 
@@ -59,7 +59,7 @@ class Al
 
 			$this->ci->data['articles'] = $this->ci->article_model->get_articles( $args );
 		}
-		$this->ci->data['innertitle'] = 'Featured Articles';
+		$this->ci->data['innertitle'] = $title;
 		$this->ci->load->view( "{$this->ci->data['theme']}/articles.tpl", $this->ci->data );
 	}
 

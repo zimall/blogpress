@@ -22,9 +22,14 @@ class Ajax extends CI_Controller
 	}
 
 	public function get_other_traffic_sources(){
+		$data = [];
 		$start = $this->input->get('start');
 		$end = $this->input->get('end');
-		$data = $start && $end ? $this->reporting->get_traffic_sources($start,$end,false) : [];
+		if($start && $end) {
+			$start = strtotime($start);
+			$end = strtotime($end);
+			$data = $start && $end ? $this->reporting->get_traffic_sources($start, $end, false) : [];
+		}
 		echo json_encode($data);
 	}
 

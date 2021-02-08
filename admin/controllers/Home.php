@@ -26,7 +26,7 @@ class Home extends CI_Controller
 			$count = array('where' => $where, 'count' => 1);
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
 
-			$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image,sc_name,sc_value,at_hits';
+			$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image,sc_name,sc_value,at_hits, at_enabled,at_featured';
 			$args = array_merge($paginate, ['where' => $where, 'sort' => 'at_date_posted desc', 'select' => $select]);
 
 			$this->data['recent_articles'] = $this->article_model->get_articles($args);
