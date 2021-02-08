@@ -28,7 +28,7 @@ class Ajax extends CI_Controller
 		if($start && $end) {
 			$start = strtotime($start);
 			$end = strtotime($end);
-			$data = $start && $end ? $this->reporting->get_traffic_sources($start, $end, false) : [];
+			$data = $start && $end ? $this->reporting->get_traffic_sources( mysql_date($start), mysql_date($end), false) : [];
 		}
 		echo json_encode($data);
 	}
