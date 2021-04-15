@@ -109,6 +109,11 @@ class Articles extends CI_Controller
 	{
 		$this->al->coaching($id);
 	}
+
+	public function gallery($id=FALSE)
+	{
+		$this->al->gallery($id);
+	}
 	
 	/****** PROCESS FORM DATA ************/
 	private function _process_form()

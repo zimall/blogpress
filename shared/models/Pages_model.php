@@ -260,6 +260,7 @@ class Pages_Model extends CI_Model
 			'sc_menu' => $menu,
 			'sc_parent' => $parent,
 			'sc_enabled' => $this->input->post('enabled'),
+			'sc_has_gallery' => $this->input->post('has_gallery')
 		);
 
 		if($id) {
@@ -278,33 +279,6 @@ class Pages_Model extends CI_Model
 
 		if($e)
 		{
-			/*$routes = [
-				$segment=>'pages/index/'.$id,
-				"{$segment}/page"=>'pages/index/'.$id,
-				"{$segment}/page/(.+)"=>"pages/index/{$id}/".'$1',
-				"{$segment}/(:num)"=>"pages/article/{$id}/".'$1',
-				"{$segment}/(:num)/.+"=>"pages/article/{$id}/".'$1'
-			];
-			
-			if(isset($old_value['sc_value']))
-			{
-				
-				if( $old_value['sc_value'] == $segment )
-				{
-					$error['error_msg'] = "Page updated successfully";
-					$error['error'] = FALSE;
-					return $error;
-				}
-			
-				$old_keys = [
-					$old_value['sc_value'],
-					"{$old_value['sc_value']}/page", "{$old_value['sc_value']}/page/(.+)", 
-					"{$old_value['sc_value']}/(:num)", "{$old_value['sc_value']}/(:num)/.+", 
-				];
-			}
-			else $old_keys = FALSE;*/
-			
-			//return $this->update_routes( $routes, $old_keys );
 			return $this->rewrite_routes();
 		}
 		return $error;

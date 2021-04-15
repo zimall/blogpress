@@ -32,7 +32,7 @@
 				<h3 class="panel-title">
 					<span>Upload New Images</span>
 					<span class="pull-right">
-						<?php echo anchor( home_url("gallery/i/{$gallery['at_id']}"), 'View Gallery', 
+						<?php echo anchor( home_url("{$gallery['sc_value']}/{$gallery['at_id']}/{$gallery['at_segment']}"), 'View Gallery',
 						'class="btn btn-default btn-xs" target="_blank"' );?>
 					</span>
 				</h3>
@@ -48,13 +48,13 @@
 						<div id="messages" class="alert"></div>
 					</div>
 					<div class="col-sm-7" style="text-align:right;">
-						<?php echo anchor( 'articles/gallery', 'Cancel', 'class="btn btn-default"' );?>
+						<?php echo anchor( "{$gallery['sc_value']}", 'Cancel', 'class="btn btn-default"' );?>
 						<button type="submit" name="submit" value="1" class="btn btn-primary">Save</button>
 						<input type="hidden" name="form_name" value="gallery_images">
 						<input type="hidden" name="form_type" value="insert">
-						<input type="hidden" name="action_string" value="<?php echo  base_url('article_thumb.php');?>" 
+						<input type="hidden" name="action_string" value="<?php echo  base_url('images/article_thumbs');?>"
 							id="action_string">
-						<input type="hidden" name="script" value="article_thumb.php" id="action_file">
+						<input type="hidden" name="script" value="images/article_thumbs" id="action_file">
 						<input type="hidden" name="id" value="<?php echo $gallery['at_id'];?>">
 					</div>
 				</div>
@@ -69,7 +69,7 @@
 				<h3 class="panel-title">
 					<span>Images</span>
 					<span class="pull-right">
-						<?php echo anchor( 'articles/gallery', 'Done', 'class="btn btn-primary btn-xs" title="Uploaded images will not be saved"' );?>
+						<?php echo anchor( $gallery['sc_value'], 'Done', 'class="btn btn-primary btn-xs" title="Uploaded images will not be saved"' );?>
 					</span>
 				</h3>
 			</div>
@@ -83,8 +83,8 @@
 								foreach($post as $image):?>
 									<li id="<?php echo $image;?>">
 										<div class="thumbnail">
-											<?php $href = base_url("images/articles/main/{$image}");
-											$src = base_url("images/articles/250x180/{$image}");?>
+											<?php $href = base_url("images/articles/lg/{$image}");
+											$src = base_url("images/articles/sm/{$image}");?>
 											<a target="_blank" class="fancybox" rel="gp" 
 											href="<?php echo $href;?>"><?php echo img($src);?></a>
 											<p>
@@ -102,8 +102,8 @@
 							<?php foreach($images as $i):?>
 								<li id="li_<?php echo $i['gi_id'];?>" style="margin-bottom:30px;">
 									<div class="thumbnail">
-										<?php $href = base_url("images/articles/main/{$i['gi_file']}");
-											$src = base_url("images/articles/250x180/{$i['gi_file']}");
+										<?php $href = base_url("images/articles/lg/{$i['gi_file']}");
+											$src = base_url("images/articles/sm/{$i['gi_file']}");
 										?>
 										<a target="_blank" class="fancybox" rel="gp<?php echo $gallery['at_id'];?>" 
 											href="<?php echo $href;?>"><?php echo img($src);?></a>

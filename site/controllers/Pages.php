@@ -50,6 +50,11 @@ class Pages extends CI_Controller
 				$this->data['keywords'] = $d['at_keywords'];
 				$this->data['menu'] = $d['sc_value'];
 				$this->data['tags'] = $this->tags($d['at_section']);
+				$this->data['images'] = $g = $d['sc_has_gallery'] ? $this->article_model->get_gallery(['at_id'=>$id]) : [];
+				if($g){
+					$this->data['theme_scripts'][] = 'lightgallery-all.min';
+					$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
+				}
 			}
 			$this->data['section'] = 'article';
 			$this->load->view("{$this->data['theme']}/pages.tpl", $this->data );

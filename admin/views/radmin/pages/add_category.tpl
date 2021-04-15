@@ -77,17 +77,22 @@
 				<!-- col-md-6 -->
 				
 				<div class="col-md-6">
-				
-					<div class="form-group">
-						<label class="control-label col-sm-3 col-xs-6" for="enabled">Status:</label>
-						<div class="col-sm-9 col-xs-6">
-							<input type="hidden" name="enabled" value="0">
-							<label class="checkbox">
-								<?php if( $this->input->post('enabled') ) $c='checked';else $c='';?>
-								<input id="enabled" type="checkbox" name="enabled" value="1" <?php echo $c;?>> Enabled
-							</label>
-						</div>
-					</div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3 col-xs-6" for="enabled">Status:</label>
+                        <div class="col-sm-9 col-xs-6">
+							<?php echo form_hidden('enabled',0)?>
+                            <input type="checkbox" name="enabled" value="1" <?=$this->input->post('enabled')?'checked':'';?> data-toggle="toggle" data-on="Enabled" data-off="Disabled">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3 col-xs-6" for="enabled">Gallery:</label>
+                        <div class="col-sm-9 col-xs-6">
+							<?php echo form_hidden('has_gallery',0)?>
+                            <input type="checkbox" name="has_gallery" value="1" <?=$this->input->post('has_gallery')?'checked':'';?> data-toggle="toggle" data-on="Enabled" data-off="Disabled">
+                        </div>
+                    </div>
 				
 				</div>
 				

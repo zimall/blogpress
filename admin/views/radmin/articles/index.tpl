@@ -118,7 +118,7 @@
 							echo anchor( current_url()."?action=delete_article&id={$v['at_id']}", 
 								'<span class="radmin radmin-remove-3" style="color:red"></span>', 
 								'title="Delete" class="btn btn-xs btn-link"' );
-							if( $v['sc_id']==11 )
+							if( $v['sc_has_gallery'] )
 								echo '<br>'.anchor( "articles/gallery/{$v['at_id']}", 
 									'<span class="radmin radmin-picture"></span> Gallery Images', 'class="btn btn-link"' );
 							?>

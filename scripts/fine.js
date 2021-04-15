@@ -38,7 +38,7 @@ function createUploader()
 						curl = $('#current_url').val();
 						burl = $('#base_url').val();
 						//id = $('#listing_id').val();
-						li = '<li id="'+response['image']+'"><div class="thumbnail"><img src="'+burl+'images/articles/250x180/'+response['image']+'"></div><p><button class="btn btn-xs btn-default product_img_fs" type="button" value="'+response['image']+'" onclick="delete_piffs(this)">delete</button></p></li>';
+						li = '<li id="'+response['image']+'"><div class="thumbnail"><img src="'+burl+'images/articles/sm/'+response['image']+'"></div><p><button class="btn btn-xs btn-default product_img_fs" type="button" value="'+response['image']+'" onclick="delete_piffs(this)">delete</button></p></li>';
 						$('#upload_files').prepend(li);
 						
 						op = '<option value="'+response['image']+'" selected>'+response['image']+'</option>';

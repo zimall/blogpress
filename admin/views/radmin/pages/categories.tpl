@@ -43,6 +43,8 @@
 			<th>ID</th>
 			<th>Page Name</th>
 			<th>Menu Position</th>
+            <th>Status</th>
+            <th>Gallery</th>
 			<th>Options</th>
 		</tr>
 		
@@ -51,6 +53,8 @@
 			<td><?php echo $page['sc_id'];?></td>
 			<td><?php echo anchor( home_url($page['sc_value']), $page['sc_name'], 'target="_blank"');?></td>
 			<td><?php echo $page['sc_menu'];?></td>
+            <td><?php echo $page['sc_enabled'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
+            <td><?php echo $page['sc_has_gallery'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
 			<td>
 				<?php echo anchor( current_url()."?action=edit_page&id={$page['sc_id']}", '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-pencil"></i> </span>' );?>
 			</td>

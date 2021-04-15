@@ -118,13 +118,13 @@ class Al
 				$this->ci->data['section'] = 'gallery_images';
 				$this->ci->data['innertitle'] = 'Gallery Images';
 				$this->ci->data['uploader'] = 'fine';
-				$where = array( 'at_section'=>11, 'at_id'=>$id );
+				$where = array( 'sc_has_gallery'=>1, 'at_id'=>$id );
 				$this->ci->data['gallery'] = $this->ci->article_model->get_articles(  array( 'where'=>$where, 'one'=>TRUE ) );
 				$this->ci->data['images'] = $this->ci->article_model->get_gallery(  array( 'at_id'=>$id ) );
 			}
 			else
 			{
-				$where = array( 'at_section'=>11 );
+				$where = array( 'sc_has_gallery'=>1 );
 				$count = array( 'where'=>$where, 'count'=>1 );
 				$paginate = $this->ci->pc->paginate($count, 'get_articles', 'article_model');
 				$args = array_merge( $paginate, array( 'where'=>$where, 'sort'=>'at_id desc' ) );
