@@ -38,12 +38,10 @@ class Home extends CI_Controller
 		$args = array_merge( $paginate, [ 'where'=>$where, 'sort'=>'at_date_posted desc', 'select'=>$select ] );
 
 		$this->data['recent_articles'] = $this->article_model->get_articles($args);
-		
-		/*
+
 		$where = array( 'bn_enabled'=>1, 'bn_theme'=>$this->data['theme'] );
 		$args = array( 'where'=>$where, 'limit'=>4 );
 		$this->data['slides'] = $this->article_model->get_banners($args);
-		*/
 		
 		$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image,sc_value,sc_name,sc_id';
 		$where = array( 'at_featured'=>1, 'at_enabled'=>1, 'at_date_posted <'=>$this->time );
