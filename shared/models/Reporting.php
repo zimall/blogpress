@@ -54,7 +54,7 @@
 			$this->ana->group_by('host');
 			$this->ana->order_by('sessions desc');
 			$r = $this->ana->get('sessions');
-			if( $r->num_rows()>0 ){
+			if( $r && $r->num_rows()>0 ){
 				$hosts = $r->result_array();
 				if($summarize) {
 					$total = array_reduce($hosts, function($t, $h) {

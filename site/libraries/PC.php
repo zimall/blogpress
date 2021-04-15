@@ -34,7 +34,7 @@ class PC
 			else $this->ci->carabiner->css("$s.css");
 		}
 
-		$this->scripts = array( 'jquery-3.2.1.min' );
+		$this->scripts = []; //array( 'jquery-3.2.1.min' );
 		//@ sourceMappingURL=jquery.min.map
 
 		foreach( $this->scripts as $s )

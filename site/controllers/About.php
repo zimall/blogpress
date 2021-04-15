@@ -30,19 +30,23 @@ class About extends CI_Controller
 		$where = array( 'at_enabled'=>1, 'at_featured'=>1, 'at_section'=>1 );
 		$this->data['about'] = $this->article_model->get_articles( array( 'where'=>$where ) );
 		
-		$where = array( 'at_section'=>2 );
+		$where = array( 'sc_value'=>'about/team' );
 		$args = array( 'where'=>$where, 'enabled'=>1, 'sort'=>'at_date_posted asc' );
-		$this->data['leadership'] = $this->article_model->get_articles( $args );
+		$this->data['team'] = $this->article_model->get_articles( $args );
+
+		$this->data['rotary'] = $this->section_items('about/rotary');
 		
-		$where = array( 'at_section'=>4 );
-		$args = array( 'where'=>$where, 'enabled'=>1, 'sort'=>array('at_date_posted'=>'RANDOM'), 'limit'=>5 );
-		$this->data['rotary'] = $this->article_model->get_articles( $args );
-		
-		$where = array( 'at_section'=>3 );
+		$where = array( 'sc_value'=>'about/pp' );
 		$args = array( 'where'=>$where, 'enabled'=>1, 'sort'=>'at_title desc' );
 		$this->data['pp'] = $this->article_model->get_articles( $args );
 		
 		$this->load->view( "{$this->data['theme']}/about.tpl", $this->data );
+	}
+
+	private function section_items($section, $limit=5, $order='at_id desc'){
+		$where = array( 'sc_value'=>$section );
+		$args = array( 'where'=>$where, 'enabled'=>1, 'sort'=>array('at_date_posted'=>$order), 'limit'=>$limit );
+		return $this->article_model->get_articles( $args );
 	}
 
 	public function i($id=FALSE)
@@ -63,7 +67,7 @@ class About extends CI_Controller
 		$this->load->view( "{$this->data['theme']}/about.tpl", $this->data );
 	}
 
-	public function leadership($id=FALSE)
+	public function team($id=FALSE)
 	{
 		if(is_numeric($id)&&$id>0)
 		{
@@ -77,6 +81,7 @@ class About extends CI_Controller
 				$this->data['description'] = $this->data['article']['at_summary'];
 				$this->data['keywords'] = $this->data['article']['at_keywords'];
 			}
+			$this->data['rotary'] = $this->section_items('about/rotary');
 		}
 		$this->load->view( "{$this->data['theme']}/about.tpl", $this->data );
 	}
@@ -94,6 +99,7 @@ class About extends CI_Controller
 				$this->data['description'] = $this->data['article']['at_summary'];
 				$this->data['keywords'] = $this->data['article']['at_keywords'];
 			}
+			$this->data['rotary'] = $this->section_items('about/rotary');
 		}
 		$this->load->view( "{$this->data['theme']}/about.tpl", $this->data );
 	}
@@ -111,6 +117,7 @@ class About extends CI_Controller
 				$this->data['description'] = $this->data['article']['at_summary'];
 				$this->data['keywords'] = $this->data['article']['at_keywords'];
 			}
+			$this->data['rotary'] = $this->section_items('about/rotary', 5, 'at_id desc');
 		}
 		$this->load->view( "{$this->data['theme']}/about.tpl", $this->data );
 	}

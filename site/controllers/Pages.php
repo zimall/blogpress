@@ -31,6 +31,7 @@ class Pages extends CI_Controller
 			$this->data['title'] = $page['sc_name'];
 			$this->data['innertitle'] = $page['sc_name'];
 			$this->data['menu'] = $page['sc_value'];
+			$this->data['tags'] = $this->tags($page_id);
 			$this->load->view( "{$this->data['theme']}/pages.tpl", $this->data );
 		}
 		else redirect( site_url("home/search")."?q={$page_id}" );
@@ -41,13 +42,14 @@ class Pages extends CI_Controller
 		if( is_numeric($id) && $id>0 )
 		{
 			$where = array( 'at_id'=>$id );
-			$this->data['article'] = $this->article_model->get_articles(  array( 'where'=>$where, 'one'=>TRUE ) );
-			if(isset($this->data['article']['at_id']))
+			$this->data['article'] = $d = $this->article_model->get_articles(  array( 'where'=>$where, 'one'=>TRUE ) );
+			if(isset($d['at_id']))
 			{
-				$this->data['title'] = $this->data['article']['at_title'];
-				$this->data['description'] = $this->data['article']['at_summary'];
-				$this->data['keywords'] = $this->data['article']['at_keywords'];
-				$this->data['menu'] = $this->data['article']['sc_value'];
+				$this->data['title'] = $d['at_title'];
+				$this->data['description'] = $d['at_summary'];
+				$this->data['keywords'] = $d['at_keywords'];
+				$this->data['menu'] = $d['sc_value'];
+				$this->data['tags'] = $this->tags($d['at_section']);
 			}
 			$this->data['section'] = 'article';
 			$this->load->view("{$this->data['theme']}/pages.tpl", $this->data );
@@ -107,6 +109,23 @@ class Pages extends CI_Controller
 			redirect('home/recent');
 			//echo 'ok';
 		}
+	}
+
+	private function tags($page_id){
+		$select = 'at_keywords';
+		$where = array( 'at_section'=>$page_id );
+		$args = array( 'where'=>$where, 'sort'=> array('at_id'=>'RANDOM'), 'limit'=>5, 'select'=>$select );
+		$tags = $this->article_model->get_articles($args);
+		$tags1 = array();
+		foreach( $tags as $t )
+		{
+			$t1 = explode( ',', $t['at_keywords'] );
+			foreach( $t1 as $t2 )
+			{
+				if( strlen($t2)>3 ) $tags1[] = $t2;
+			}
+		}
+		return array_unique($tags1);
 	}
 
 	public function i($id=FALSE)
