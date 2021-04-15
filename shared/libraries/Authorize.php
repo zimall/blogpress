@@ -130,9 +130,9 @@ class Authorize
 			'shopping_cart/discount_coupon', 'shopping_cart/remove_coupon', 'images/fav.ico', 'favicon.ico', 'shop/quotation',
 			'ia', 'ia/index', '/images/logos/fav.ico'
 		];
-		$c = '/\/?images\/.*/';
 		if(in_array($path,$forget)) return TRUE;
-		elseif( preg_match( $c, $path ) ) return TRUE;
+		elseif( preg_match( '/\/?images\/.*/', $path ) ) return TRUE;
+		elseif( preg_match( '/.*\/asset_cache\/.*/' , $path ) ) return true;
 		return FALSE;
 	}
 
