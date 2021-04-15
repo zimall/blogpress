@@ -128,11 +128,11 @@ class Authorize
 			'account/forgotten_password', 'account/activate_account', 'account/logout', 'fb/fb_login', 'fb/fb_register',
 			'fbstore/account/fb_login', 'fbstore/account/fb_register', 'fbstore/fb/fb_login', 'fbstore/fb/fb_register',
 			'shopping_cart/discount_coupon', 'shopping_cart/remove_coupon', 'images/fav.ico', 'favicon.ico', 'shop/quotation',
-			'ia', 'ia/index'
+			'ia', 'ia/index', '/images/logos/fav.ico'
 		];
-		//$c = '/activate_account/';
+		$c = '/\/?images\/.*/';
 		if(in_array($path,$forget)) return TRUE;
-		//elseif( preg_match( $c, $path ) ) return FALSE;
+		elseif( preg_match( $c, $path ) ) return FALSE;
 		return FALSE;
 	}
 
