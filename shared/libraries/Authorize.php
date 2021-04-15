@@ -132,7 +132,7 @@ class Authorize
 		];
 		$c = '/\/?images\/.*/';
 		if(in_array($path,$forget)) return TRUE;
-		elseif( preg_match( $c, $path ) ) return FALSE;
+		elseif( preg_match( $c, $path ) ) return TRUE;
 		return FALSE;
 	}
 
