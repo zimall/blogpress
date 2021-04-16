@@ -43,6 +43,7 @@ class Pages extends CI_Controller
 		{
 			$where = array( 'at_id'=>$id );
 			$this->data['article'] = $d = $this->article_model->get_articles(  array( 'where'=>$where, 'one'=>TRUE ) );
+			$this->data['tags'] = [];
 			if(isset($d['at_id']))
 			{
 				$this->data['title'] = $d['at_title'];
