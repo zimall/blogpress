@@ -17,7 +17,7 @@ class PC
 
 		$this->ci->load->library('carabiner');
 		$carabiner_config = array(
-			'script_dir' => 'scripts/',
+			//'script_dir' => 'scripts/',
 			'style_dir'  => 'site/views/'.$this->theme.'/css/',
 			'cache_dir'  => 'site/asset_cache/',
 			'combine'    => TRUE,
@@ -49,7 +49,7 @@ class PC
 			'script_dir'  => 'site/views/'.$this->theme.'/js/',
 			'cache_dir'  => 'site/asset_cache/',
 			'combine'    => TRUE,
-			'dev'        => TRUE
+			'dev'        => ENVIRONMENT!='production'
 		);
 		$this->ci->sc->config($sc_config);
 
