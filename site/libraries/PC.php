@@ -49,7 +49,7 @@ class PC
 			'script_dir'  => 'site/views/'.$this->theme.'/js/',
 			'cache_dir'  => 'site/asset_cache/',
 			'combine'    => TRUE,
-			'dev'        => ENVIRONMENT!='production'
+			'dev'        => true
 		);
 		$this->ci->sc->config($sc_config);
 
