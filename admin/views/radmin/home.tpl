@@ -226,7 +226,7 @@
 					                        }
 					                        $try = "images/articles/xs/{$v['at_image']}";
 					                        if( strlen($v['at_image'])>3 && file_exists($try) ) $file = $try;
-					                        else $file = 'images/articles/xs/placeholder.jpg';
+					                        else $file = 'images/noimage.svg';
 					                        $img = array( 'src'=>$file, 'class'=>'thumbnail' );
 					                        echo anchor( $link, img($img), 'target="_blank"' );
 				                        ?>
