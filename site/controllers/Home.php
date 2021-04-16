@@ -27,7 +27,7 @@ class Home extends CI_Controller
 		$select = 'at_id';
 		$where = array(  'at_enabled'=>1, 'at_date_posted <'=>$this->time );
 
-		if( in_array( $this->config->item('club-type'), ['Rotary', 'Rotaract'] ) ){
+		if( is_rotary() ){
 			$where['sc_value'] = 'news';
 		}
 
