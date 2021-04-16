@@ -46,15 +46,11 @@
 								$link = home_url($v['at_segment']);
 							else
 							{
-								$sections = explode( '/', $v['sc_value'] );
-								if( count($sections)>1 )
-									$link = home_url( "{$v['sc_value']}/{$v['at_id']}/{$v['at_segment']}" );
-								else 
-									$link = home_url( "{$v['sc_value']}/i/{$v['at_id']}/{$v['at_segment']}" );
+							    $link = home_url( "{$v['sc_value']}/{$v['at_id']}/{$v['at_segment']}" );
 							}
-							$try = "images/articles/100x75/{$v['at_image']}";
+							$try = "images/articles/xs/{$v['at_image']}";
 							if( strlen($v['at_image'])>3 && file_exists($try) ) $file = $try;
-							else $file = 'images/noimage100x75.jpg';
+							else $file = 'images/noimage.svg';
 							$img = array( 'src'=>$file, 'class'=>'thumbnail', 'style'=>'max-width:50px;' );
 							echo anchor( $link, img($img), 'target="_blank"' );
 						?>

@@ -54,6 +54,7 @@ class Pages extends CI_Controller
 		$this->data['title'] = $page['sc_name'];
 		$this->data['segment'] = $page['sc_value'];
 		$this->data['innertitle'] = $page['sc_name'];
+		if( preg_match('/about\/?.*/', $page['sc_value']) ) $this->data['nav_element'] = 'about';
 
 		$this->al->_process_form($page['sc_value']);
 		$this->pc->page_control($page['sc_value'].'_list', 10 );

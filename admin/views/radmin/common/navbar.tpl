@@ -78,52 +78,47 @@
 					<i style="color:brown;" class="radmin-icon radmin-cabinet"></i>
 				</span>
 				<span class="hidden-tablet hidden-phone">About</span>
-				<span class="badge pull-right hidden-tablet hidden-phone">1</span>
+				<span class="badge pull-right hidden-tablet hidden-phone"><?php echo is_rotary()?4:1;?></span>
 			</a>
 			
 			<div id="collapse-about" class="accordion-body collapse">
 				<br clear="all">
 				<ul class="nav nav-stacked submenu">
 					<li><br></li>
-					<!-- <li>
+                    <?php if(is_rotary()):?>
+					 <li>
 						<?php echo anchor( 'about/index',
 							'<span class="box"> <i class="radmin-icon radmin-box"></i> </span>'.
 							'<span class="hidden-tablet hidden-phone">General Information</span>'
 						);?>
 					</li> 
 					<li>
-						<?php echo anchor( 'about/leadership',
+						<?php echo anchor( 'about/team',
 							'<span class="box"> <i class="radmin-icon radmin-user"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Management</span>'
+							'<span class="hidden-tablet hidden-phone">Current Board</span>'
 						);?>
 					</li>
 					
 					<li>
-						<?php echo anchor( 'about/other',
+						<?php echo anchor( 'about/pp',
 							'<span class="box"> <i class="radmin-icon radmin-user"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Vision, Mission...</span>'
+							'<span class="hidden-tablet hidden-phone">Past Presidents</span>'
 						);?>
 					</li>
-					
-					<li>
-						<?php echo anchor( 'about/approach',
+                    <li class="submenu-last">
+						<?php echo anchor( 'about/rotary',
 							'<span class="box"> <i class="radmin-icon radmin-target-2"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Our Approach</span>'
+							'<span class="hidden-tablet hidden-phone">Rotary International</span>'
 						);?>
 					</li>
-					<li>
-						<?php echo anchor( 'about/philosophy',
-							'<span class="box"> <i class="radmin-icon radmin-lab"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Our Philosophy</span>'
-						);?>
-					</li>
-					 -->
+					 <?php else:?>
 					<li class="submenu-last">
 						<?php echo anchor( 'about/index',
 							'<span class="box"> <i class="radmin-icon radmin-briefcase"></i> </span>'.
 							'<span class="hidden-tablet hidden-phone">About Us</span>'
 						);?>
 					</li>
+                    <?php endif;?>
 				</ul>
 			</div>
 		</li>

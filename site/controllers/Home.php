@@ -14,7 +14,7 @@ class Home extends CI_Controller
 		$this->data['menu'] = 'home';
 		$this->data['rotary_theme'] = $this->article_model->get_month_theme();
 		$this->al->sidebar();
-		$this->time = time();
+		$this->time = mysql_date();
 	}
 
 	public function index()

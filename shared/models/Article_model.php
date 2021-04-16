@@ -213,7 +213,7 @@ class Article_Model extends CI_Model
 		if( strlen($segment) < 5 )
 			$segment = url_title( $title, '-', TRUE );
 		
-		$date = time();
+		$date = mysql_date();
 		$user_id = $this->flexi_auth->get_user_id();
 		$show_author = $this->input->post('show_author');
 		$pvt = $this->input->post('private')?$this->input->post('private'):0;
@@ -243,7 +243,7 @@ class Article_Model extends CI_Model
 			$data["at_v{$i}"] = $this->input->post("v{$i}");
 		}
 		
-		if( $date_posted > 0 ) $data['at_date_posted'] = $date_posted;
+		if( $date_posted > 0 ) $data['at_date_posted'] = mysql_date($date_posted);
 		$error['error'] = !$this->db->insert('articles', $data);
 		$error['error_msg'] = "Article Posted successfully";
 		return $error;
@@ -292,7 +292,7 @@ class Article_Model extends CI_Model
 		if( strlen($segment) < 5 )
 			$segment = url_title( $title, '-', TRUE );
 		
-		$date = time();
+		$date = mysql_date();
 		$user_id = $this->flexi_auth->get_user_id();
 		$show_author = $this->input->post('show_author');
 		
@@ -312,7 +312,7 @@ class Article_Model extends CI_Model
 			'at_segment' => $segment, 
 			'at_keywords' => $key
 		);
-		if( $date_posted > 0 ) $data['at_date_posted'] = $date_posted;
+		if( $date_posted > 0 ) $data['at_date_posted'] = mysql_date($date_posted);
 		
 		for( $i=1; $i<=8; $i++ )
 		{

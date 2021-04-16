@@ -70,7 +70,7 @@ class Al
 		$end = mysql_date();
 		$ids = $this->ci->reporting->top_articles($start, $end, ['limit'=>$limit]);
 		$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image,sc_value,sc_name,sc_id';
-		$where = array( 'at_enabled'=>1, 'sc_value !='=>'about', 'at_date_posted <'=>$this->time );
+		$where = array( 'at_enabled'=>1, 'sc_value !='=>'about', 'at_date_posted <'=>mysql_date($this->time) );
 		$args = array( 'where'=>$where, 'limit'=>$limit, 'select'=>$select );
 		if( !empty($ids) ){
 			$args['where_in'] = [ 'at_id'=>$ids ];

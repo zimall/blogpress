@@ -177,7 +177,7 @@
 				
 				<div class="form-group">
 					<label class="control-label col-sm-3">Date Published</label>
-					<?php $tom = date( 'Y-m-d H:i', $article['at_date_posted'] );?>
+					<?php $tom = $article['at_date_posted'];?>
 					<div class="col-sm-7">
 						<div class="input-group date" id="datetimepicker1" data-time="<?php echo $tom;?>" data-format="DD-MM-YYYY, HH:mm">
 							<span class="input-group-addon">

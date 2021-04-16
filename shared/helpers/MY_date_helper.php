@@ -69,5 +69,13 @@
 		}
 	}
 
+	if(!function_exists('pretty_date')){
+		function pretty_date( $date=false, $format='d M Y, H:i' ){
+			if(!$date) $date = mysql_date();
+			$d = new DateTime($date);
+			return $d->format($format);
+		}
+	}
+
 	/* End of file MY_date_helper.php */
 	/* Location: ./shared/helpers/MY_date_helper.php */

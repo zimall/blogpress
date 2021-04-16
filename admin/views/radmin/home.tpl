@@ -241,9 +241,9 @@
                         <span class="hidden-sm">
                             <?php echo $v['at_summary'];?>
                             <br>
-                            <strong>Posted: </strong><?php echo date( 'd M Y, H:i', $v['at_date_posted'] );?>
+                            <strong>Posted: </strong><?php echo pretty_date( $v['at_date_posted'] );?>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <strong>Updated: </strong><?php echo date( 'd M Y, H:i', $v['at_date_updated'] );?>
+                            <strong>Updated: </strong><?php echo pretty_date( $v['at_date_updated'] );?>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                         </span>
                                         Read by: <strong><?php echo $v['at_hits'];?></strong>

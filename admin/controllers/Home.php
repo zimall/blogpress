@@ -22,7 +22,7 @@ class Home extends CI_Controller
 			$this->prepare_report();
 			$this->pc->page_control('recent_articles', 10);
 			$select = 'at_id';
-			$where = array('at_enabled' => 1, 'at_date_posted <' => time());
+			$where = array('at_enabled' => 1, 'at_date_posted <' => mysql_date() );
 			$count = array('where' => $where, 'count' => 1);
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
 
