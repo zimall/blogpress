@@ -78,7 +78,7 @@ h3
 ol.progtrckr {
     margin: 0;
     padding: 0;
-    list-style-type none;
+    list-style-type: none;
     display: block;
     width: 100%;
 }
@@ -1337,4 +1337,7 @@ ul.left-menu li.active {
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	word-break: break-word;
+}
+td img.thumbnail{
+	max-width: 100px;
 }
