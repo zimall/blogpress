@@ -51,12 +51,16 @@
 		<?php foreach($pages as $k=>$page):?>
 		<tr>
 			<td><?php echo $page['sc_id'];?></td>
-			<td><?php echo anchor( home_url($page['sc_value']), $page['sc_name'], 'target="_blank"');?></td>
+			<td>
+				<?php echo anchor( $page['sc_value'], $page['sc_name']);?>
+				<?php echo anchor( home_url($page['sc_value']), '<i class="radmin radmin-new-tab"></i>', 'target="_blank"');?>
+			</td>
 			<td><?php echo $page['sc_menu'];?></td>
             <td><?php echo $page['sc_enabled'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
             <td><?php echo $page['sc_has_gallery'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
 			<td>
-				<?php echo anchor( current_url()."?action=edit_page&id={$page['sc_id']}", '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-pencil"></i> </span>' );?>
+				<?php echo anchor( current_url()."?action=edit_page&id={$page['sc_id']}", '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-pencil"></i> </span>', ['title'=>'Edit'] );?>
+				<?php echo anchor( 'pages/rules/'.$page['sc_id'], '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-cog"></i> </span>', ['title'=>'Page Settings'] );?>
 			</td>
 		</tr>
 		<?php endforeach;?>

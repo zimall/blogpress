@@ -25,7 +25,7 @@ class PC
 		);
 		$this->ci->carabiner->config($carabiner_config);
 
-		$this->styles = $this->theme_config['styles'];
+		$this->styles = $this->theme_config['styles']??[];
 		// add a css file
 		foreach( $this->styles as $s )
 		{
@@ -42,7 +42,7 @@ class PC
 			$this->ci->carabiner->js("$s.js");
 		}
 
-		$this->theme_scripts = $this->theme_config['scripts'];
+		$this->theme_scripts = $this->theme_config['scripts']??[];
 
 		$this->ci->sc = new Carabiner();
 		$sc_config = array(
@@ -104,6 +104,18 @@ class PC
 		$where = array( 'at_permalink'=>1, 'at_section'=>1 );
 		$args = array( 'where'=>$where, 'one'=>1, 'enabled'=>1 );
 		$this->ci->data['required_content']['aboutus'] = $this->ci->article_model->get_articles( $args );
+		$this->ci->data['menu_items'] = $this->ci->article_model->get_sections( ['enabled'=>1, 'menu'=>true] );
+	}
+
+	public function get_route_content( $class, $method=false ){
+		$theme_content = $this->theme_config['required_content'][$class]??[];
+		foreach($theme_content as $k=>$args){
+			$paths = explode('/', $k);
+			if( $method && isset($paths[0]) && isset($paths[1]) && $method===$paths[0] ){
+				$this->ci->data[$paths[1]] = $this->ci->article_model->get_articles($args);
+			}
+			elseif(isset($paths[0])) $this->ci->data[$paths[0]] = $this->ci->article_model->get_articles($args);
+		}
 	}
 
 	public function record_count( $args=array() )

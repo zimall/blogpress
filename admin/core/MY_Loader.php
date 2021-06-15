@@ -159,4 +159,45 @@ class MY_Loader extends CI_Loader
 		return $data;
 	}
 
+	/**
+	 * View Loader
+	 *
+	 * Loads "view" files.
+	 *
+	 * @param	string	$view	View name
+	 * @param	array	$vars	An associative array of data
+	 *				to be extracted for use in the view
+	 * @param	bool	$return	Whether to return the view output
+	 *				or leave it to the Output class
+	 * @return	object|string
+	 */
+	public function view($view, $vars = array(), $return = FALSE)
+	{
+		$CI = &get_instance();
+		$accept = $CI->input->get_request_header('accept', TRUE);
+		if($accept==='application/json'){
+			return $this->send_response($vars, $return);
+		}
+		return $this->_ci_load(array('_ci_view' => $view, '_ci_vars' => $this->_ci_prepare_view_vars($vars), '_ci_return' => $return));
+	}
+
+	private function send_response($data, $return=false){
+		header('Content-Type: application/json');
+		$CI = &get_instance();
+		$CI->load->helper('json');
+		$js = new Json_helper();
+		$json = $js->encode($data, JSON_UNESCAPED_UNICODE);
+		$je = $js->get_last_error();
+		if( $je == JSON_ERROR_NONE ){
+			if($return) return $json;
+			else echo $json;
+		}
+		else{
+			if($return) return $js->encode(['error'=>true,'message'=>$js->get_last_error_msg()]);
+			echo $js->encode(['error'=>true,'message'=>$js->get_last_error_msg()]);
+		}
+		if(isset($_GET['print_response'])) print_r($data);
+		return '';
+	}
+
 }

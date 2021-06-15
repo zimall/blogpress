@@ -191,7 +191,7 @@ class Pages_Model extends CI_Model
 			$key = implode( ',', $exp );
 		}
 		
-		if( strlen($segment) < 5 )
+		if( strlen($segment) < 2 )
 			$segment = url_title( $title, '-', TRUE );
 		
 		$date = mysql_date();
@@ -244,7 +244,7 @@ class Pages_Model extends CI_Model
 		
 		$old_value = $this->get_pages( ['select'=>'sc_value', 'id'=>$id ] );
 				
-		if( strlen($segment) < 5 ) {
+		if( strlen($segment) < 2 ) {
 			$title = str_replace( '/', '__ignore__', $title );
 			$segment = url_title($title, '-', TRUE);
 		}

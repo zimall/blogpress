@@ -62,6 +62,13 @@ class Pages extends CI_Controller
 
 		if( $option == 'new' )
 		{
+
+			$this->load->model('settings_model');
+			$theme_name = $this->config->item('site_theme');
+			$theme = $this->settings_model->load_theme( $theme_name, 'site' );
+			if(isset($theme['image_sizes'])) $this->data['image_sizes'] = $theme['image_sizes'];
+			else $this->data['image_sizes']['xl'] = 'max: 2000px / 2MB';
+
 			$this->data['section'] = 'new_article';
 			$this->data['ckeditor'] = TRUE;
 			$this->data['scripts'][] = 'ajaxupload';
@@ -115,6 +122,16 @@ class Pages extends CI_Controller
 			$this->data['section'] = 'categories';
 		}
 		
+		$this->load->view( "{$this->data['theme']}/pages.tpl", $this->data );
+	}
+
+	public function rules($page_id){
+		if( !$page_id || !is_numeric($page_id) ) return bad_request();
+
+		$this->data['page'] = $this->pages_model->get_pages(['id'=>$page_id]);
+
+		$this->data['section'] = 'rules';
+		$this->data['nav_element'] = 'articles';
 		$this->load->view( "{$this->data['theme']}/pages.tpl", $this->data );
 	}
 

@@ -58,6 +58,7 @@ class Pages extends CI_Controller
 				}
 			}
 			$this->data['section'] = 'article';
+			$this->pc->get_route_content('Courses','details');
 			$this->load->view("{$this->data['theme']}/pages.tpl", $this->data );
 		}
 		else

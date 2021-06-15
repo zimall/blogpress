@@ -71,5 +71,33 @@ if(!function_exists('is_rotary')){
 	}
 }
 
+	if ( ! function_exists('sade'))
+	{
+		function sade( $msg='You do not have permission to view this page', $title='Access Denied', $url=FALSE )
+		{
+			$ci =& get_instance();
+			$ci->data['sad_msg'] = $msg;
+			$ci->data['sad_title'] = $title;
+			$ci->data['sad_url'] = $url?$url:full_url();
+			$ci->data['section'] = '403';
+			$ci->load->view($ci->data['theme'].'/common.tpl', $ci->data);
+			return 403;
+		}
+	}
+
+	if ( ! function_exists('bad_request'))
+	{
+		function bad_request( $msg='Your request could not be processed. Please check your URL or submitted data', $title='Bad Request', $url=FALSE )
+		{
+			$ci =& get_instance();
+			$ci->data['sad_msg'] = $msg;
+			$ci->data['sad_title'] = $title;
+			$ci->data['sad_url'] = $url?$url:full_url();
+			$ci->data['section'] = '400';
+			$ci->load->view($ci->data['theme'].'/common.tpl', $ci->data);
+			return 400;
+		}
+	}
+
 /* End of file error_helper.php */
 /* Location: ./system/helpers/error_helper.php */

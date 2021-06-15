@@ -32,7 +32,7 @@ class Imagier
 		}
 	}
 
-	public function create_thumb($index)
+	public function create_thumb($index, $resize=true)
 	{
 		$data['error'] = TRUE;
 		$data['form'] = 'blog_article';
@@ -90,20 +90,29 @@ class Imagier
 		$theme_name = $this->ci->config->item('site_theme');
 		$theme = $this->ci->settings_model->load_theme($theme_name, 'site');
 
-		$to = $this->get_sizes( $theme, 'xs', $from );
-		$this->simple_resize( $image, $from, $to, $xs );
+		if($resize) {
+			$to = $this->get_sizes($theme, 'xs', $from);
+			$this->simple_resize($image, $from, $to, $xs);
 
-		$to = $this->get_sizes( $theme, 'sm', $from );
-		$this->simple_resize( $image, $from, $to, $sm );
-		
-		$to = $this->get_sizes( $theme, 'md', $from );
-		$this->simple_resize( $image, $from, $to, $md );
-		
-		$to = $this->get_sizes( $theme, 'lg', $from );
-		$this->simple_resize( $image, $from, $to, $lg );
-		
-		$to = $this->get_sizes( $theme, 'xl', $from );
-		$this->simple_resize( $image, $from, $to, $xl );
+			$to = $this->get_sizes($theme, 'sm', $from);
+			$this->simple_resize($image, $from, $to, $sm);
+
+			$to = $this->get_sizes($theme, 'md', $from);
+			$this->simple_resize($image, $from, $to, $md);
+
+			$to = $this->get_sizes($theme, 'lg', $from);
+			$this->simple_resize($image, $from, $to, $lg);
+
+			$to = $this->get_sizes($theme, 'xl', $from);
+			$this->simple_resize($image, $from, $to, $xl);
+		}
+		else{
+			$this->keep_size($image,$xs);
+			$this->keep_size($image,$sm);
+			$this->keep_size($image,$md);
+			$this->keep_size($image,$lg);
+			$this->keep_size($image,$xl);
+		}
 	
 		try
 		{
@@ -179,8 +188,15 @@ class Imagier
 		return $e;
 	}
 
+	private function keep_size($image, $save){
+		$e = $image->saveToFile($save);
+		$this->save_webp($save);
+		return $e;
+	}
+
 	private function save_webp($file, $quality=80, $output=false){
 		$ext = pathinfo($file, PATHINFO_EXTENSION);
+		if($ext) $ext = strtolower($ext);
 		$f = str_replace( '.'.$ext, '.webp', $file );
 		if ($ext == 'jpeg' || $ext == 'jpg') $image = imagecreatefromjpeg($file);
 		elseif ($ext == 'gif') $image = imagecreatefromgif($file);

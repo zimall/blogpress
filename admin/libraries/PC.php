@@ -10,6 +10,7 @@ class PC
 	function __construct()
 	{
 		$this->ci = &get_instance();
+		$this->theme = $this->ci->config->item('admin_theme');
 		$this->admin_debug = $this->ci->session->userdata( 'admin_debug' );
 		$this->ci->load->config( $this->theme.'_theme' );
 		$this->theme_config = $this->ci->config->item('theme');

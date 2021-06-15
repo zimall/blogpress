@@ -462,15 +462,23 @@ class Article_Model extends CI_Model
 
 	public function get_sections($args=[])
 	{
-
-		if(isset($args['enabled']))
-			$this->db->where( 'sc_enabled', $args['enabled'] );
+		if(isset($args['menu']) && $args['menu'] ) $this->db->where('sc_menu <', 99);
+		if(isset($args['enabled'])) $this->db->where( 'sc_enabled', $args['enabled'] );
 		$this->db->order_by( 'sc_menu', 'asc' );
-
 		$q = $this->db->get('sections');
-		if($q->num_rows()>0)
-			return $q->result_array();
+		if($q->num_rows()>0) return $q->result_array();
 		return array();
+	}
+
+	public function get_section_id($name){
+		$this->db->select('sc_id');
+		$this->db->where( 'sc_value', trim($name) );
+		$q = $this->db->get('sections');
+		if($q->num_rows()>0){
+			$row = $q->row();
+			return $row->sc_id;
+		}
+		return false;
 	}
 
 	public function levels_of_education()

@@ -79,3 +79,20 @@ strip out all the content between any tag that has an opening and closing tag, l
 		}
 		return $str;
 	}
+
+	if(!function_exists('get_image')){
+		function get_image($name, $size='md', $default='noimage.svg'){
+			$img = "images/articles/{$size}/{$name}";
+			$f = ( file_exists($img) && is_file($img) );
+			if(!$f){
+				$img = $webp = "images/{$default}";
+				//$webp = 'images/placeholder.webp?ext=jpg';
+			}
+			else{
+				$ext = pathinfo($img, PATHINFO_EXTENSION);
+				$webp = str_replace( ".{$ext}", ".webp?ext={$ext}", $img );
+			}
+			$bg = "background-image: url(".base_url($webp)."), url(".base_url($img).")";
+			return [ 'src'=>$img, 'webp'=>$webp, 'bg'=>$bg, 'exists'=>$f ];
+		}
+	}
