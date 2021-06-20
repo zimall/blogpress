@@ -26,12 +26,15 @@ class Pages extends CI_Controller
 			$where = array( 'at_enabled'=>1, 'at_section'=>$page['sc_id'] );
 			$count = array( 'where'=>$where, 'count'=>1 );
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
-			$args = array_merge( $paginate, array( 'where'=>$where, 'sort'=>'at_id desc' ) );
+			if( !isset($this->data['sort']) || !$this->data['sort'] ) $this->data['sort'] = 'at_id desc';
+			$paginate['sort'] = $this->data['sort'];
+			$args = array_merge( $paginate, ['where'=>$where] );
 			$this->data['articles'] = $this->article_model->get_articles( $args );
 			$this->data['title'] = $page['sc_name'];
 			$this->data['innertitle'] = $page['sc_name'];
 			$this->data['menu'] = $page['sc_value'];
 			$this->data['tags'] = $this->tags($page_id);
+			$this->pc->get_route_content('Pages','index', [ 'where'=>['at_section'=>$page['sc_id']] ]);
 			$this->load->view( "{$this->data['theme']}/pages.tpl", $this->data );
 		}
 		else redirect( site_url("home/search")."?q={$page_id}" );
@@ -76,13 +79,14 @@ class Pages extends CI_Controller
 		$this->data['search_term'] = $q;
 		if( is_string($q) && strlen($q)>0 )
 		{
+			$this->data['search_query'] = $q;
 			$this->pc->page_control( 'search', 10 );
 			$like = array( 'at_keywords'=>$q ); //'at_section'=>5
 			$like = [ "CONCAT(at_title,at_keywords,at_summary,sc_name)"=>$q ];
 			$order = [ "FIELD(at_title, '$q')", "FIELD(at_keywords, '$q')", "FIELD(at_summary, '$q')", "FIELD(sc_name, '$q')", 'at_date_posted desc' ];
 			$count = array( 'like'=>$like, 'count'=>1 );
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
-			
+			$this->data['sort_id'] = 1;
 			$args = array_merge( $paginate, array( 'like'=>$like, 'sort'=>$order ) );
 			$this->data['articles'] = $articles = $this->article_model->get_articles( $args );
 				
@@ -183,6 +187,22 @@ class Pages extends CI_Controller
 		{
 			sem( 'The page you requested could not be found' );
 			$this->index();
+		}
+	}
+
+	public function contact()
+	{
+		$id = 'contact';
+		if( $id )
+		{
+			$this->data['title'] = 'Contact Us';
+			$this->data['section'] = 'contact';
+			$this->pc->get_route_content('Contact');
+			$this->load->view("{$this->data['theme']}/contact.tpl", $this->data );
+		}
+		else
+		{
+			show_404();
 		}
 	}
 	

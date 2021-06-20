@@ -81,8 +81,8 @@ strip out all the content between any tag that has an opening and closing tag, l
 	}
 
 	if(!function_exists('get_image')){
-		function get_image($name, $size='md', $default='noimage.svg'){
-			$img = "images/articles/{$size}/{$name}";
+		function get_image($name, $size='md', $default='noimage.svg', $path='images/articles'){
+			$img = $size? "{$path}/{$size}/{$name}" : "{$path}/{$name}";
 			$f = ( file_exists($img) && is_file($img) );
 			if(!$f){
 				$img = $webp = "images/{$default}";

@@ -246,6 +246,8 @@ class Article_Model extends CI_Model
 		if( $date_posted > 0 ) $data['at_date_posted'] = mysql_date($date_posted);
 		$error['error'] = !$this->db->insert('articles', $data);
 		$error['error_msg'] = "Article Posted successfully";
+		$section = $this->get_section($cat);
+		if($section) $error = array_merge($section,$error);
 		return $error;
 	}
 
@@ -327,6 +329,8 @@ class Article_Model extends CI_Model
 			$error['error_msg'] = "Article updated successfully";
 			$error['error'] = FALSE;
 		}
+		$section = $this->get_section($cat);
+		if($section) $error = array_merge($section,$error);
 		return $error;
 	}
 
@@ -588,19 +592,20 @@ class Article_Model extends CI_Model
 		$data = array(
 				'first_name'=>$this->input->post('name'),
 				'last_name'=>'',
-				'email'=>$this->input->post('email')
+				'email'=>$this->input->post('email'),
+				'phone'=>$this->input->post('phone')
 		);
-		// 'phone'=>$this->input->post('phone')
 		$site = $this->config->item('site-name');
 		$email = $this->config->item('site-email');
 		$noreply = $this->config->item('no-reply');
 		$data['message'] = strip_tags( $this->input->post('message') );
 		$data['subject'] = "$site Contact Form Message from {$data['first_name']} {$data['last_name']}";
 		
-		$msg = "The following user left a message on the $site Website:<br><br><em>Name:</em> {$data['first_name']} {$data['last_name']} <br><em>Email:</em> {$data['email']}<br><br><strong>Message:</strong><br><i>".
+		$msg = "The following user left a message on the $site Website:<br><br><em>Name:</em> {$data['first_name']} {$data['last_name']} <br><em>Email:</em> {$data['email']}{{phone}}<br><br><strong>Message:</strong><br><i>".
 		nl2br($data['message'])."</i> <br><br>Regards, <br><br>$site Web.";
 		
-		// <br><em>Phone: </em>{$data['phone']} 
+		$phone = $data['phone'] ? "<br><em>Phone: </em>{$data['phone']}":'';
+		$msg = str_replace( '{{phone}}', $phone, $msg );
 		
 		if( isset($data['email']) )
 		{
@@ -608,14 +613,12 @@ class Article_Model extends CI_Model
 			$this->email->from($noreply, $site);
 			$this->email->reply_to( $data['email'], "{$data['first_name']} {$data['last_name']}");
 			$this->email->to( $email );
-			//$this->email->cc('faraimuti@gmail.com');
-			$this->email->bcc('michaelmartinc@gmail.com');
+			$bcc = config_item('bcc-email');
+			if($bcc) $this->email->bcc($bcc);
 			$this->email->subject($data['subject']);
-			
 			$this->email->message( $msg );
-			$e = $this->email->send();
-			if($e)
-				return array( 'error'=>FALSE, 'error_msg'=>'Thank you for your inquiry, our Secretary will respond to your message soon' );
+			$e = $this->email->send(false);
+			if($e) return array( 'error'=>FALSE, 'error_msg'=>'Thank you for your inquiry. We will respond to your message soon' );
 		}
 		return array( 'error'=>TRUE, 'error_msg'=>'Could not send your message, please check your info and try again.' );		
 	}

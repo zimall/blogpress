@@ -68,7 +68,7 @@ function init_uploader() {
 					curl = $('#current_url').val();
 					burl = $('#base_url').val();
 					folder = 'images/slider/';
-					li = '<li id="' + response['image'] + '"><div class="thumbnail"><img src="' + burl + folder + response['image'] + '"></div><p><button class="btn btn-sm btn-mini btn-default product_img_fs" type="button" value="' + response['image'] + '" onclick="delete_slider(this)">delete</button></p> <input type="hidden" name="image" value="' + response['image'] + '"> </li>';
+					const li = '<li id="slider_' + response['image'] + '"><div class="thumbnail"><img src="' + burl + folder + response['image'] + '"></div><p><button class="btn btn-sm btn-mini btn-default product_img_fs" type="button" value="' + response['image'] + '" onclick="delete_slider(this)">delete</button></p> <input type="hidden" name="image" value="' + response['image'] + '"> </li>';
 					$('#upload_files').prepend(li);
 					//document.getElementById('image_name').value = response['image'];
 				}

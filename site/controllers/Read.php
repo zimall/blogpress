@@ -40,6 +40,11 @@ class Read extends CI_Controller
 		{
 			$this->data['section'] = 'article';
 			$this->data['article'] = $found[0];
+			$this->data['page'] = $this->article_model->get_section($found[0]['at_section']);
+			$this->data['title'] = $found[0]['at_title'];
+			$page = preg_replace( '/^'.$found[0]['sc_value'].'/', '', $found[0]['at_segment'] );
+			$page = trim( $page, '/' );
+			$this->pc->get_route_content( ucfirst( $found[0]['sc_value'] ), $page );
 		}
 		elseif ($n==0)
 		{

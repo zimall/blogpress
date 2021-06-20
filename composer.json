@@ -1,6 +1,7 @@
 {
     "require": {
         "coffeecode/optimizer": "^2.0",
-      "ext-gd": "*"
+      "ext-gd": "*",
+      "ext-curl": "*"
     }
 }

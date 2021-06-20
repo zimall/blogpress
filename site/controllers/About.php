@@ -19,13 +19,13 @@ class About extends CI_Controller
 	{
 		$where = array( 'at_permalink'=>1, 'at_segment'=>'about' );
 		$args = array( 'where'=>$where, 'one'=>1, 'enabled'=>1 );
-		$this->data['aboutus'] = $this->article_model->get_articles( $args );
+		$this->data['aboutus'] = $this->data['article'] = $this->article_model->get_articles( $args );
 		if(isset($this->data['aboutus']['at_id']))
-			{
-				$this->data['title'] = 'About Us';
-				$this->data['description'] = $this->data['aboutus']['at_summary'];
-				$this->data['keywords'] = $this->data['aboutus']['at_keywords'];
-			}
+		{
+			$this->data['title'] = 'About Us';
+			$this->data['description'] = $this->data['aboutus']['at_summary'];
+			$this->data['keywords'] = $this->data['aboutus']['at_keywords'];
+		}
 		
 		$where = array( 'at_enabled'=>1, 'at_featured'=>1, 'at_section'=>1 );
 		$this->data['about'] = $this->article_model->get_articles( array( 'where'=>$where ) );
@@ -39,6 +39,8 @@ class About extends CI_Controller
 		$where = array( 'sc_value'=>'about/pp' );
 		$args = array( 'where'=>$where, 'enabled'=>1, 'sort'=>'at_title desc' );
 		$this->data['pp'] = $this->article_model->get_articles( $args );
+
+		$this->pc->get_route_content('About');
 		
 		$this->load->view( "{$this->data['theme']}/about.tpl", $this->data );
 	}

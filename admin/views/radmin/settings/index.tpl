@@ -156,7 +156,7 @@
 					</a>
 				</h3>
 			</div>
-			<div id="collapseOne" class="panel-collapse collapse">
+			<div id="collapseOne" class="panel-collapse collapse in">
 				<div class="panel-body">
 					<?php echo form_open( current_url(), 'class="form form-horizontal"' );?>
 						<div class="col-sm-6">
@@ -223,8 +223,20 @@
 							<div class="form-group">
 								<div class="col-sm-10">
 									<label>Google Analytics ID <code>google-analytics</code></label>
-									<input type="text" name="google_analytics" class="form-control" value="<?php echo $this->config->item('google_analytics');?>">
+									<input type="text" name="google-analytics" class="form-control" value="<?php echo $this->config->item('google-analytics');?>">
 									<small>For website traffic statistics. Account ID starting with UA-</small>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Google reCaptcha Site Key <code>google_recaptcha_site_key</code></label>
+									<input type="text" name="google_recaptcha_site_key" class="form-control" value="<?php echo config('google_recaptcha_site_key');?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Google reCaptcha Secret <code>google_recaptcha_secret</code></label>
+									<input type="text" name="google_recaptcha_secret" class="form-control" value="<?php echo config('google_recaptcha_secret');?>">
 								</div>
 							</div>
 						
@@ -254,6 +266,13 @@
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
+									<label>Whatsapp Link - <small>full URL</small>  <code>whatsapp</code></label>
+									<input type="url" name="whatsapp" class="form-control" value="<?php echo $this->config->item('whatsapp');?>"
+										   placeholder="e.g https://api.whatsapp.com/send/?phone=2637720123456">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
 									<label>Facebook Page/Group - <small>full URL</small>  <code>facebook</code></label>
 									<input type="url" name="facebook" class="form-control" value="<?php echo $this->config->item('facebook');?>" 
 										placeholder="https://">
@@ -262,7 +281,7 @@
 							<div class="form-group">
 								<div class="col-sm-10">
 									<label>Instagram <small>username only</small>  <code>instagram</code></label>
-									<input type="url" name="instagram" class="form-control" value="<?php echo $this->config->item('instagram');?>" 
+									<input type="text" name="instagram" class="form-control" value="<?php echo $this->config->item('instagram');?>"
 										placeholder="e.g my_name">
 								</div>
 							</div>

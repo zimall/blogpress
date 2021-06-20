@@ -195,18 +195,30 @@ class Imagier
 	}
 
 	private function save_webp($file, $quality=80, $output=false){
-		$ext = pathinfo($file, PATHINFO_EXTENSION);
-		if($ext) $ext = strtolower($ext);
-		$f = str_replace( '.'.$ext, '.webp', $file );
-		if ($ext == 'jpeg' || $ext == 'jpg') $image = imagecreatefromjpeg($file);
-		elseif ($ext == 'gif') $image = imagecreatefromgif($file);
-		elseif ($ext == 'png') $image = imagecreatefrompng($file);
-		$e = imagewebp($image, $f, $quality);
-		if($output) imagewebp( $image, null, $quality );
-		else return $e;
+		try {
+			$ext = pathinfo($file, PATHINFO_EXTENSION);
+			if($ext) $ext = strtolower($ext);
+			$f = str_replace('.' . $ext, '.webp', $file);
+			if($ext == 'jpeg' || $ext == 'jpg') $image = @imagecreatefromjpeg($file);
+			elseif($ext == 'gif') $image = @imagecreatefromgif($file);
+			elseif($ext == 'png') $image = @imagecreatefrompng($file);
+			if(!$image){
+				$error = error_get_last();
+				$m = $error['message']??'Unable to create Webp image from '.$file;
+				throw new Exception($m);
+			}
+			$e = imagewebp($image, $f, $quality);
+			if($output) imagewebp($image, null, $quality);
+			else return $e;
+		}
+		catch(Exception $e){
+			log_message('error', $e->getMessage() );
+			if($output) $this->output($file);
+			else return $file;
+		}
 	}
 
-	private function output($file,$size='lg')
+	public function output($file,$size='lg')
 	{
 		if(file_exists($file) && is_file($file))
 		{
@@ -218,9 +230,11 @@ class Imagier
 		}
 		else
 		{
+			$file = 'images/noimage.svg';
+			$type = exif_imagetype($file);
 			$this->ci->output
-        		->set_content_type('image/jpeg')
-        		->set_output(file_get_contents(''));
+        		->set_content_type($type)
+        		->set_output(file_get_contents($file));
 		}
 	}
 

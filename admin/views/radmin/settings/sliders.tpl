@@ -44,14 +44,14 @@
 					<td>
 						<?php 
 							if( $v['bn_link'] )
-								$link = $v['bn_link'];
+								$link = preg_match( '/^https?:\/\//', $v['bn_link'] ) ? $v['bn_link'] : home_url($v['bn_link']);
 							else
 							{
 								$link = '#';
 							}
 							$try = "images/slider/{$v['bn_image']}";
 							if( strlen($v['bn_image'])>3 && file_exists($try) ) $file = $try;
-							else $file = 'images/noimage100x75.jpg';
+							else $file = 'images/noimage.svg';
 							$img = array( 'src'=>$file, 'class'=>'thumbnail', 'style'=>'width:300px' );
 							echo anchor( $link, img($img), 'target="_blank"' );
 						?>
@@ -59,7 +59,7 @@
 					<td>
 						<strong><?php echo $v['bn_title'];?></strong>
 						<br>
-						<?php echo $v['bn_action'];?>
+						<?php echo $v['bn_action']??'n/a';?>
 						<br>
 						Position: <?php echo $v['bn_position'];?>
 					</td>

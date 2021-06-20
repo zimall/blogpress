@@ -85,11 +85,18 @@ class PC
 				$this->ci->form_validation->set_rules('name', 'Full Name', 'required');
 				$this->ci->form_validation->set_rules('message', 'Your Message', 'required');
 				$this->ci->form_validation->set_rules('email', 'Email Address', 'required|valid_email');
-				//$this->ci->form_validation->set_rules('captcha', 'Help prevent spam', 'required');
-				// && $this->ci->actions->validate_captcha() 
+
+				if(config_item('google_recaptcha_site_key')){
+					$this->ci->form_validation->set_rules('g-recaptcha-response', "I'm not a robot", 'required');
+				}
 				if( $this->ci->form_validation->run() === TRUE )
 				{
-					$e = $this->ci->article_model->contact();
+					if( $this->verify_recaptcha($this->ci->input->post('g-recaptcha-response')) ){
+						$e = $this->ci->article_model->contact();
+					}
+					else{
+						$e = ['error'=>true, 'error_msg'=>'You need to verify that you are not a robot.'];
+					}
 					sem($e);
 					if($e['error']===FALSE) redirect( current_url() );
 				}
@@ -107,9 +114,15 @@ class PC
 		$this->ci->data['menu_items'] = $this->ci->article_model->get_sections( ['enabled'=>1, 'menu'=>true] );
 	}
 
-	public function get_route_content( $class, $method=false ){
+	public function get_route_content( $class, $method=false, $extra_args=[] ){
 		$theme_content = $this->theme_config['required_content'][$class]??[];
-		foreach($theme_content as $k=>$args){
+		foreach($theme_content as $k=>$args) {
+			foreach(['where', 'sort', 'limit', 'select', 'one'] as $key ){
+				if(isset($extra_args[$key])) {
+					$args[$key] = isset($args[$key]) && is_array($args[$key]) && is_array($extra_args[$key]) ? array_merge($args[$key], $extra_args[$key]) : $extra_args[$key];
+				}
+			}
+
 			$paths = explode('/', $k);
 			if( $method && isset($paths[0]) && isset($paths[1]) && $method===$paths[0] ){
 				$this->ci->data[$paths[1]] = $this->ci->article_model->get_articles($args);
@@ -231,25 +244,21 @@ class PC
 		$this->ci->data['per'] = $per;
 		
 		/************* SORT ********************/
-		
 		$sort = $this->ci->input->post('sort');
-		//echo $sort;
-		if($sort===FALSE OR strlen($sort)<5 ){
-			$sort = $this->ci->input->cookie($this->ci->config->item('cookie_prefix').$table.'_sort');
-			//echo '<br>problem here';	
+		if( is_null($sort) || $sort===FALSE )
+		{
+			$sort = $this->ci->input->cookie(config('cookie_prefix').$table.'_sort');
+			//echo '<br>problem here';
 		}
-		if($sort===FALSE)
-			$sort = FALSE;
+		if( $sort===FALSE || is_null($sort) ) $sort = config('default_sort_by');
 
-		$cookie = array(
-			'name'   => $table.'_sort',
-			'value'  => $sort,
-			'expire' => '60000',
-			'secure' => FALSE
-		);
+		$cookie = [ 'name'   => $table.'_sort', 'value'  => $sort, 'expire' => '60000', 'secure' => FALSE ];
 		$this->ci->input->set_cookie($cookie);
-			
-		$this->ci->data['sort'] = $sort;
+		$this->ci->data['sort_id'] = $sort;
+		$sorts = config('article_sort');
+		if(isset($sorts[$sort])) $this->ci->data['sort'] = "{$sorts[$sort]['f']} {$sorts[$sort]['s']}";
+		else $this->ci->data['sort'] = FALSE;
+
 		
 		/*********** FILTERS ***********/
 		
@@ -303,7 +312,7 @@ class PC
 		}
 		
 		if( $this->ci->input->post('per_page') || $this->ci->input->post('sort') )
-			redirect( current_url() );
+			redirect( full_url() );
 		
 	}
 
@@ -399,6 +408,47 @@ class PC
 		
 		$merged = array_merge($data, $assoc);
 		return $merged;
+	}
+
+	private function verify_recaptcha($key)
+	{
+		$url = 'https://www.google.com/recaptcha/api/siteverify';
+		$data = array(
+			'response'=>$key,
+			'secret'=>config_item('google_recaptcha_secret'),
+			'remoteip'=>$_SERVER["REMOTE_ADDR"]
+		);
+
+		$params = http_build_query($data, NULL, '&');
+
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($curl, CURLOPT_POST, TRUE);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded', 'Content-length: ' . strlen($params)));
+
+		$response = curl_exec($curl);
+		//log_message( 'error', $response );
+		//log_message( 'error', $params );
+		if ($response === FALSE)
+		{
+			$this->data['admin-message'] = curl_error($curl);
+			curl_close($curl);
+			log_message( 'error', $this->data['admin-message'] );
+
+			return FALSE;
+		}
+		curl_close($curl);
+
+		$decoded = json_decode($response, TRUE);
+		if( isset($decoded['success']) ) return $decoded['success'];
+		else
+		{
+			log_message( 'error', $response );
+			return FALSE;
+		}
 	}
 
 }

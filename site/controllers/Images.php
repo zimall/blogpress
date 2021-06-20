@@ -33,5 +33,8 @@ class Images extends CI_Controller
 		echo json_encode($res);
 	}
 
+	public function logos($file){
+		$this->imagier->output( $file );
+	}
 
 }

@@ -155,8 +155,10 @@ class Al
 					$error = $this->ci->article_model->post_article();
 					sem($error);
 					if(!$r) $r = 'articles';
-					if( !$error['error'] )
-						redirect( $r );
+					if( !$error['error'] ) {
+						if( preg_match('/^search\/|^search$/', $r) && isset($error['sc_value']) ) $r = $error['sc_value'];
+						redirect($r);
+					}
 				}
 			}
 			elseif( $name == 'article' && $action == 'update' )
@@ -169,8 +171,10 @@ class Al
 					$error = $this->ci->article_model->update_article();
 					sem($error);
 					if(!$r) $r = current_url();
-					if( !$error['error'] )
-						redirect( $r );
+					if( !$error['error'] ) {
+						if( preg_match('/^search\/|^search$/', $r) && isset($error['sc_value']) ) $r = $error['sc_value'];
+						redirect($r);
+					}
 				}
 			}
 			elseif( $name == 'article' && $action == 'delete' )
