@@ -72,16 +72,18 @@
 						<?php echo anchor( current_url()."?action=edit_slide&id={$v['bn_id']}", 
 							'<span class="radmin radmin-pencil"></span>', 
 							'class="btn btn-xs btn-link" title="edit slide"' );
-							
+
 							$e = $v['bn_enabled']?'radmin-checkbox':'radmin-checkbox-unchecked';
 							$et = $v['bn_enabled']?'Disable':'Enable';
-							
-							echo anchor( current_url()."?action=toggle_state&p=enabled&v={$v['bn_enabled']}&id={$v['bn_id']}", 
+
+							echo anchor( current_url()."?action=toggle_state&p=enabled&v={$v['bn_enabled']}&id={$v['bn_id']}",
 								'<span class="radmin '.$e.'" style="font-size:13px;"></span>', 
-								'title="'.$et.'" class="btn btn-link btn-xs"' );
-							echo anchor( current_url()."?action=delete_slider&id={$v['bn_id']}", 
+								'title="'.$et.'" class="btn btn-link btn-xs disabled" disabled' );
+							/*
+							echo anchor( current_url()."?action=delete_slider&id={$v['bn_id']}",
 								'<span class="radmin radmin-remove-3" style="color:red"></span>', 
 								'title="Delete" class="btn btn-xs btn-link"' );
+							*/
 							?>
 						
 						

@@ -330,6 +330,62 @@ class Article_Model extends CI_Model
 		return $error;
 	}
 
+	public function duplicate_article($id)
+	{
+		$this->db->where('at_id', $id);
+		$r = $this->db->get('articles');
+		if($r->num_rows()==1){
+			$article = $r->row_array();
+			unset($article['at_id']);
+			$article['at_title'] = 'Copy - '.$article['at_title'];
+			$article['at_segment'] = $article['at_segment'].'-copy';
+			$article['at_enabled'] = 0;
+			$article['at_hits'] = 0;
+			$article['at_date_posted'] = mysql_date();
+			$article['at_date_updated'] = mysql_date();
+			$this->db->insert('articles', $article);
+			$id = $this->db->insert_id();
+			if($id){
+				$this->duplicate_images($id);
+				$error['error'] = false;
+				$error['error_msg'] = "Article duplicated successfully";
+				return $error;
+			}
+		}
+		else{
+			return ['error'=>true, 'error_msg'=>"Unable to duplicate, article not found. ".$r->num_rows()];
+		}
+
+		$error['error'] = true;
+		$error['error_msg'] = "Unable to duplicate article. Please check the article data and try again.";
+		return $error;
+	}
+
+	private function duplicate_images($at_id){
+		$this->db->select('at_image');
+		$r = $this->db->get_where( 'articles', ['at_id'=>$at_id] );
+		if($r->num_rows()==1){
+			$article = $r->row_array();
+			$image = $article['at_image']??false;
+			if(!$image) return false;
+			$sizes = [ 'xs', 'sm', 'md', 'lg', 'xl' ];
+			$copied = false;
+			foreach($sizes as $size){
+				$file = "images/articles/{$size}/$image";
+				$new_file = "images/articles/{$size}/{$at_id}-{$image}";
+				if(file_exists($file) && !is_dir($file) ){
+					$c = copy( $file, $new_file );
+					if(!$copied) $copied = $c;
+				}
+			}
+			if($copied){
+				$this->db->where('at_id', $at_id);
+				return $this->db->update( 'articles', ['at_image'=>$at_id.'-'.$image] );
+			}
+			return $copied;
+		}
+	}
+
 	public function get_articles($args=[])
 	{
 		if(! isset($args['table']) ) $args['table'] = 'articles';
