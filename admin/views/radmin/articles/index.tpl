@@ -115,6 +115,9 @@
 							echo anchor( current_url()."?action=toggle_state&p=private&v={$v['at_private']}&id={$v['at_id']}", 
 								'<span class="radmin '.$p.'" style="font-size:15px;"></span>', 
 								'title="'.$pt.'" class="btn btn-link btn-xs"' );
+							echo anchor( current_url()."?action=duplicate&id={$v['at_id']}",
+								'<span class="radmin radmin-copy" style="font-size:15px;"></span>',
+								'title="Duplicate Article" class="btn btn-link btn-xs"' );
 							echo anchor( current_url()."?action=delete_article&id={$v['at_id']}", 
 								'<span class="radmin radmin-remove-3" style="color:red"></span>', 
 								'title="Delete" class="btn btn-xs btn-link"' );

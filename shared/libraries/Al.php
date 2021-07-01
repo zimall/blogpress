@@ -263,6 +263,13 @@ class Al
 				$this->ci->data['section'] = 'delete_article';
 				$continue = FALSE;
 			}
+			elseif( $action=='duplicate' && is_numeric($id) )
+			{
+				$e = $this->ci->article_model->duplicate_article( $id );
+				sem($e);
+				redirect( current_url() );
+				$continue = TRUE;
+			}
 		}
 		return $continue;
 	}
