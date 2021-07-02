@@ -2,6 +2,8 @@
 	$prefix = '';
 	if( defined('TABLE_PREFIX') ) $prefix = TABLE_PREFIX;
 	else {
+		$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+		$dotenv->load();
 	 	if(!defined('BASEPATH')) define('BASEPATH', './');
 		if(!defined('ENVIRONMENT')) define('ENVIRONMENT', $_SERVER['CI_ENV'] ?? 'production');
 		$config = realpath('./shared/config/' . ENVIRONMENT . '/database.php');

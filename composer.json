@@ -3,6 +3,10 @@
         "coffeecode/optimizer": "^2.0",
       "ext-gd": "*",
       "ext-curl": "*",
-        "doctrine/migrations": "^3.1"
-    }
+        "doctrine/migrations": "^3.1",
+        "vlucas/phpdotenv": "^5.3"
+    },
+  "scripts": {
+    "post-update-cmd": "php fix-env.php"
+  }
 }

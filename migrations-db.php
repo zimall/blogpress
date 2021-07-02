@@ -1,4 +1,6 @@
 <?php
+	$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+	$dotenv->load();
 	$r = [];
 	$table_prefix = '';
 	if(!defined('BASEPATH')) define('BASEPATH', './');
