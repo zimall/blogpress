@@ -246,7 +246,7 @@
                             <strong>Updated: </strong><?php echo pretty_date( $v['at_date_updated'] );?>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                         </span>
-                                        Read by: <strong><?php echo $v['at_hits'];?></strong>
+                                        Opened: <strong><?php echo $v['at_hits'].' time', $v['at_hits']?'':'s';?></strong>
                                     </td>
                                     <td>
 				                        <?php echo anchor( current_url()."?action=edit_article&id={$v['at_id']}",

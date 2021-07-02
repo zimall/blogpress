@@ -9,7 +9,7 @@
                 $u = preg_replace( "/page[^s]\/?\d*\/?$/", '', $u );
                 $u = $u.'/new';
                 $u = str_replace( '//', '/', $u );
-                echo anchor( $u, 'New Article', ['class'=>'btn btn-sm btn-default'] );?>
+                echo isset($search_term)?'':anchor( $u, 'New Article', ['class'=>'btn btn-sm btn-default'] );?>
         </span>
 	</h2>
 </div>
@@ -90,10 +90,12 @@
                             <strong>Updated: </strong><?php echo pretty_date( $v['at_date_updated'] );?>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                         </span>
-						Read by: <strong><?php echo $v['at_hits'];?></strong>
+						Opened: <strong><?php echo $v['at_hits'].' time', $v['at_hits']==1?'':'s';?></strong>
 					</td>
 					<td>
-						<?php echo anchor( current_url()."?action=edit_article&id={$v['at_id']}", 
+						<?php
+							$url = isset($search_term)?site_url($v['sc_value']):current_url();
+							echo anchor( "{$url}?action=edit_article&id={$v['at_id']}",
 							'<span class="radmin radmin-pencil"></span>', 
 							'class="btn btn-xs btn-link" title="edit article"' );
 							
@@ -106,19 +108,19 @@
 							$p = $v['at_private']?'radmin-locked':'radmin-unlocked';
 							$pt = $v['at_private']?'Make Public':'Make Private';
 							
-							echo anchor( current_url()."?action=toggle_state&p=enabled&v={$v['at_enabled']}&id={$v['at_id']}", 
+							echo anchor( "{$url}?action=toggle_state&p=enabled&v={$v['at_enabled']}&id={$v['at_id']}",
 								'<span class="radmin '.$e.'" style="font-size:13px;"></span>', 
 								'title="'.$et.'" class="btn btn-link btn-xs"' );
-							echo anchor( current_url()."?action=toggle_state&p=featured&v={$v['at_featured']}&id={$v['at_id']}", 
+							echo anchor( "{$url}?action=toggle_state&p=featured&v={$v['at_featured']}&id={$v['at_id']}",
 								'<span class="radmin '.$f.'" style="font-size:15px;"></span>', 
 								'title="'.$ft.'" class="btn btn-link btn-xs"' );
-							echo anchor( current_url()."?action=toggle_state&p=private&v={$v['at_private']}&id={$v['at_id']}", 
+							echo anchor( "{$url}?action=toggle_state&p=private&v={$v['at_private']}&id={$v['at_id']}",
 								'<span class="radmin '.$p.'" style="font-size:15px;"></span>', 
 								'title="'.$pt.'" class="btn btn-link btn-xs"' );
-							echo anchor( current_url()."?action=duplicate&id={$v['at_id']}",
+							echo anchor( "{$url}?action=duplicate&id={$v['at_id']}",
 								'<span class="radmin radmin-copy" style="font-size:15px;"></span>',
 								'title="Duplicate Article" class="btn btn-link btn-xs"' );
-							echo anchor( current_url()."?action=delete_article&id={$v['at_id']}", 
+							echo anchor( "{$url}?action=delete_article&id={$v['at_id']}",
 								'<span class="radmin radmin-remove-3" style="color:red"></span>', 
 								'title="Delete" class="btn btn-xs btn-link"' );
 							if( $v['sc_has_gallery'] )
