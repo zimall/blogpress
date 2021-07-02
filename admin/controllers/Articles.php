@@ -75,6 +75,7 @@ class Articles extends CI_Controller
 		$this->load->model('settings_model');
 		$theme_name = $this->config->item('site_theme');
 		$theme = $this->settings_model->load_theme( $theme_name, 'site' );
+		echo "<pre>"; print_r($theme); echo "</pre>";
 		if(isset($theme['image_sizes'])) $this->data['image_sizes'] = $theme['image_sizes'];
 		else $data['image_sizes']['xl'] = 'max: 2000px / 2MB';
 		

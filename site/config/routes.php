@@ -18,6 +18,14 @@ $route['about/pp/(:num)/.+'] = 'about/pp/$1';
 $route['about/rotary/(:num)'] = 'about/rotary/$1';
 $route['about/rotary/(:num)/.+'] = 'about/rotary/$1';
 
+$route['contact'] = 'pages/contact';
+
+$route['courses'] = 'courses/index';
+$route['courses/page'] = 'courses/index';
+$route['courses/page/(.+)'] = 'courses/index/$1';
+$route['courses/(:num)'] = 'courses/details/$1';
+$route['courses/(:num)/.+'] = 'courses/details/$1';
+
 $route['default_controller'] = 'home';
 $route['404_override'] = 'read/index';
 $route['translate_uri_dashes'] = FALSE;

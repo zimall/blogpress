@@ -95,23 +95,48 @@ class Settings extends CI_Controller
 			}
 			elseif( $name == 'slider' && $action == 'insert' )
 			{
+				$theme_name = $this->input->post('site_slider');
+				if($theme_name){
+					$theme = $this->settings_model->load_theme( $theme_name, 'site' );
+				}
+
+				if( isset($theme['slider']) ){
+					$settings = $theme['slider'];
+					if( isset($settings['has_subtitle']) && $settings['has_subtitle'] )
+						$this->form_validation->set_rules( 'subtitle', 'Subtitle Text', 'required' );
+				}
+
 				$this->form_validation->set_rules( 'title', 'Title Text', 'required' );
-				$this->form_validation->set_rules( 'subtitle', 'Subtitle Text', 'required' );
 				$this->form_validation->set_rules( 'image', 'Slider Image', 'required' );
 				$this->form_validation->set_rules( 'site_slider', 'Slider Theme', 'required' );
 				if( $this->form_validation->run() )
 				{
 					$error = $this->settings_model->new_banner();
 					sem($error);
-					if( !$error['error'] )
-						redirect( current_url() );
+					if( !$error['error'] ) redirect( current_url() );
+					else{
+						$_GET['action'] = 'new_slide';
+					}
+				}
+				else{
+					$_GET['action'] = 'new_slide';
 				}
 			}
 			elseif( $name == 'slider' && $action == 'update' )
 			{
+				$theme_name = $this->input->post('site_slider');
+				if($theme_name){
+					$theme = $this->settings_model->load_theme( $theme_name, 'site' );
+				}
+
+				if( isset($theme['slider']) ){
+					$settings = $theme['slider'];
+					if( isset($settings['has_subtitle']) && $settings['has_subtitle'] )
+						$this->form_validation->set_rules( 'subtitle', 'Subtitle Text', 'required' );
+				}
+
 				$this->form_validation->set_rules( 'id', 'Banner ID', 'required' );
 				$this->form_validation->set_rules( 'title', 'Title Text', 'required' );
-				$this->form_validation->set_rules( 'subtitle', 'Subtitle Text', 'required' );
 				$this->form_validation->set_rules( 'image', 'Slider Image', 'required' );
 				$this->form_validation->set_rules( 'site_slider', 'Slider Theme', 'required' );
 				if( $this->form_validation->run() )
@@ -121,6 +146,8 @@ class Settings extends CI_Controller
 					if( !$error['error'] )
 						redirect( current_url() );
 				}
+				$_GET['action'] = 'edit_slide';
+				$_GET['id'] = $this->input->post('id');
 			}
 		}
 		//else sem('no form data found');

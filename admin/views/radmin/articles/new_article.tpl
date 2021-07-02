@@ -55,7 +55,7 @@
 				</div>
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Section</label>
-					<div class="col-sm-8">
+					<div class="col-sm-9">
 						<select class="form-control" name="section">
 							<?php foreach($sections as $k=>$v):
                                 $s = $this->input->post('section') == $v['sc_id'] ? 'selected="selected"':'';
@@ -66,10 +66,16 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="control-label col-sm-3">Image Resize</label>
+					<div class="col-sm-9">
+						<input type="checkbox" name="resize_image" value="1" data-toggle="toggle" onchange="init_uploader()" checked/>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="control-label col-sm-3">Upload Image</label>
 					<div class="col-sm-9">
 						<span id="upload" class="uneditable-input col-sm-9 form-control">
-							no file chosen... <small>( recommended <?php if(isset($image_sizes['xs'])) echo $image_sizes['xl'];?> )</small>
+							no file chosen... <small>( recommended <?php if(isset($image_sizes['xl'])) echo $image_sizes['xl'];?> )</small>
 						<span>
 					</div>
 				</div>

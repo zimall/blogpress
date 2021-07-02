@@ -47,6 +47,8 @@ class Home extends CI_Controller
 		$where = array( 'at_featured'=>1, 'at_enabled'=>1, 'at_date_posted <'=>$this->time );
 		$args = array( 'where'=>$where, 'sort'=>'at_date_posted desc', 'limit'=>5, 'select'=>$select );
 		$this->data['featured'] = $this->article_model->get_articles($args);
+
+		$this->pc->get_route_content(self::class);
 		
 		$this->data['innertitle'] = 'Latest Posts';
 		$this->data['title'] = 'Home';

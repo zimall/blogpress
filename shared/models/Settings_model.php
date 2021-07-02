@@ -14,7 +14,7 @@ class Settings_Model extends CI_Model
 			$keys['$config["'.$k.'"]'] = $v;
 		}
 		$set = '';
-		$general = SHAREDPATH."config/general.php";
+		$general = SHAREDPATH."config/".ENVIRONMENT."/general.php";
 		
 		$myfile = fopen($general, "r+");
 		while(!feof($myfile))
@@ -40,7 +40,7 @@ class Settings_Model extends CI_Model
 		{
 			// flexi_auth.php
 			$set = '';
-			$flexi_auth = SHAREDPATH."config/flexi_auth.php";
+			$flexi_auth = SHAREDPATH."config/".ENVIRONMENT."/flexi_auth.php";
 			$myfile = fopen($flexi_auth, "r+");
 			while(!feof($myfile))
 			{

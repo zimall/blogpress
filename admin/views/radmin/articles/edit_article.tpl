@@ -26,7 +26,7 @@
 <div class="squiggly-border col-sm-12"></div>
 
 
-<?php echo form_open( full_url(), 'class="form form-horizontal" name="blog_post"' );?>
+<?php echo form_open( full_url(), 'class="form form-horizontal article_form" name="blog_post"' );?>
 
 	<div class="col-sm-6">
 		<div class="panel panel-default">
@@ -63,13 +63,19 @@
 				</div>
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Section</label>
-					<div class="col-sm-8">
+					<div class="col-sm-9">
 						<select class="form-control" name="section">
 							<?php foreach($sections as $k=>$v):
 								if( $v['sc_id'] == $article['sc_id'] ) $s='selected';else $s='';?>
 								<option value="<?php echo $v['sc_id']?>" <?php echo $s;?>><?php echo $v['sc_name']?></option>
 							<?php endforeach;?>
 						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">Image Resize</label>
+					<div class="col-sm-9">
+						<input type="checkbox" name="resize_image" value="1" data-toggle="toggle" onchange="init_uploader()" checked/>
 					</div>
 				</div>
 				<div class="form-group">

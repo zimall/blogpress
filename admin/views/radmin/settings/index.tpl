@@ -156,14 +156,14 @@
 					</a>
 				</h3>
 			</div>
-			<div id="collapseOne" class="panel-collapse collapse">
+			<div id="collapseOne" class="panel-collapse collapse in">
 				<div class="panel-body">
 					<?php echo form_open( current_url(), 'class="form form-horizontal"' );?>
 						<div class="col-sm-6">
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Business Name</label>
-									<input type="text" name="site-name" class="form-control" value="<?php echo $this->config->item('site-name');?>" required>
+									<label>Business Name <code>site-name</code></label>
+									<input type="text" name="site-name" class="form-control" value="<?php echo $this->config->item('site-name');?>">
 								</div>
 							</div>
 							<div class="form-group">
@@ -177,54 +177,66 @@
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Phone Number</label>
-									<input type="text" name="phone" class="form-control" value="<?php echo $this->config->item('phone');?>" required>
+									<label>Phone Number <code>phone</code></label>
+									<input type="text" name="phone" class="form-control" value="<?php echo $this->config->item('phone');?>">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Second Phone Number</label>
-									<input type="text" name="phone-2" class="form-control" value="<?php echo $this->config->item('phone-2');?>" required>
+									<label>Second Phone Number <code>phone-2</code></label>
+									<input type="text" name="phone-2" class="form-control" value="<?php echo $this->config->item('phone-2');?>">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Business Email</label>
+									<label>Business Email <code>site-email</code></label>
 									<input type="email" name="site-email" class="form-control" 
-										value="<?php echo $this->config->item('site-email');?>" required>
+										value="<?php echo $this->config->item('site-email');?>">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Second Business Email</label>
+									<label>Second Business Email <code>site-email-2</code></label>
 									<input type="email" name="site-email-2" class="form-control" 
-										value="<?php echo $this->config->item('site-email-2');?>" required>
+										value="<?php echo $this->config->item('site-email-2');?>">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>System Email</label>
-									<input type="email" name="no-reply" class="form-control" value="<?php echo $this->config->item('no-reply');?>" required>
+									<label>System Email <code>no-reply</code></label>
+									<input type="email" name="no-reply" class="form-control" value="<?php echo $this->config->item('no-reply');?>">
 									<small>typically no-reply@example.com</small>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Year Founded</label>
+									<label>Year Founded <code>year-founded</code></label>
 									<input type="text" name="year-founded" class="form-control" value="<?php echo $this->config->item('year-founded');?>">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Business Hours</label>
-									<input type="text" name="meetings" class="form-control" value="<?php echo $this->config->item('meetings');?>" required>
+									<label>Business Hours <code>meetings</code></label>
+									<input type="text" name="meetings" class="form-control" value="<?php echo $this->config->item('meetings');?>">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Google Analytics ID</label>
-									<input type="text" name="google_analytics" class="form-control" value="<?php echo $this->config->item('google_analytics');?>">
+									<label>Google Analytics ID <code>google-analytics</code></label>
+									<input type="text" name="google-analytics" class="form-control" value="<?php echo $this->config->item('google-analytics');?>">
 									<small>For website traffic statistics. Account ID starting with UA-</small>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Google reCaptcha Site Key <code>google_recaptcha_site_key</code></label>
+									<input type="text" name="google_recaptcha_site_key" class="form-control" value="<?php echo config('google_recaptcha_site_key');?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Google reCaptcha Secret <code>google_recaptcha_secret</code></label>
+									<input type="text" name="google_recaptcha_secret" class="form-control" value="<?php echo config('google_recaptcha_secret');?>">
 								</div>
 							</div>
 						
@@ -241,55 +253,62 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Short Address</label>
+									<label>Short Address <code>address</code></label>
 									<input type="text" name="address" class="form-control" value="<?php echo $this->config->item('address');?>" required>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Full Address</label>
+									<label>Full Address <code>full-address</code></label>
 									<textarea class="form-control" name="full-address"><?php echo $this->config->item('full-address');?></textarea>
 									<!-- <input type="text" name="full-address" class="form-control" value="<?php echo $this->config->item('full-address');?>">  -->
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Facebook Page/Group - <small>full URL</small> </label>
+									<label>Whatsapp Link - <small>full URL</small>  <code>whatsapp</code></label>
+									<input type="url" name="whatsapp" class="form-control" value="<?php echo $this->config->item('whatsapp');?>"
+										   placeholder="e.g https://api.whatsapp.com/send/?phone=2637720123456">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Facebook Page/Group - <small>full URL</small>  <code>facebook</code></label>
 									<input type="url" name="facebook" class="form-control" value="<?php echo $this->config->item('facebook');?>" 
 										placeholder="https://">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Instagram <small>username only</small> </label>
-									<input type="url" name="instagram" class="form-control" value="<?php echo $this->config->item('instagram');?>" 
+									<label>Instagram <small>username only</small>  <code>instagram</code></label>
+									<input type="text" name="instagram" class="form-control" value="<?php echo $this->config->item('instagram');?>"
 										placeholder="e.g my_name">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Youtube <small>full URL</small> </label>
+									<label>Youtube <small>full URL</small>  <code>youtube</code></label>
 									<input type="url" name="youtube" class="form-control" value="<?php echo $this->config->item('youtube');?>" 
 										placeholder="https://">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Linkedin <small>full URL</small> </label>
+									<label>Linkedin <small>full URL</small>  <code>linkedin</code></label>
 									<input type="url" name="linkedin" class="form-control" value="<?php echo $this->config->item('linkedin');?>" 
 										placeholder="https://">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Twitter Username</label>
+									<label>Twitter Username <code>twitter</code></label>
 									<input type="text" name="twitter" class="form-control" value="<?php echo $this->config->item('twitter');?>">
 									<small>Username only without the url and without the @ sign</small>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Twitter Widget ID</label>
+									<label>Twitter Widget ID <code>twitter-widget-id</code></label>
 									<input type="text" name="twitter-widget-id" class="form-control" 
 										value="<?php echo $this->config->item('twitter-widget-id');?>">
 								</div>
@@ -297,7 +316,7 @@
 							
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Site Cache</label>
+									<label>Site Cache <code>site-cache</code></label>
 									<?php echo form_hidden('site_cache',0)?>
 									<input type="checkbox" name="site_cache" value="1" <?=$this->config->item('site_cache')?'checked':'';?> data-toggle="toggle">
 								</div>
