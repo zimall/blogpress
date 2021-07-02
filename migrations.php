@@ -6,7 +6,7 @@
 		$dotenv->load();
 	 	if(!defined('BASEPATH')) define('BASEPATH', './');
 		if(!defined('ENVIRONMENT')) define('ENVIRONMENT', $_SERVER['CI_ENV'] ?? 'production');
-		$config = realpath('./shared/config/' . ENVIRONMENT . '/database.php');
+		$config = __DIR__.'./shared/config/' . ENVIRONMENT . '/database.php';
 		if(file_exists($config)) {
 			include $config;
 			$group = $active_group ?? "default";

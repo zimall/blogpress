@@ -7,7 +7,7 @@
 	if(!defined('BASEPATH')) define('BASEPATH', './');
 	if(!defined('ENVIRONMENT')) define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
 	echo " on ".ENVIRONMENT."\n";
-	$config = realpath('./shared/config/'.ENVIRONMENT.'/database.php');
+	$config = __DIR__.'/shared/config/'.ENVIRONMENT.'/database.php';
 	echo "Config path: {$config}\n";
 	if(file_exists($config)) {
 		include($config);
