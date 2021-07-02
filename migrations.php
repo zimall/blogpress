@@ -29,7 +29,5 @@
 
 		'all_or_nothing' => true,
 		'check_database_platform' => true,
-		'organize_migrations' => 'none',
-		'connection' => null,
-		'em' => null,
+		'organize_migrations' => 'none'
 	];
