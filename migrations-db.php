@@ -1,12 +1,14 @@
 <?php
-	echo 'Current PHP version: ' . phpversion()."\n";
+	echo 'Current PHP version: ' . phpversion();
 	$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 	$dotenv->load();
 	$r = [];
 	$table_prefix = '';
 	if(!defined('BASEPATH')) define('BASEPATH', './');
 	if(!defined('ENVIRONMENT')) define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
+	echo " on ".ENVIRONMENT."\n";
 	$config = realpath('./shared/config/'.ENVIRONMENT.'/database.php');
+	echo "Config path: {$config}\n";
 	if(file_exists($config)) {
 		include($config);
 		$group = $active_group??"default";
