@@ -19,9 +19,9 @@ final class Version20210702123101 extends AbstractMigration
 
 	public function up(Schema $schema): void
 	{
-
 		// this up() migration is auto-generated, please modify it to your needs
-		$this->addSql("ALTER TABLE `av_sections` 
+		$prefix = defined('TABLE_PREFIX') ? TABLE_PREFIX : '';
+		$this->addSql("ALTER TABLE `{$prefix}sections` 
 			add column `sc_f1` varchar(255) NOT NULL default '',
 			add column   `sc_v1` varchar(255) NOT NULL default '',
 			add column  `sc_f2` varchar(255) NOT NULL default '',
@@ -43,7 +43,8 @@ final class Version20210702123101 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-	    $this->addSql("ALTER TABLE `av_sections` 
+	    $prefix = defined('TABLE_PREFIX') ? TABLE_PREFIX : '';
+	    $this->addSql("ALTER TABLE `{$prefix}sections` 
 			drop sc_f1, drop sc_v1, drop sc_f2, drop sc_v2, drop sc_f3, drop sc_v3, drop sc_f4, drop sc_v4,
 			drop sc_f5, drop sc_v5, drop sc_f6, drop sc_v6, drop sc_f7, drop sc_v7, drop sc_f8, drop sc_v8");
     }
