@@ -95,6 +95,99 @@
                     </div>
 				
 				</div>
+				<br clear="all"><br clear="all">
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Additional Fields (1 - 4)</h3>
+						</div>
+						<div class="panel-body">
+
+							<div class="form-group">
+								<label class="col-sm-5">Field Title</label>
+								<label class="col-sm-7">Example Value / Description</label>
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f1" value="<?php echo $this->input->post('f1')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v1" value="<?php echo $this->input->post('v1')?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f2" value="<?php echo $this->input->post('f2')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v2" value="<?php echo $this->input->post('v2')?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f3" value="<?php echo $this->input->post('f3')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v3" value="<?php echo $this->input->post('v3')?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f4" value="<?php echo $this->input->post('f4')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v4" value="<?php echo $this->input->post('v4')?>">
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+				<!-- col-sm-6 Additional Article Fields -->
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Additional Fields (5 - 8)</h3>
+						</div>
+						<div class="panel-body">
+
+							<div class="form-group">
+								<label class="col-sm-5">Field Title</label>
+								<label class="col-sm-7">Example Value / Description</label>
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f5" value="<?php echo $this->input->post('f5')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v5" value="<?php echo $this->input->post('v5')?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f6" value="<?php echo $this->input->post('f6')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v6" value="<?php echo $this->input->post('v6')?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f7" value="<?php echo $this->input->post('f7')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v7" value="<?php echo $this->input->post('v7')?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-5">
+									<input type="text" class="form-control input-sm" name="f8" value="<?php echo $this->input->post('f8')?>">
+								</div>
+								<div class="col-sm-7">
+									<input type="text" class="form-control input-sm" name="v8" value="<?php echo $this->input->post('v8')?>">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- col-sm-6 Additional Article Fields -->
 				
 				<br clear="all">
 				<hr>

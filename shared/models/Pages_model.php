@@ -262,6 +262,11 @@ class Pages_Model extends CI_Model
 			'sc_enabled' => $this->input->post('enabled'),
 			'sc_has_gallery' => $this->input->post('has_gallery')
 		);
+		for( $i=1; $i<=8; $i++ )
+		{
+			$data["sc_f{$i}"] = $this->input->post("f{$i}");
+			$data["sc_v{$i}"] = $this->input->post("v{$i}");
+		}
 
 		if($id) {
 			$this->db->where('sc_id', $id);
@@ -282,6 +287,22 @@ class Pages_Model extends CI_Model
 			return $this->rewrite_routes();
 		}
 		return $error;
+	}
+
+	public function get_category_fields($id){
+		$select = [];
+		for( $i=1; $i<=8; $i++ )
+		{
+			$select[] = "sc_f{$i}";
+			$select[] = "sc_v{$i}";
+		}
+		$this->db->select($select);
+		$this->db->where('sc_id', $id);
+		$r = $this->db->get('sections');
+		if($r->num_rows()==1){
+			return $r->row();
+		}
+		return [];
 	}
 
 	private function update_routes( $new_keys, $old_keys )

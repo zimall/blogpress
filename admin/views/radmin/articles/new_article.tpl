@@ -56,13 +56,19 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Section</label>
 					<div class="col-sm-9">
-						<select class="form-control" name="section">
+						<select class="form-control" name="section" onchange="get_category_fields(this.value)">
 							<?php foreach($sections as $k=>$v):
                                 $s = $this->input->post('section') == $v['sc_id'] ? 'selected="selected"':'';
                                 ?>
 								<option value="<?php echo $v['sc_id']?>" <?php echo $s;?>><?php echo $v['sc_name']?></option>
 							<?php endforeach;?>
 						</select>
+						<script type="text/javascript">
+                            window.addEventListener("load",function(){
+                                const select = document.querySelector(".article_form select[name='section']");
+                                if(select && select.value) get_category_fields(select.value);
+                            },false);
+						</script>
 					</div>
 				</div>
 				<div class="form-group">

@@ -349,4 +349,11 @@ class Ajax extends CI_Controller
 		}
 	}
 
+	public function get_category_fields($id)
+	{
+		$fields= $this->pages_model->get_category_fields($id);
+		$fields = $fields?:[];
+		echo  json_encode($fields);
+	}
+
 }
