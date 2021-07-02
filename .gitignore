@@ -26,9 +26,9 @@ admin/logs/*
 
 site/views/
 !site/views/index.html
-!site/views/errors/
-!site/views/account/
-!site/views/emails/
+!site/views/errors
+!site/views/account
+!site/views/emails
 .idea/
 
 .well-known/acme-challenge/
@@ -48,4 +48,3 @@ site/views/
 !/images/xl/index.html
 
 composer.lock
-/site/views/errors/
