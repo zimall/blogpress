@@ -6,6 +6,11 @@
         "doctrine/migrations": "3.0.4",
         "vlucas/phpdotenv": "^5.3"
     },
+  "config": {
+    "platform": {
+      "php": "7.3.28"
+    }
+  },
   "scripts": {
     "post-update-cmd": "php fix-env.php"
   }
