@@ -1,4 +1,5 @@
 <?php
+	echo 'Current PHP version: ' . phpversion()."\n";
 	$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 	$dotenv->load();
 	$r = [];
