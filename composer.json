@@ -13,8 +13,9 @@
   },
   "scripts": {
     "post-update-cmd": [
-      "php fix-env.php",
-      "./dm migrate  --no-interaction"
+      "php lib/fix-env.php",
+      "./dm migrate  --no-interaction",
+      "php lib/fix-thumbs.php"
     ]
   }
 }
