@@ -153,6 +153,7 @@
 				<h3 class="panel-title">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="display:block">
 						General Settings
+						<small class="pull-right">Use <code>##reset</code> to restore a default value</small>
 					</a>
 				</h3>
 			</div>
@@ -234,14 +235,7 @@
 									<input type="text" name="file-manager-access-key" class="form-control" value="<?php echo config('file-manager-access-key');?>">
 								</div>
 							</div>
-						
-							<div class="form-group">
-								<div class="col-sm-10">
-									<button type="submit" name="general" value="1" class="btn btn-primary pull-right">Update Settings</button>
-									<input type="hidden" name="form_type" value="update">
-									<input type="hidden" name="form_name" value="general">
-								</div>
-							</div>
+
 						</div>
 						<!-- col-sm-6 -->
 				
@@ -331,7 +325,16 @@
 						
 						</div>
 						<!-- col-sm-6 -->
-					</form>
+						<div class="clearfix"></div>
+						<div class="form-group" style="margin-top: 60px;">
+							<div class="text-center">
+								<button type="submit" name="general" value="1" class="btn btn-lg btn-primary">Update Settings</button>
+								<input type="hidden" name="form_type" value="update">
+								<input type="hidden" name="form_name" value="general">
+							</div>
+						</div>
+
+					<?php echo form_close();?>
 				</div>
 				<!-- panel-body -->
 			</div>

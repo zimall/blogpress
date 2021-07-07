@@ -11,7 +11,7 @@ class Settings_Model extends CI_Model
 		$keys = array();
 		foreach( $settings as $k=>$v )
 		{
-			$keys['$config["'.$k.'"]'] = $v;
+			$keys['$config["'.$k.'"]'] = ['value'=>$v, 'key'=>$k];
 		}
 		$set = '';
 		$general = SHAREDPATH."config/".ENVIRONMENT."/general.php";
@@ -27,11 +27,37 @@ class Settings_Model extends CI_Model
 			else $key = FALSE;
 
 			// search for keys/value pairs to set
-			if( $key && isset( $keys[$key] ) )
-				$set .= $key.' = "'.$keys[$key].'";'."\n";
+			if( $key && isset( $keys[$key] ) ) {
+				$v = $keys[$key]['value'];
+				if( is_numeric($v) || in_array($v, ['false','FALSE','TRUE', 'true', 'null', 'NULL']) ) $value = $v;
+				elseif($v==='##reset'){
+					unset($settings[$keys[$key]['key']]);
+					continue;
+				}
+				else $value = '"'.$v.'"';
+				$set .= $key. ' = '. $value . ";\n";
+				unset($settings[$keys[$key]['key']]);
+			}
 			else $set .= $setting;
 		}
-		
+
+		// Add new non-empty settings
+		$new_added = [];
+		foreach( $settings as $k=>$v ){
+			if(!empty($v)){
+				if( is_numeric($v) || in_array($v, ['false','FALSE','TRUE', 'true', 'null', 'NULL']) ) $value = $v;
+				elseif($v==='##reset') continue;
+				else $value = '"'.$v.'"';
+				$str = '$config["'.$k.'"] = '. $value . ";\n";
+				$new_added[] = '<code>'.$str.'</code>';
+				$set .= $str;
+			}
+		}
+
+		if($new_added){
+			sem( '<h4>Added new config items:</h4><br>'.implode('<br>',$new_added), 2 );
+		}
+
 		// using file_put_contents() instead of fwrite()
 		$e = file_put_contents( $general, $set);
 		fclose($myfile);
@@ -63,7 +89,7 @@ class Settings_Model extends CI_Model
 			$e = file_put_contents( $flexi_auth, $set);
 			fclose($myfile);
 		}
-		if( $e!==FALSE ) return array( 'error'=>FALSE, 'error_msg'=>'Settings updated successfully' );
+		if( $e!==FALSE ) return array( 'error'=>FALSE, 'error_msg'=>'Settings updated successfully. '.anchor( current_url(), 'Reload page' ).' to see updated settings' );
 		else return array( 'error'=>TRUE, 'error_msg'=>'Could not update settings' );
 	}
 

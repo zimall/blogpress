@@ -4,6 +4,7 @@ $config["admin_panels"] = array( "admin" );
 $config["site-name"] = "BlogPress";
 $config["club-type"] = "Default";
 $config["address"] = "555 Test Address, Test City";
+$config["full-address"] = $config["address"];
 $config["phone"] = "0123456789";
 $config["meetings"] = "Mon - Fri, 08:00 - 16:00";
 $config["site-email"] = "info@example.com";
