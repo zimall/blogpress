@@ -56,7 +56,10 @@ if( isset($ckeditor) ):?>
 					{
 						toolbar : 'Basic',
 						//uiColor : '#9AB8F3',
-						enterMode : CKEDITOR.ENTER_BR
+						enterMode : CKEDITOR.ENTER_BR,
+                        filebrowserBrowseUrl : "/filemanager/dialog.php?type=2&editor=ckeditor&akey=<?php echo config('file-manager-access-key');?>&fldr=",
+                        filebrowserUploadUrl : "/filemanager/dialog.php?type=2&editor=ckeditor&akey=<?php echo config('file-manager-access-key');?>&fldr=",
+                        filebrowserImageBrowseUrl : "/filemanager/dialog.php?type=1&editor=ckeditor&akey=<?php echo config('file-manager-access-key');?>&fldr="
 					});
 		</script>
 	<?php else:?>
@@ -64,7 +67,10 @@ if( isset($ckeditor) ):?>
 		<script>
 					CKEDITOR.replace( 'ckeditor1',
 					{
-						enterMode : CKEDITOR.ENTER_BR
+						enterMode : CKEDITOR.ENTER_BR,
+                        filebrowserBrowseUrl : "/filemanager/dialog.php?type=2&editor=ckeditor&akey=<?php echo config('file-manager-access-key');?>&fldr=",
+                        filebrowserUploadUrl : "/filemanager/dialog.php?type=2&editor=ckeditor&akey=<?php echo config('file-manager-access-key');?>&fldr=",
+                        filebrowserImageBrowseUrl : "/filemanager/dialog.php?type=1&editor=ckeditor&akey=<?php echo config('file-manager-access-key');?>&fldr="
 					});
 		</script>
 				

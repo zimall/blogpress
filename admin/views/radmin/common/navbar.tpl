@@ -136,7 +136,7 @@
 					<i style="color:brown;" class="radmin-icon radmin-cog"></i>
 				</span>
 				<span class="hidden-tablet hidden-phone">Settings</span>
-				<span class="badge pull-right hidden-tablet hidden-phone">2</span>
+				<span class="badge pull-right hidden-tablet hidden-phone">3</span>
 			</a>
 			<div id="collapse-settings" class="accordion-body collapse">
 				<ul class="nav nav-stacked submenu">
@@ -147,10 +147,16 @@
 							'<span class="hidden-tablet hidden-phone">General</span>'
 						);?>
 					</li>
-					<li class="submenu-last">
+					<li>
 						<?php echo anchor( 'settings/slider',
 							'<span class="box"> <i class="radmin-icon radmin-picture"></i> </span>'.
 							'<span class="hidden-tablet hidden-phone">Banner Slider</span>'
+						);?>
+					</li>
+					<li class="submenu-last">
+						<?php echo anchor( 'settings/files',
+							'<span class="box"> <i class="radmin-icon radmin-file"></i> </span>'.
+							'<span class="hidden-tablet hidden-phone">File Manager</span>'
 						);?>
 					</li>
 				</ul>

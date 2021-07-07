@@ -31,3 +31,4 @@ $config['default_sort_by'] = 2;
 $config['google-analytics'] = "";
 $config['google_recaptcha_site_key'] = "";
 $config['google_recaptcha_secret'] = "";
+$config['file-manager-access-key'] = "";

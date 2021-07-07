@@ -208,18 +208,7 @@
 									<small>typically no-reply@example.com</small>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="col-sm-10">
-									<label>Year Founded <code>year-founded</code></label>
-									<input type="text" name="year-founded" class="form-control" value="<?php echo $this->config->item('year-founded');?>">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-10">
-									<label>Business Hours <code>meetings</code></label>
-									<input type="text" name="meetings" class="form-control" value="<?php echo $this->config->item('meetings');?>">
-								</div>
-							</div>
+
 							<div class="form-group">
 								<div class="col-sm-10">
 									<label>Google Analytics ID <code>google-analytics</code></label>
@@ -239,6 +228,12 @@
 									<input type="text" name="google_recaptcha_secret" class="form-control" value="<?php echo config('google_recaptcha_secret');?>">
 								</div>
 							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>File Manager Access Key <code>file-manager-access-key</code></label>
+									<input type="text" name="file-manager-access-key" class="form-control" value="<?php echo config('file-manager-access-key');?>">
+								</div>
+							</div>
 						
 							<div class="form-group">
 								<div class="col-sm-10">
@@ -251,6 +246,18 @@
 						<!-- col-sm-6 -->
 				
 						<div class="col-sm-6">
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Year Founded <code>year-founded</code></label>
+									<input type="text" name="year-founded" class="form-control" value="<?php echo $this->config->item('year-founded');?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Business Hours <code>meetings</code></label>
+									<input type="text" name="meetings" class="form-control" value="<?php echo $this->config->item('meetings');?>">
+								</div>
+							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
 									<label>Short Address <code>address</code></label>

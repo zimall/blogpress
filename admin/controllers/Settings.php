@@ -29,6 +29,12 @@ class Settings extends CI_Controller
 		$this->load->view( "{$this->data['theme']}/settings.tpl", $this->data );
 	}
 
+	public function files()
+	{
+		$this->data['section'] = 'files';
+		$this->load->view( "{$this->data['theme']}/settings.tpl", $this->data );
+	}
+
 	public function theme($name=FALSE, $source='site')
 	{
 		$this->_process_post();

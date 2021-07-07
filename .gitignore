@@ -46,6 +46,6 @@ site/views/
 !/images/md/index.html
 !/images/lg/index.html
 !/images/xl/index.html
-
+/thumbs
 composer.lock
 .env
