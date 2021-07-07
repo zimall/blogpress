@@ -29,7 +29,9 @@ class Settings_Model extends CI_Model
 			// search for keys/value pairs to set
 			if( $key && isset( $keys[$key] ) ) {
 				$v = $keys[$key]['value'];
-				if( is_numeric($v) || in_array($v, ['false','FALSE','TRUE', 'true', 'null', 'NULL']) ) $value = $v;
+				if( $this->is_literal($v) ){
+					$value = $v;
+				}
 				elseif($v==='##reset'){
 					unset($settings[$keys[$key]['key']]);
 					continue;
@@ -45,7 +47,7 @@ class Settings_Model extends CI_Model
 		$new_added = [];
 		foreach( $settings as $k=>$v ){
 			if(!empty($v)){
-				if( is_numeric($v) || in_array($v, ['false','FALSE','TRUE', 'true', 'null', 'NULL']) ) $value = $v;
+				if( $this->is_literal($v) ) $value = $v;
 				elseif($v==='##reset') continue;
 				else $value = '"'.$v.'"';
 				$str = '$config["'.$k.'"] = '. $value . ";\n";
@@ -91,6 +93,10 @@ class Settings_Model extends CI_Model
 		}
 		if( $e!==FALSE ) return array( 'error'=>FALSE, 'error_msg'=>'Settings updated successfully. '.anchor( current_url(), 'Reload page' ).' to see updated settings' );
 		else return array( 'error'=>TRUE, 'error_msg'=>'Could not update settings' );
+	}
+
+	private function is_literal($value){
+		return preg_match_all( '/^\d$|^[1-9]\d+$|^false$|^true$|^null$/i', $value );
 	}
 
 	public function theme_settings()
