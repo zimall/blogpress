@@ -57,7 +57,7 @@ class Pages extends CI_Controller
 		if( preg_match('/about\/?.*/', $page['sc_value']) ) $this->data['nav_element'] = 'about';
 
 		$this->al->_process_form($page['sc_value']);
-		$this->pc->page_control($page['sc_value'].'_list', 10 );
+		$this->pc->page_control($page['sc_value'].'_list', $page['sc_items'], $page['sc_order'] );
 		$continue = $this->al->_process_get();
 
 		if( $option == 'new' )
@@ -83,9 +83,9 @@ class Pages extends CI_Controller
 		{
 			$where = array( 'at_section'=>$page['sc_id'] );
 			$count = array( 'where'=>$where, 'count'=>1 );
-
+			$sort = $this->data['sort'] ?? get_sort($page['sc_order']);
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
-			$args = array_merge( $paginate, array( 'where'=>$where, 'sort'=>'at_id desc' ) );
+			$args = array_merge( $paginate, array( 'where'=>$where, 'sort'=>$sort ) );
 			$this->data['articles'] = $this->article_model->get_articles( $args );
 
 			if( $option == 'edit' )

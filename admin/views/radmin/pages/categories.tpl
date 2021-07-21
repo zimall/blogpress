@@ -60,7 +60,7 @@
             <td><?php echo $page['sc_has_gallery'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
 			<td>
 				<?php echo anchor( current_url()."?action=edit_page&id={$page['sc_id']}", '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-pencil"></i> </span>', ['title'=>'Edit'] );?>
-				<?php echo anchor( 'pages/rules/'.$page['sc_id'], '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-cog"></i> </span>', ['title'=>'Page Settings'] );?>
+				<?php //echo anchor( 'pages/rules/'.$page['sc_id'], '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-cog"></i> </span>', ['title'=>'Page Settings'] );?>
 			</td>
 		</tr>
 		<?php endforeach;?>

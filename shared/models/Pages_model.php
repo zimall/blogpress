@@ -239,7 +239,8 @@ class Pages_Model extends CI_Model
 		$segment = $this->input->post('segment');
 		$parent = $this->input->post('parent');
 		$menu = $this->input->post('menu');
-		$date = time();
+		$order = $this->input->post('order')??'';
+		$items = $this->input->post('items')??'';
 		$error = array('error'=>TRUE,'error_msg'=>'Could not update page');
 		
 		$old_value = $this->get_pages( ['select'=>'sc_value', 'id'=>$id ] );
@@ -260,7 +261,9 @@ class Pages_Model extends CI_Model
 			'sc_menu' => $menu,
 			'sc_parent' => $parent,
 			'sc_enabled' => $this->input->post('enabled'),
-			'sc_has_gallery' => $this->input->post('has_gallery')
+			'sc_has_gallery' => $this->input->post('has_gallery'),
+			'sc_order' => $order,
+			'sc_items' => $items
 		);
 		for( $i=1; $i<=8; $i++ )
 		{

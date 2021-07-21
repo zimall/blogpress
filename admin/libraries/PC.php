@@ -190,11 +190,11 @@ class PC
 	 * @param string $filter_settings contains jason encoded rules used for selecting records in database 
 	 */
 	
-	public function page_control($table, $per=10, $filter_settings=false)
+	public function page_control($table, $default_per=10, $default_sort=false, $filter_settings=false)
 	{
 		$p = $changed = $this->ci->input->post('per_page');
 		if(!$p) $p = $this->ci->input->cookie($this->ci->config->item('cookie_prefix').$table.'_per_page');
-		$per = $p && is_numeric($p) ? $p : $per;
+		$per = $p && is_numeric($p) ? $p : $default_per;
 
 		$cookie = array(
 			'name'   => $table.'_per_page',
@@ -204,27 +204,22 @@ class PC
 		);
 		if( ! $this->ci->input->set_cookie($cookie) ) log_message( 'warning', 'Unable to set pagination cookie' );
 		$this->ci->data['per'] = $per;
-		
-		/************* SORT ********************/
-		
-		$sort = $this->ci->input->post('sort');
-		//echo $sort;
-		if($sort===FALSE OR strlen($sort)<5 ){
-			$sort = $this->ci->input->cookie($this->ci->config->item('cookie_prefix').$table.'_sort');
-			//echo '<br>problem here';	
-		}
-		if($sort===FALSE)
-			$sort = FALSE;
 
-		$cookie = array(
-			'name'   => $table.'_sort',
-			'value'  => $sort,
-			'expire' => '60000',
-			'secure' => FALSE
-		);
+		/************* SORT ********************/
+		$sort = $this->ci->input->post('change_page_sort');
+		if( is_null($sort) || $sort===FALSE )
+		{
+			$sort = $this->ci->input->cookie(config('cookie_prefix').$table.'_asort');
+			//echo '<br>problem here';
+		}
+		if( $sort===FALSE || is_null($sort) ) $sort = $default_sort ?: config('default_sort_by');
+
+		$cookie = [ 'name'   => $table.'_asort', 'value'  => $sort, 'expire' => '60000', 'secure' => FALSE ];
 		$this->ci->input->set_cookie($cookie);
-			
-		$this->ci->data['sort'] = $sort;
+		$this->ci->data['sort_id'] = $sort;
+		$sorts = config('default_sort_fields');
+		if(isset($sorts[$sort])) $this->ci->data['sort'] = "{$sorts[$sort]['f']} {$sorts[$sort]['s']}";
+		else $this->ci->data['sort'] = FALSE;
 		
 		/*********** FILTERS ***********/
 		
@@ -277,7 +272,7 @@ class PC
 			}
 		}
 		
-		if( $this->ci->input->post('per_page') || $this->ci->input->post('sort') ) {
+		if( $this->ci->input->post('per_page') || $this->ci->input->post('change_page_sort') ) {
 			$c = full_url();
 			$c = preg_replace( "/page\/\d*/", '', $c );
 			$c = str_replace( '/.', '.', $c );

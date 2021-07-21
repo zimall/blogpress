@@ -184,6 +184,9 @@ ol.progtrckr li {
     	width: 50%;
 	}
 
+	.info-bar ul.breadcrumb-left-xs{
+		text-align: left;
+	}
 }
 
 @media (max-width: 480px) {
@@ -196,6 +199,10 @@ ol.progtrckr li {
     	text-align: center;
     	line-height: 3em;
     	width: 100%;
+	}
+
+	.info-bar ul.breadcrumb-left-xs{
+		text-align: left;
 	}
 
 }
@@ -610,6 +617,20 @@ ul.left-menu li ul.submenu li span.box {
 }
 
 /* Breadcrumbs */
+
+.info-bar{
+	background-color: #EEE;
+	margin-bottom: 20px;
+	border-radius: 4px;
+}
+
+.info-bar .breadcrumb-right{
+	text-align: right;
+}
+
+.info-bar ul.breadcrumb{
+	margin-bottom: 0;
+}
 
 ul.breadcrumb li {
 	margin-bottom: 3px;

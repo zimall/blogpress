@@ -181,6 +181,7 @@ class Article_Model extends CI_Model
 		$permalink = $this->input->post('permalink');
 		$smi = $this->input->post('show_image');
 		$content = $this->input->post('text');
+		$position = $this->input->post('position');
 		$rawtext = remove_HTML( $content,'p|b|strong|u|em|br|img|a|div|span|font|ul|ol|li|table|tr|tbody|thead|th|td|h1|h2|h3|h4|h5|h6|iframe');
 		$text = htmlentities( $rawtext, ENT_QUOTES );
 		$date = time();
@@ -234,7 +235,8 @@ class Article_Model extends CI_Model
 			'at_image' => $image, 
 			'at_show_main_image' => $smi,
 			'at_segment' => $segment, 
-			'at_keywords' => $key
+			'at_keywords' => $key,
+			'at_position' => $position
 		);
 		
 		for( $i=1; $i<=8; $i++ )
@@ -262,6 +264,7 @@ class Article_Model extends CI_Model
 		$permalink = $this->input->post('permalink');
 		$smi = $this->input->post('show_image');
 		$content = $this->input->post('text');
+		$position = $this->input->post('position');
 		$rawtext = remove_HTML( $content,'p|b|strong|u|em|br|img|a|div|span|font|ul|ol|li|table|tr|tbody|thead|th|td|h1|h2|h3|h4|h5|h6|iframe');
 		$text = htmlentities( $rawtext, ENT_QUOTES );
 		$date = time();
@@ -312,7 +315,8 @@ class Article_Model extends CI_Model
 			'at_image' => $image, 
 			'at_show_main_image' => $smi,
 			'at_segment' => $segment, 
-			'at_keywords' => $key
+			'at_keywords' => $key,
+			'at_position' => $position
 		);
 		if( $date_posted > 0 ) $data['at_date_posted'] = mysql_date($date_posted);
 		
@@ -463,7 +467,7 @@ class Article_Model extends CI_Model
 					$this->db->where( $v->t.'.'.$v->f, $v->v );
 			}
 		}
-		
+		$this->db->order_by('at_enabled desc');
 		if($args['sort'])
 		{
 			$sort = $args['sort'];

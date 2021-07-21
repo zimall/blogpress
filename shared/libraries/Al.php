@@ -150,6 +150,7 @@ class Al
 			{
 				$this->ci->form_validation->set_rules( 'text', 'Article Body', 'required' );
 				$this->ci->form_validation->set_rules( 'title', 'Title', 'required' );
+				$this->ci->form_validation->set_rules( 'position', 'Position', 'numeric' );
 				if( $this->ci->form_validation->run() )
 				{
 					$error = $this->ci->article_model->post_article();
@@ -166,6 +167,7 @@ class Al
 				$this->ci->form_validation->set_rules( 'text', 'Article Body', 'required' );
 				$this->ci->form_validation->set_rules( 'title', 'Title', 'required' );
 				$this->ci->form_validation->set_rules( 'id', 'Article ID', 'required|numeric' );
+				$this->ci->form_validation->set_rules( 'position', 'Position', 'numeric' );
 				if( $this->ci->form_validation->run() )
 				{
 					$error = $this->ci->article_model->update_article();

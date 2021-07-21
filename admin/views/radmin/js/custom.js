@@ -554,6 +554,15 @@ jQuery(function($){
 		$('#change_per_page_form').submit();
 	});
 
+	$('.change_page_sort a').click(function (e){
+		e.preventDefault();
+		let a = $(e.target);
+		let v = a.data('id');
+		console.log(v);
+		$('#change_page_sort').val(v);
+		$('#change_page_sort_form').submit();
+	});
+
 	let start_date = $('#ana_start').val();
 	let end_date = $('#ana_end').val();
 	start_date = start_date ? start_date : moment().startOf('day').subtract( 7, 'day' );

@@ -78,6 +78,26 @@
 				
 				<div class="col-md-6">
 
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Default Order</label>
+						<div class="col-sm-8">
+							<select class="form-control" name="order">
+								<option value="0">None</option>
+								<?php $fields = config_item('default_sort_fields');
+									foreach( $fields as $k=>$v):
+									if( $page['sc_order'] == $k ) $s='selected';else $s='';?>
+									<option value="<?php echo $k?>" <?php echo $s;?>><?php echo $v['n'];?></option>
+								<?php endforeach;?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Default Items Per Page</label>
+						<div class="col-sm-8">
+							<input type="number" min="1" class="form-control" name="items" value="<?php echo $page['sc_items'];?>">
+						</div>
+					</div>
+
                     <div class="form-group">
                         <label class="control-label col-sm-3 col-xs-6" for="enabled">Status:</label>
                         <div class="col-sm-9 col-xs-6">

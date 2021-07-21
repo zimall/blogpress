@@ -16,27 +16,48 @@
 
 
 <div class="col-sm-12">
-	<ul class="breadcrumb">
-		<li>
-			<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
-		</li>
-		<li>
-			<?php echo anchor( 'articles', '<i class="radmin-icon radmin-clipboard"></i>Articles' );?>
-		</li>
-		<li class="active">
-			<i class="radmin-icon radmin-clipboard-2"></i> <?php echo $innertitle?>
-		</li>
-        <li class="pull-right dropdown">
-            <a href="#" data-toggle="dropdown"><?php echo $per;?> items <span class="caret"></span></a> per page
-            <ul class="dropdown-menu change_per_page">
-                <li><a href="#">5</a></li>
-                <li><a href="#">10</a></li>
-                <li><a href="#">20</a></li>
-                <li><a href="#">50</a></li>
-                <li><a href="#">100</a></li>
-            </ul>
-        </li>
-	</ul>
+	<div class="info-bar">
+		<div class="row">
+			<div class="col-sm-6">
+				<ul class="breadcrumb">
+				<li>
+					<?php echo anchor( 'home', '<i class="radmin-icon radmin-home"></i>Dashboard' );?>
+				</li>
+				<li>
+					<?php echo anchor( 'articles', '<i class="radmin-icon radmin-clipboard"></i>Articles' );?>
+				</li>
+				<li class="active">
+					<i class="radmin-icon radmin-clipboard-2"></i> <?php echo $innertitle?>
+				</li>
+			</ul>
+			</div>
+			<div class="col-sm-6">
+				<ul class="breadcrumb breadcrumb-right breadcrumb-left-xs">
+					<li class="dropdown" style="margin-right: 30px;">
+						Sort by <a href="#" data-toggle="dropdown"><?php echo get_sort_name($sort_id??'');?> <span class="caret"></span></a>
+						<ul class="dropdown-menu change_page_sort">
+							<?php $default_sort_fields = config_item('default_sort_fields');
+								foreach($default_sort_fields as $k=>$v):
+									?>
+									<li><a href="#" data-id="<?php echo $k;?>"><?php echo $v['n'];?></a></li>
+								<?php endforeach;?>
+						</ul>
+					</li>
+					<li class="dropdown">
+						Show <a href="#" data-toggle="dropdown"><?php echo $per??'';?> items <span class="caret"></span></a> per page
+						<ul class="dropdown-menu change_per_page">
+							<?php $list = config_item('items-per-page');
+								$list = $list?explode(',',$list):[];
+								foreach($list as $v):
+									?>
+									<li><a href="#"><?php echo trim($v);?></a></li>
+								<?php endforeach;?>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div> <!-- end of span12 -->
 
 <div class="squiggly-border col-sm-12"></div>
@@ -78,9 +99,9 @@
                         <strong class="hidden-md hidden-lg"><?php echo $v['at_title'];?></strong>
 					</td>
 					<td class="hidden-xs hidden-sm">
-						<strong><?php echo anchor( "{$url}?action=edit_article&id={$v['at_id']}", $v['at_title'], ['title'=>'Click to edit']);?></strong>
+						<strong><?php echo anchor( "{$url}?action=edit_article&id={$v['at_id']}", $v['at_title'], ['title'=>'Click to edit article']);?></strong>
 						<br>
-						<?php echo $v['sc_name'];?>
+						<?php echo anchor( site_url('pages/categories')."?action=edit_page&id={$v['sc_id']}", $v['sc_name'], ['title'=>'Click to edit category']);?>
 					</td>
 					<td class="hidden-xs">
                         <span class="hidden-sm">
@@ -92,6 +113,7 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;
                         </span>
 						Opened: <strong><?php echo $v['at_hits'].' time', $v['at_hits']==1?'':'s';?></strong>
+						<span style="margin-left: 30px;">Position: <strong><?php echo $v['at_position'];?></strong></span>
 					</td>
 					<td>
 						<?php

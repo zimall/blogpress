@@ -22,12 +22,13 @@ class Pages extends CI_Controller
 
 		if(!empty($page))
 		{
-			$this->pc->page_control( 'pages', 15 );
+			$this->pc->page_control( $page['sc_value'].'_list', $page['sc_items'], $page['sc_order'] );
 			$where = array( 'at_enabled'=>1, 'at_section'=>$page['sc_id'] );
 			$count = array( 'where'=>$where, 'count'=>1 );
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
-			if( !isset($this->data['sort']) || !$this->data['sort'] ) $this->data['sort'] = 'at_id desc';
-			$paginate['sort'] = $this->data['sort'];
+			$sort = $this->data['sort'] ?? get_sort($page['sc_order']);
+			//if( !isset($this->data['sort']) || !$this->data['sort'] ) $this->data['sort'] = $sort?:'at_id desc';
+			$paginate['sort'] = $sort?:'at_id desc';
 			$args = array_merge( $paginate, ['where'=>$where] );
 			$this->data['articles'] = $this->article_model->get_articles( $args );
 			$this->data['title'] = $page['sc_name'];

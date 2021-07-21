@@ -235,6 +235,13 @@
 									<input type="text" name="file-manager-access-key" class="form-control" value="<?php echo config('file-manager-access-key');?>">
 								</div>
 							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
+									<label>Items to show per page<code>items-per-page</code></label>
+									<input type="text" name="items-per-page" class="form-control" value="<?php echo config('items-per-page');?>">
+									<small>This is supposed to be comma seperated list of values, e.g. 5,10,20,50</small>
+								</div>
+							</div>
 
 						</div>
 						<!-- col-sm-6 -->

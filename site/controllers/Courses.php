@@ -19,11 +19,12 @@
 		public function index(){
 			$page = $this->article_model->get_section('courses');
 			if($page) {
-				$this->pc->page_control('pages', 15);
+				$this->pc->page_control('courses_list', $page['sc_items'], $page['sc_order']);
 				$where = array('at_enabled' => 1, 'at_section' => $page['sc_id']); //
 				$count = array('where' => $where, 'count' => 1);
 				$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
-				$args = array_merge($paginate, array('where' => $where, 'sort' => 'at_id asc'));
+				$sort = $this->data['sort'] ?? get_sort($page['sc_order']);
+				$args = array_merge($paginate, array('where' => $where, 'sort' => $sort));
 				$this->data['courses'] = $this->article_model->get_articles($args);
 				$this->data['title'] = $page['sc_name'];
 				$this->data['innertitle'] = $page['sc_name'];

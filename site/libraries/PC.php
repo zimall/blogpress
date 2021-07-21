@@ -225,13 +225,12 @@ class PC
 	 * @param string $filter_settings contains jason encoded rules used for selecting records in database 
 	 */
 	
-	public function page_control($table, $filter_settings=FALSE)
+	public function page_control($table, $default_per=20, $default_sort=false,  $filter_settings=FALSE)
 	{
-		$per = $this->ci->input->post($table.'_per_page');
+		$per = $this->ci->input->post('per_page');
 		if($per===FALSE OR $per=='' OR $per==0)
 			$per = $this->ci->input->cookie($this->ci->config->item('cookie_prefix').$table.'_per_page');
-		if($per===FALSE  OR $per=='' OR $per==0)
-			$per = 10;
+		if($per===FALSE  OR $per=='' OR $per==0) $per = $default_per;
 
 			$cookie = array(
 				'name'   => $table.'_per_page',
@@ -248,14 +247,17 @@ class PC
 		if( is_null($sort) || $sort===FALSE )
 		{
 			$sort = $this->ci->input->cookie(config('cookie_prefix').$table.'_sort');
-			//echo '<br>problem here';
+			$changed = false;
 		}
-		if( $sort===FALSE || is_null($sort) ) $sort = config('default_sort_by');
+		else{
+			$changed = true;
+		}
+		if( $sort===FALSE || is_null($sort) || $sort==='0' ) $sort = $default_sort ?: config('default_sort_by');
 
 		$cookie = [ 'name'   => $table.'_sort', 'value'  => $sort, 'expire' => '60000', 'secure' => FALSE ];
 		$this->ci->input->set_cookie($cookie);
 		$this->ci->data['sort_id'] = $sort;
-		$sorts = config('article_sort');
+		$sorts = config('default_sort_fields');
 		if(isset($sorts[$sort])) $this->ci->data['sort'] = "{$sorts[$sort]['f']} {$sorts[$sort]['s']}";
 		else $this->ci->data['sort'] = FALSE;
 
@@ -311,9 +313,12 @@ class PC
 			}
 		}
 		
-		if( $this->ci->input->post('per_page') || $this->ci->input->post('sort') )
-			redirect( full_url() );
-		
+		if( $this->ci->input->post('per_page') || $changed ){
+			$c = full_url();
+			$c = preg_replace( "/page\/\d*/", '', $c );
+			$c = str_replace( '/.', '.', $c );
+			redirect($c);
+		}
 	}
 
 	/**

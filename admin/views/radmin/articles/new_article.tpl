@@ -54,7 +54,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label">Section</label>
+					<label class="col-sm-3 control-label">Category</label>
 					<div class="col-sm-9">
 						<select class="form-control" name="section" onchange="get_category_fields(this.value)">
 							<?php foreach($sections as $k=>$v):
@@ -189,6 +189,15 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3">Position</label>
+					<div class="col-sm-7">
+						<input type="number" class="form-control" name="position" value="<?php echo set_value('at_position');?>"
+							   placeholder="Only used if category uses sort by position">
+					</div>
+				</div>
+				<br clear="all"><br clear="all">
 
 				<div class="form-group">
 					<label class="control-label col-xs-3">Submit</label>
