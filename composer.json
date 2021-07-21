@@ -12,7 +12,7 @@
     }
   },
   "scripts": {
-    "post-update-cmd": [
+    "post-install-cmd": [
       "php lib/fix-env.php",
       "./dm migrate  --no-interaction",
       "php lib/fix-thumbs.php"
