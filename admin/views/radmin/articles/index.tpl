@@ -42,7 +42,7 @@
 <div class="squiggly-border col-sm-12"></div>
 
 <div class="col-sm-12">
-	<table class="table table-dotted">
+	<table class="table table-dotted table-hover">
 		<thead>
 			<tr>
 				<th>#</th>
@@ -54,10 +54,11 @@
 		</thead>
 		<tbody>
 			<?php foreach($articles as $k=>$v):?>
-				<tr>
+				<tr class="<?php echo $v['at_enabled']?'':'active';?>">
 					<td><?php echo $k+$start;?></td>
 					<td>
-						<?php 
+						<?php
+							$url = isset($search_term)?site_url($v['sc_value']):current_url();
 							if( $v['at_permalink'] )
 								$link = home_url($v['at_segment']);
 							else
@@ -72,12 +73,12 @@
 							if( strlen($v['at_image'])>3 && file_exists($try) ) $file = $try;
 							else $file = 'images/noimage.svg';
 							$img = array( 'src'=>$file, 'class'=>'thumbnail' );
-							echo anchor( $link, img($img), 'target="_blank"' );
+							echo anchor( $link, img($img), 'target="_blank" title="Click to view article"' );
 						?>
                         <strong class="hidden-md hidden-lg"><?php echo $v['at_title'];?></strong>
 					</td>
 					<td class="hidden-xs hidden-sm">
-						<strong><?php echo $v['at_title'];?></strong>
+						<strong><?php echo anchor( "{$url}?action=edit_article&id={$v['at_id']}", $v['at_title'], ['title'=>'Click to edit']);?></strong>
 						<br>
 						<?php echo $v['sc_name'];?>
 					</td>
@@ -94,7 +95,6 @@
 					</td>
 					<td>
 						<?php
-							$url = isset($search_term)?site_url($v['sc_value']):current_url();
 							echo anchor( "{$url}?action=edit_article&id={$v['at_id']}",
 							'<span class="radmin radmin-pencil"></span>', 
 							'class="btn btn-xs btn-link" title="edit article"' );
