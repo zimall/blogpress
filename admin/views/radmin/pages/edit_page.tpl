@@ -84,10 +84,10 @@
 							<select class="form-control" name="order">
 								<option value="0">None</option>
 								<?php $fields = config_item('default_sort_fields');
-									foreach( $fields as $k=>$v):
+									foreach( $fields as $k=>$v): if($k>0):
 									if( $page['sc_order'] == $k ) $s='selected';else $s='';?>
 									<option value="<?php echo $k?>" <?php echo $s;?>><?php echo $v['n'];?></option>
-								<?php endforeach;?>
+								<?php endif; endforeach;?>
 							</select>
 						</div>
 					</div>
