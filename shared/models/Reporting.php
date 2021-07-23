@@ -153,12 +153,25 @@
 				$sessions['total'] = $total_sessions = $this->ana->count_all_results('sessions') * 1;
 
 				// Bounce rate = short_sessions / total
+
+				/*
 				$this->ana->where( 'ss_created >=', $start );
 				$this->ana->where( 'ss_created <=', $end );
 				//$this->ana->where( 'ss_duration <=', 10 );  // sessions less than 10 seconds
 				$pv = $this->ana->dbprefix('pageviews');
 				$this->ana->where( "( SELECT COUNT(pv_id) FROM {$pv} WHERE `pv_session` = `ss_id` )=1", null, false );
 				$bounces = $this->ana->count_all_results('sessions')*1;
+				*/
+
+				// this is a faster query for calculating bounces
+				$this->ana->select("COUNT(ss_id)");
+				$this->ana->join('pageviews', 'pv_session = ss_id', 'inner');
+				$this->ana->where( 'ss_created >=', $start );
+				$this->ana->where( 'ss_created <=', $end );
+				$this->ana->group_by('ss_id');
+				$this->ana->having("COUNT(pv_id)", 1);
+				$bounces = $this->ana->count_all_results('sessions')*1;
+
 				$sessions['bounce_rate'] = $bounces && $total_sessions ?  $bounces / $total_sessions : 0;
 				$sessions['bounces'] = $bounces;
 
