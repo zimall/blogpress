@@ -64,11 +64,21 @@ class PC
 			'theme_scripts'=>$this->theme_scripts, 'views'=>APPNAME."/views/{$this->theme}/"
 		);
 		$this->ci->data['menu'] = $this->get_menu();
+		$this->ci->data['about_menu'] = $this->get_about_menu();
 	}
 
 	public function get_menu(){
 		$this->ci->load->model('pages_model');
 		return $this->ci->pages_model->get_pages(['select'=>'sc_name as title, sc_value as segment', 'where'=>['sc_enabled'=>1,'sc_parent'=>0]]);
+	}
+
+	public function get_about_menu(){
+		$this->ci->load->model('pages_model');
+		$about = $this->ci->pages_model->get_pages([ 'select'=>'sc_id', 'where'=>['sc_enabled'=>1,'sc_value'=>'about'], 'one'=>true ]);
+		if( $about && isset($about['sc_id']) ){
+			return $this->ci->pages_model->get_pages([ 'select'=>'sc_name as title, sc_value as segment', 'where'=>['sc_enabled'=>1,'sc_parent'=>$about['sc_id']] ]);
+		}
+		return [];
 	}
 
 	public function debug_status()

@@ -169,10 +169,14 @@
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
-									<label>Business Type</label>
+									<label>Website Type</label>
 									<?php $ct = $this->config->item('club-type');?>
 									<select name="club-type" class="form-control" required>
-										<option value="Default" <?php if($ct=='Default') echo 'selected';?>>Default</option>
+										<?php foreach( config('club-types') as $type ):
+											$s = ($type===$ct)?'selected':'';
+										?>
+											<option value="<?php echo $type;?>" <?php echo $s;?>><?php echo $type;?></option>
+										<?php endforeach;?>
 									</select>
 								</div>
 							</div>

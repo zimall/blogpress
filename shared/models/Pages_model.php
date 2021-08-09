@@ -463,7 +463,7 @@ class Pages_Model extends CI_Model
 			{
 				$data = $q->row_array();
 				$data['sc_parent_name'] = '';
-				if($data['sc_parent']>0){
+				if( isset($data['sc_parent']) && $data['sc_parent']>0){
 					$this->db->select('sc_name');
 					$this->db->where('sc_id',$data['sc_parent']);
 					$q2 = $this->db->get('sections');

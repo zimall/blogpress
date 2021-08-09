@@ -72,53 +72,39 @@
 			</div>
 		</li>
 		<li id="navigation-about" class="accordion">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#navigation-about"
-				href="#collapse-about">
-				<span class="box">
-					<i style="color:brown;" class="radmin-icon radmin-cabinet"></i>
-				</span>
-				<span class="hidden-tablet hidden-phone">About</span>
-				<span class="badge pull-right hidden-tablet hidden-phone"><?php echo is_rotary()?4:1;?></span>
-			</a>
+			<?php $about_items = count($about_menu??[]);?>
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#navigation-about"
+					href="#collapse-about">
+					<span class="box">
+						<i style="color:brown;" class="radmin-icon radmin-cabinet"></i>
+					</span>
+					<span class="hidden-tablet hidden-phone">About</span>
+					<span class="badge pull-right hidden-tablet hidden-phone"><?php echo $about_items+2;?></span>
+				</a>
 			
 			<div id="collapse-about" class="accordion-body collapse">
-				<br clear="all">
 				<ul class="nav nav-stacked submenu">
 					<li><br></li>
-                    <?php if(is_rotary()):?>
-					 <li>
-						<?php echo anchor( 'about/index',
-							'<span class="box"> <i class="radmin-icon radmin-box"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">General Information</span>'
-						);?>
-					</li> 
 					<li>
-						<?php echo anchor( 'about/team',
-							'<span class="box"> <i class="radmin-icon radmin-user"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Current Board</span>'
-						);?>
-					</li>
-					
-					<li>
-						<?php echo anchor( 'about/pp',
-							'<span class="box"> <i class="radmin-icon radmin-user"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Past Presidents</span>'
-						);?>
-					</li>
-                    <li class="submenu-last">
-						<?php echo anchor( 'about/rotary',
-							'<span class="box"> <i class="radmin-icon radmin-target-2"></i> </span>'.
-							'<span class="hidden-tablet hidden-phone">Rotary International</span>'
-						);?>
-					</li>
-					 <?php else:?>
-					<li class="submenu-last">
 						<?php echo anchor( 'about/index',
 							'<span class="box"> <i class="radmin-icon radmin-briefcase"></i> </span>'.
 							'<span class="hidden-tablet hidden-phone">About Us</span>'
 						);?>
 					</li>
-                    <?php endif;?>
+					<?php foreach($about_menu as $k=>$item):?>
+						<li>
+							<?php echo anchor( $item['segment'],
+								'<span class="box"> <i class="radmin-icon radmin-briefcase-2"></i> </span>'.
+								'<span class="hidden-tablet hidden-phone">'.$item['title'].'</span>'
+							);?>
+						</li>
+					<?php endforeach;?>
+					<li class="submenu-last">
+						<?php echo anchor( 'about',
+							'<span class="box"> <i class="radmin-icon radmin-briefcase-2"></i> </span>'.
+							'<span class="hidden-tablet hidden-phone">Other Articles</span>'
+						);?>
+					</li>
 				</ul>
 			</div>
 		</li>

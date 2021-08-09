@@ -66,8 +66,7 @@ if(!function_exists('clear_cache'))
 
 if(!function_exists('is_rotary')){
 	function is_rotary(){
-		$ci = &get_instance();
-		return in_array($ci->config->item('club-type'),['Rotary','Rotaract','Interact']);
+		return in_array(config('club-type'),['Rotary','Rotaract','Interact']);
 	}
 }
 
