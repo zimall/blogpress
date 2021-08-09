@@ -172,8 +172,9 @@ class Al
 				{
 					$error = $this->ci->article_model->update_article();
 					sem($error);
+					$exit = $this->ci->input->post('submit_exit');
 					if(!$r) $r = current_url();
-					if( !$error['error'] ) {
+					if( $exit && !$error['error'] ) {
 						if( preg_match('/^search\/|^search$/', $r) && isset($error['sc_value']) ) $r = $error['sc_value'];
 						redirect($r);
 					}

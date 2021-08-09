@@ -136,7 +136,8 @@
 					<label class="control-label col-sm-3">Submit</label>
 					<div class="col-sm-9" style="text-align:right;">
 						<?php echo anchor( 'about/index', 'Cancel', 'class="btn btn-default"' );?>
-						<button type="submit" name="submit" value="1" class="btn btn-primary">Submit</button>
+						<button type="submit" name="submit" value="1" class="btn btn-primary">Save Changes</button>
+						<button type="submit" name="submit_exit" value="1" class="btn btn-primary">Save & Exit</button>
 						<input type="hidden" name="form_name" value="article">
 						<input type="hidden" name="form_type" value="update">
 						<input type="hidden" name="id" value="<?php echo $about['at_id'];?>">

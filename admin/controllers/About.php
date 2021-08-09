@@ -19,7 +19,7 @@ class About extends CI_Controller
 
 	public function index($option='')
 	{
-		$this->al->_process_form('about');
+		$this->al->_process_form('about/index');
 		$continue = $this->al->_process_get();
 		
 		$this->data['title'] = $this->data['innertitle'] = 'About Us';

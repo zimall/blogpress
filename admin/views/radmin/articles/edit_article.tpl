@@ -211,9 +211,10 @@
 				<br clear="all"><br clear="all">
 				<div class="form-group">
 					<label class="control-label col-xs-3">Submit</label>
-					<div class="col-xs-9" style="text-align:right;">
+					<div class="col-xs-8" style="text-align:center;">
 						<?php echo anchor( current_url(), 'Cancel', 'class="btn btn-default"' );?>
-						<button type="submit" name="submit" value="1" class="btn btn-primary">Submit</button>
+						<button type="submit" name="submit" value="1" class="btn btn-primary">Save Changes</button>
+						<button type="submit" name="submit_exit" value="1" class="btn btn-primary">Save & Exit</button>
 						<input type="hidden" name="form_name" value="article">
 						<input type="hidden" name="form_type" value="update">
 						<input type="hidden" name="action_string" value="<?php echo  base_url('images/article_thumbs');?>" 
