@@ -67,7 +67,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <?php foreach($menu as $v):;?>
+                        <?php foreach($menu as $v):?>
                         <li>
 							<?php echo anchor( $v['segment'], '<i class="radmin-arrow-right-5"></i>&nbsp;&nbsp;<span>'.$v['title'].'</span>' );?>
                         </li>

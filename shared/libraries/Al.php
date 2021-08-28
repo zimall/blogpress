@@ -9,6 +9,7 @@ class Al
 		$this->ci = &get_instance();
 		$this->ci->load->model('user_model');
 		$this->ci->load->model('article_model');
+		$this->ci->load->model('pages_model');
 		$this->ci->data['nav_element'] = 'articles';
 		$this->ci->data['section'] = 'index';
 		$this->ci->data['innertitle'] = 'Site Pages and Articles';
@@ -275,5 +276,15 @@ class Al
 			}
 		}
 		return $continue;
+	}
+
+	function get_view($name){
+		$view = 'pages';
+		if( !empty($name) ){
+			$path = APPPATH."views/{$this->ci->data['theme']}/{$name}.tpl";
+			if( file_exists($path) ) $view = $name;
+			else sem( "The view '$path' does not exist.", 1, 1, $this->flexi_auth->is_admin() );
+		}
+		return $view;
 	}
 }

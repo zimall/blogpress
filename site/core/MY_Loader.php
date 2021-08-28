@@ -159,4 +159,24 @@ class MY_Loader extends CI_Loader
 		return $data;
 	}
 
+	/**
+	 * View Loader
+	 *
+	 * Loads "view" files.
+	 *
+	 * @param	string	$view	View name
+	 * @param	array	$vars	An associative array of data
+	 *				to be extracted for use in the view
+	 * @param	bool	$return	Whether to return the view output
+	 *				or leave it to the Output class
+	 * @return	object|string
+	 */
+	public function view($view, $vars = array(), $return = FALSE)
+	{
+		$CI = &get_instance();
+		$CI->_loaded_views = $CI->_loaded_views??[];
+		$CI->_loaded_views[] = $view;
+		return $this->_ci_load(array('_ci_view' => $view, '_ci_vars' => $this->_ci_prepare_view_vars($vars), '_ci_return' => $return));
+	}
+
 }

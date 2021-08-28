@@ -18,7 +18,7 @@ class Pages extends CI_Controller
 
 	public function index( $page_id )
 	{
-		$this->data['page'] = $page = $this->article_model->get_section($page_id);
+		$this->data['page'] = $page = $this->pages_model->get_pages($page_id);
 
 		if(!empty($page))
 		{
@@ -36,7 +36,9 @@ class Pages extends CI_Controller
 			$this->data['menu'] = $page['sc_value'];
 			$this->data['tags'] = $this->tags($page_id);
 			$this->pc->get_route_content('Pages','index', [ 'where'=>['at_section'=>$page['sc_id']] ]);
-			$this->load->view( "{$this->data['theme']}/pages.tpl", $this->data );
+
+			$view = $this->al->get_view($page['sc_view']??'');
+			$this->load->view( "{$this->data['theme']}/{$view}.tpl", $this->data );
 		}
 		else redirect( site_url("home/search")."?q={$page_id}" );
 	}
@@ -61,9 +63,10 @@ class Pages extends CI_Controller
 					$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
 				}
 			}
+			$view = $this->al->get_view($d['sc_view']??'');
 			$this->data['section'] = 'article';
 			$this->pc->get_route_content('Courses','details');
-			$this->load->view("{$this->data['theme']}/pages.tpl", $this->data );
+			$this->load->view("{$this->data['theme']}/{$view}.tpl", $this->data );
 		}
 		else
 		{

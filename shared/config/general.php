@@ -50,3 +50,11 @@ $config['google-analytics'] = "";
 $config['google_recaptcha_site_key'] = "";
 $config['google_recaptcha_secret'] = "";
 $config['file-manager-access-key'] = "";
+$config['nested-tree'] = [
+		'tableName'    => 'tree',
+		'idColumnName' => 'sct_id',
+		'leftColumnName' => 'sct_left',
+		'rightColumnName' => 'sct_right',
+		'levelColumnName' => 'sct_level',
+		'parentIdColumnName' => 'sct_parent'
+	];

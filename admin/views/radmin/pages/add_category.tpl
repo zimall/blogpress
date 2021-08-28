@@ -72,6 +72,20 @@
 							</select>
 						</div>
 					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-3">Category Keywords <small>(for SEO)</small></label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="keywords" value="<?php echo set_value('keywords')?>">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-3">Description</label>
+						<div class="col-sm-9">
+							<textarea class="form-control" name="description"><?php echo set_value('description')?></textarea>
+						</div>
+					</div>
 				
 				</div>
 				<!-- col-md-6 -->
