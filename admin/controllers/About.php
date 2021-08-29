@@ -45,7 +45,7 @@ class About extends CI_Controller
 			$where = array( 'at_permalink'=>1, 'at_segment'=>'about' );
 			$args = array( 'where'=>$where, 'one'=>1 );
 			
-			$this->data['about'] = $this->article_model->get_articles( $args );
+			$this->data['about'] = $this->data['article'] = $this->article_model->get_articles( $args );
 			if( $option == 'edit' )
 			{
 				$this->data['ckeditor'] = TRUE;

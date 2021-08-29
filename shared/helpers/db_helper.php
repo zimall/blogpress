@@ -54,8 +54,8 @@
 	}
 
 	if(!function_exists('get_rows')){
-		function get_rows($db){
-			$r = $db->get();
+		function get_rows($db, $table=null){
+			$r = $db->get($table);
 			if( $r->num_rows() > 0 ){
 				return $r->result_array();
 			}

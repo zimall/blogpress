@@ -329,4 +329,4 @@
 	</div>
 	<!-- col-sm-6 Additional Article Fields -->
 
-</form>
+<?php echo '</form>';?>

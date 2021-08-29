@@ -454,6 +454,7 @@ class Pages_Model extends CI_Model
 		if(! isset($args['sort']) ) $args['sort'] = FALSE;
 		if(! isset($args['enabled']) ) $args['enabled'] = 'n/a';
 		if(! isset($args['select']) ) $args['select'] = FALSE;
+		if(! isset($args['article_count']) ) $args['article_count'] = FALSE;
 
 		//if($args['limit']) $this->db->limit($args['limit'], $args['start']);
 		//if($args['select']) $this->db->select($args['select']);
@@ -462,6 +463,15 @@ class Pages_Model extends CI_Model
 		if( is_numeric($args['enabled']) ) $this->db->where( 'sections.sc_enabled', $args['enabled']);
 
 		query_args( $this->db, $args );
+
+		if( !$args['select'] ){
+			$this->db->select('*');
+		}
+
+		if($args['article_count']){
+			$a = $this->db->dbprefix('articles');
+			$this->db->select("(select count(at_id) from {$a} where `at_section` = `sc_id`) as article_count");
+		}
 
 		if(!$args['sort'])
 		{
@@ -479,7 +489,7 @@ class Pages_Model extends CI_Model
 			if( $args['one'] || $args['id'] )
 			{
 				$data = $q->row_array();
-				$data['sc_parent_name'] = '';
+				/*$data['sc_parent_name'] = '';
 				$data['sc_parent_value'] = '';
 				if( isset($data['sc_parent']) && $data['sc_parent']>0){
 					$this->db->select('sc_name, sc_value');
@@ -490,7 +500,7 @@ class Pages_Model extends CI_Model
 						$data['sc_parent_name'] = $parent['sc_name'];
 						$data['sc_parent_value'] = $parent['sc_value'];
 					}
-				}
+				}*/
 				return $data;
 			}
 			$rows = $q->result_array();
@@ -499,8 +509,58 @@ class Pages_Model extends CI_Model
 		return array();
 	}
 
-	public function get_sections()
+	public function delete_category($id){
+		$og = $this->input->post('id');
+		$delete_sub = $this->input->post('delete_sub_categories');
+		$delete_articles = $this->input->post('delete_articles');
+		$stats = ['cats'=>0, 'articles'=>0];
+		$stats = $this->_delete_category($id, $delete_sub, $delete_articles, $stats);
+		$message = "";
+		if($delete_articles){
+			$s = $stats['articles']==1 ? '' : 's';
+			$message = "{$stats['articles']} article{$s} deleted.<br>";
+		}
+		if($stats['cats']>0) {
+			$this->rewrite_routes();
+			$c = $stats['cats']==1 ? 'category' : 'categories';
+			$message .= "{$stats['cats']} $c deleted successfully.";
+		}
+		else{
+			$message .= "Unable to delete category";
+		}
+
+		return [ 'error'=>!$stats['cats'], 'error_msg'=>$message ];
+	}
+
+	private function _delete_category($id, $delete_sub, $delete_articles, $stats){
+		if( $delete_sub ) {
+			$this->db->where('sc_parent', $id);
+			$child = get_field($this->db, 'sc_id', 'sections');
+			if($child) {
+				$stats = $this->_delete_category($child, $delete_sub, $delete_articles, $stats);
+			}
+		}
+
+		if($delete_articles){
+			$this->db->select('at_id')->where('at_section', $id);
+			$articles = get_rows($this->db, 'articles');
+			foreach($articles as $article){
+				$this->article_model->delete_article($article['at_id']);
+			}
+			$stats['articles'] += count($articles);
+		}
+
+		$this->db->where( 'sc_id', $id );
+		$d = $this->db->delete('sections');
+		if($d) $stats['cats'] = $stats['cats']+1;
+		return $stats;
+	}
+
+	public function get_sections($parent=false)
 	{
+		if($parent){
+			$this->db->where('sc_parent',$parent);
+		}
 		$q = $this->db->get('sections');
 		if($q->num_rows()>0) 
 			return $q->result_array();
@@ -595,7 +655,6 @@ class Pages_Model extends CI_Model
 		else return array( 'error'=>TRUE, 'error_msg'=>'No new gallery images were added.' );
 	}
 
-
 	public function get_month_theme()
 	{
 		$m = date('n');
@@ -607,7 +666,6 @@ class Pages_Model extends CI_Model
 		}
 		return array();
 	}
-
 
 	public function contact()
 	{

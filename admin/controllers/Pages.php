@@ -81,7 +81,7 @@ class Pages extends CI_Controller
 
 		if($continue)
 		{
-			$where = array( 'at_section'=>$page['sc_id'] );
+			$where = "( `at_section` = {$page['sc_id']} OR `sc_parent`= {$page['sc_id']} )";
 			$count = array( 'where'=>$where, 'count'=>1 );
 			$sort = $this->data['sort'] ?? get_sort($page['sc_order']);
 			$paginate = $this->pc->paginate($count, 'get_articles', 'article_model');
@@ -114,7 +114,7 @@ class Pages extends CI_Controller
 			$function = 'get_pages';
 			$paginate = $this->pc->paginate($count, $function, 'pages_model');
 			
-			$args = array( 'start'=>$paginate['start'], 'limit'=>$paginate['limit'] );
+			$args = [ 'start'=>$paginate['start'], 'limit'=>$paginate['limit'], 'article_count'=>true ];
 			$count['count'] = NULL;
 			$args = array_merge($args, $count);
 			$this->data['nav_element'] = 'articles';
@@ -415,9 +415,7 @@ class Pages extends CI_Controller
 					$_GET['id'] = $this->input->post('id');
 				}
 			}
-			
 			elseif( $_POST['form_name']=="group" && $_POST['form_type']=="delete" ){
-				
 				$this->form_validation->set_rules('id', 'Item ID', 'required');
 				if ($this->form_validation->run() === TRUE){
 					$this->data['error'] = $this->user_model->delete_group();
@@ -429,7 +427,6 @@ class Pages extends CI_Controller
 				}
 			}
 			elseif( $_POST['form_name']=="group" && $_POST['form_type']=="update" ){
-				
 				$this->form_validation->set_rules('name', 'Group Name', 'required');
 				$this->form_validation->set_rules('id', 'Group ID', 'required');
 				if ($this->form_validation->run() === TRUE){
@@ -441,10 +438,8 @@ class Pages extends CI_Controller
 					$_GET['id'] = $this->input->post('id');
 				}
 			}
-			
 			elseif( $_POST['form_name']=="sms" && $_POST['form_type']=="send" )
 			{
-				
 				$this->form_validation->set_rules('phone', 'Phone Number', 'required');
 				$this->form_validation->set_rules('message', 'Message', 'required');
 				if ($this->form_validation->run() === TRUE)
@@ -455,9 +450,7 @@ class Pages extends CI_Controller
 					sem( send_sms( $phone, $msg ) );
 				}
 			}
-				
 			elseif( $_POST['form_name']=="user" && $_POST['form_type']=="insert" ){
-				
 				$this->form_validation->set_rules('name', 'User Name', 'required');
 				$this->form_validation->set_rules('surname', 'Surname', 'required');
 				$this->form_validation->set_rules('email', 'Email', 'required');
@@ -491,16 +484,28 @@ class Pages extends CI_Controller
 				}
 				else $_GET['action'] = 'add_user';
 			}
-			
+			elseif( $name == 'category' && $action == 'delete' )
+			{
+				$this->form_validation->set_rules( 'confirm_delete', 'Yes I\'m sure', 'required' );
+				$this->form_validation->set_rules( 'id', 'Category ID', 'required|numeric' );
+				if( $this->form_validation->run() )
+				{
+					$id = $this->input->post('id');
+					$error = $this->pages_model->delete_category($id);
+					sem($error);
+					if( !$error['error'] );
+					redirect( current_url() );
+				}
+			}
 		}
 		return 0;
 	}
-	
-	
+
 	private function _process_get()
 	{
 		$continue = TRUE;
 		$action = $this->input->get('action');
+		$id = $this->input->get('id');
 		if( $action )
 		{
 			if( $action=='add_category' )
@@ -510,35 +515,20 @@ class Pages extends CI_Controller
 				$this->data['innertitle'] = 'Add new category';
 				$continue = FALSE;
 			}
-			elseif( $action=='edit_page' )
+			elseif( $action=='edit_page' && $id )
 			{
-				if( $id = $this->input->get('id') )
-				{
-					$this->data['page'] = $this->pages_model->get_pages( ['id'=>$id] );
-					$this->data['sections'] = $this->pages_model->get_pages( ['where'=>[ "sc_id !="=>$id, 'sc_parent'=>0 ] ] );
-					$this->data['section'] = 'edit_page';
-					$this->data['innertitle'] = 'Edit Page';
-					$continue = FALSE;
-				}
+				$this->data['page'] = $this->pages_model->get_pages( ['id'=>$id] );
+				$this->data['sections'] = $this->pages_model->get_pages( ['where'=>[ "sc_id !="=>$id, 'sc_parent'=>0 ] ] );
+				$this->data['section'] = 'edit_page';
+				$this->data['innertitle'] = 'Edit Page';
+				$continue = FALSE;
+
 			}
-			elseif( $action=='remove_account' )
+			elseif( $action=='delete_category' && $id && is_numeric($id) )
 			{
-				if( $id = $this->input->get('id') )
-				{
-					$this->data['account'] = $this->user_model->get_users( array('id'=>$id) );
-					$this->data['section'] = 'remove_account';
-					$continue = FALSE;
-				}
-			}
-			elseif( $action=='toggle_user_state' )
-			{
-				$id = $this->input->get('id');
-				$state = $this->input->get('state');
-				$data = array('id'=>$id, 'table'=>'user_accounts', 'state'=>$state);
-				$e = $this->user_model->toggle_user_state( $data );
-				sem( $e );
-				redirect( current_url() );
-				$continue = TRUE;
+				$this->data['page'] = $this->pages_model->get_pages($id);
+				$this->data['section'] = 'delete_category';
+				$continue = FALSE;
 			}
 			
 		}

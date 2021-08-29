@@ -40,36 +40,19 @@ class Read extends CI_Controller
 		{
 			$this->data['section'] = 'article';
 			$this->data['article'] = $found[0];
-			$this->data['page'] = $this->article_model->get_section($found[0]['at_section']);
+			$this->data['page'] = $p = $this->article_model->get_section($found[0]['at_section']);
 			$this->data['title'] = $found[0]['at_title'];
 			$page = preg_replace( '/^'.$found[0]['sc_value'].'/', '', $found[0]['at_segment'] );
 			$page = trim( $page, '/' );
+			$this->data['tags'] = $this->al->tags($p['sc_id']);
 			$this->pc->get_route_content( ucfirst( $found[0]['sc_value'] ), $page );
 		}
 		elseif ($n==0)
 		{
 			$this->data['section'] = 'not_found';
 		}
-		
-		$select = 'at_id, at_summary, at_title, at_segment, at_date_posted, at_image, at_show_main_image';
-		$where = array( 'at_section'=>5 );
-		$args = array( 'where'=>$where, 'sort'=>'at_hits desc', 'limit'=>5, 'select'=>$select );
-		$this->data['popular_articles'] = $this->article_model->get_articles($args);
-		
-		$select = 'at_keywords';
-		$where = array( 'at_section'=>5 );
-		$args = array( 'where'=>$where, 'sort'=> array('at_id'=>'RANDOM'), 'limit'=>5, 'select'=>$select );
-		$tags = $this->article_model->get_articles($args);
-		$tags1 = array();
-		foreach( $tags as $t )
-		{
-			$t1 = explode( ',', $t['at_keywords'] );
-			foreach( $t1 as $t2 )
-			{
-				if( strlen($t2)>3 ) $tags1[] = $t2;
-			}
-		}
-		$this->data['tags'] = array_unique($tags1);
+
+		//$this->data['tags'] = $this->al->tags();
 		
 		$this->data['innertitle'] = 'read';
 		$this->load->view( "{$this->data['theme']}/read.tpl", $this->data );

@@ -41,7 +41,7 @@
 	<table class="table table-condensed table-dotted table-hover">
 		<tr>
 			<th>ID</th>
-			<th>Page Name</th>
+			<th>Page Name &nbsp;&nbsp;&nbsp; (Articles)</th>
 			<th>Menu Position</th>
             <th>Status</th>
             <th>Gallery</th>
@@ -54,13 +54,16 @@
 			<td>
 				<?php echo anchor( $page['sc_value'], $page['sc_name']);?>
 				<?php echo anchor( home_url($page['sc_value']), '<i class="radmin radmin-new-tab"></i>', 'target="_blank"');?>
+				&nbsp;&nbsp;&nbsp;
+				(<?php echo $page['article_count'];?>)
 			</td>
 			<td><?php echo $page['sc_menu'];?></td>
             <td><?php echo $page['sc_enabled'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
             <td><?php echo $page['sc_has_gallery'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
 			<td>
-				<?php echo anchor( current_url()."?action=edit_page&id={$page['sc_id']}", '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-pencil"></i> </span>', ['title'=>'Edit'] );?>
+				<?php echo anchor( current_url()."?action=edit_page&id={$page['sc_id']}", '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-pencil"></i> Edit</span>', ['title'=>'Edit'] );?>
 				<?php //echo anchor( 'pages/rules/'.$page['sc_id'], '<span class="btn btn-default btn-xs"> <i class="radmin-icon radmin-cog"></i> </span>', ['title'=>'Page Settings'] );?>
+				<?php echo anchor( current_url()."?action=delete_category&id={$page['sc_id']}", '<span class="btn btn-default btn-xs btn-danger"> <i class="radmin-icon radmin-remove"></i> Delete</span>', ['title'=>'Delete Category'] );?>
 			</td>
 		</tr>
 		<?php endforeach;?>

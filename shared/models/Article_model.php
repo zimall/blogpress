@@ -652,7 +652,7 @@ class Article_Model extends CI_Model
 	{
 		$data = array(
 				'first_name'=>$this->input->post('name'),
-				'last_name'=>'',
+				'last_name'=>$this->input->post('last_name'),
 				'email'=>$this->input->post('email'),
 				'phone'=>$this->input->post('phone')
 		);
