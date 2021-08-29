@@ -58,3 +58,4 @@ $config['nested-tree'] = [
 		'levelColumnName' => 'sct_level',
 		'parentIdColumnName' => 'sct_parent'
 	];
+$config["map-location"] = "";
