@@ -28,7 +28,7 @@ site/views/
 !site/views/index.html
 !site/views/errors
 !site/views/account
-!site/views/emails
+!site/views/email
 .idea/
 
 .well-known/acme-challenge/
