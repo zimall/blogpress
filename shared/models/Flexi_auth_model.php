@@ -2315,7 +2315,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model
 		$this->email->subject($this->auth->email_settings['site_title'] ." ". $email_title);
 		$this->email->message($message);
 		$done = $this->email->send();
-		$debug = $this->email->print_debugger(['headers']);
+		$debug = $this->email->print_debugger();
 		log_message( 'error', $debug );
 		return $done;
 	}
