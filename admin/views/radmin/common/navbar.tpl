@@ -44,7 +44,7 @@
                     </li>
 					<li class="submenu-last">
 						<?php echo anchor( 'articles',
-							'<span class="box"> <i class="radmin-icon radmin-user"></i> </span>'.
+							'<span class="box"> <i class="radmin-icon radmin-newspaper"></i> </span>'.
 							'<span class="hidden-tablet hidden-phone">All Articles</span>'
 						);?>
 					</li>

@@ -57,7 +57,7 @@
 				&nbsp;&nbsp;&nbsp;
 				(<?php echo $page['article_count'];?>)
 			</td>
-			<td><?php echo $page['sc_menu'];?></td>
+			<td><?php echo $page['sc_menu']==99?'-':$page['sc_menu'];?></td>
             <td><?php echo $page['sc_enabled'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
             <td><?php echo $page['sc_has_gallery'] ? '<span class="label label-success">Enabled</span>' : '<span class="label label-default">Disabled</span>' ?></td>
 			<td>
