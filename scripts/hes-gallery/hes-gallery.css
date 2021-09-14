@@ -205,3 +205,5 @@
     max-width: calc(100% - 40px);
   }
 }
+
+#hg-pic-cont{background: #fff url("processing.gif") center no-repeat; background-size: 30px;}
