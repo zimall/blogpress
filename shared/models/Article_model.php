@@ -527,6 +527,7 @@ class Article_Model extends CI_Model
 	public function get_sections($args=[])
 	{
 		if(isset($args['menu']) && $args['menu'] ) $this->db->where('sc_menu <', 99);
+		if(isset($args['parent']) && $args['parent']>=0 ) $this->db->where('sc_parent', $args['parent']);
 		if(isset($args['enabled'])) $this->db->where( 'sc_enabled', $args['enabled'] );
 		$this->db->order_by( 'sc_menu', 'asc' );
 		$q = $this->db->get('sections');
@@ -651,7 +652,7 @@ class Article_Model extends CI_Model
 	{
 		$data = array(
 				'first_name'=>$this->input->post('name'),
-				'last_name'=>'',
+				'last_name'=>$this->input->post('last_name'),
 				'email'=>$this->input->post('email'),
 				'phone'=>$this->input->post('phone')
 		);

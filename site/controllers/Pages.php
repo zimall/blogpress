@@ -18,7 +18,7 @@ class Pages extends CI_Controller
 
 	public function index( $page_id )
 	{
-		$this->data['page'] = $page = $this->article_model->get_section($page_id);
+		$this->data['page'] = $page = $this->pages_model->get_pages($page_id);
 
 		if(!empty($page))
 		{
@@ -34,9 +34,11 @@ class Pages extends CI_Controller
 			$this->data['title'] = $page['sc_name'];
 			$this->data['innertitle'] = $page['sc_name'];
 			$this->data['menu'] = $page['sc_value'];
-			$this->data['tags'] = $this->tags($page_id);
+			$this->data['tags'] = $this->al->tags($page_id);
 			$this->pc->get_route_content('Pages','index', [ 'where'=>['at_section'=>$page['sc_id']] ]);
-			$this->load->view( "{$this->data['theme']}/pages.tpl", $this->data );
+
+			$view = $this->al->get_view($page['sc_view']??'');
+			$this->load->view( "{$this->data['theme']}/{$view}.tpl", $this->data );
 		}
 		else redirect( site_url("home/search")."?q={$page_id}" );
 	}
@@ -54,16 +56,20 @@ class Pages extends CI_Controller
 				$this->data['description'] = $d['at_summary'];
 				$this->data['keywords'] = $d['at_keywords'];
 				$this->data['menu'] = $d['sc_value'];
-				$this->data['tags'] = $this->tags($d['at_section']);
+				$this->data['tags'] = $this->al->tags($d['at_section']);
 				$this->data['images'] = $g = $d['sc_has_gallery'] ? $this->article_model->get_gallery(['at_id'=>$id]) : [];
 				if($g){
-					$this->data['theme_scripts'][] = 'lightgallery-all.min';
-					$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
+					$this->data['scripts'][] = 'hes-gallery/hes-gallery.min';
+					//$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
 				}
+				$this->data['section'] = 'article';
 			}
-			$this->data['section'] = 'article';
+			else{
+				$this->data['section'] = 'not_found';
+			}
+			$view = $this->al->get_view($d['sc_view']??'');
 			$this->pc->get_route_content('Courses','details');
-			$this->load->view("{$this->data['theme']}/pages.tpl", $this->data );
+			$this->load->view("{$this->data['theme']}/{$view}.tpl", $this->data );
 		}
 		else
 		{
@@ -121,23 +127,6 @@ class Pages extends CI_Controller
 			redirect('home/recent');
 			//echo 'ok';
 		}
-	}
-
-	private function tags($page_id){
-		$select = 'at_keywords';
-		$where = array( 'at_section'=>$page_id );
-		$args = array( 'where'=>$where, 'sort'=> array('at_id'=>'RANDOM'), 'limit'=>5, 'select'=>$select );
-		$tags = $this->article_model->get_articles($args);
-		$tags1 = array();
-		foreach( $tags as $t )
-		{
-			$t1 = explode( ',', $t['at_keywords'] );
-			foreach( $t1 as $t2 )
-			{
-				if( strlen($t2)>3 ) $tags1[] = $t2;
-			}
-		}
-		return array_unique($tags1);
 	}
 
 	public function i($id=FALSE)

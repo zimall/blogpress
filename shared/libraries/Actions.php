@@ -96,17 +96,10 @@ class Actions{
 			}
 			
 			$old = $this->ci->session->userdata('error_msg');
-			
-			if($show)
-			{
-				$usermsg = $msg;
-				if( $log==1 || $log===TRUE ) log_message('error', $msg);
-			}
-			else
-			{
-				if( $log==1 || $log===TRUE ) log_message('error', $msg);
-				return;
-			}
+
+			if( $log==1 || $log===TRUE ) log_message('error', $msg);
+			if($show) $usermsg = $msg;
+			else return;
 			
 			$key = md5($usermsg);
 			//$this->ci->load->library('password');

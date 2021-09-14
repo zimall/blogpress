@@ -9,6 +9,7 @@ class Al
 		$this->ci = &get_instance();
 		$this->ci->load->model('user_model');
 		$this->ci->load->model('article_model');
+		$this->ci->load->model('pages_model');
 		$this->ci->data['nav_element'] = 'articles';
 		$this->ci->data['section'] = 'index';
 		$this->ci->data['innertitle'] = 'Site Pages and Articles';
@@ -275,5 +276,42 @@ class Al
 			}
 		}
 		return $continue;
+	}
+
+	function get_view($name){
+		$view = 'pages';
+		if( !empty($name) ){
+			$path = APPPATH."views/{$this->ci->data['theme']}/{$name}.tpl";
+			if( file_exists($path) ) $view = $name;
+			else sem( "The view '$path' does not exist.", 1, 1, $this->flexi_auth->is_admin() );
+		}
+		return $view;
+	}
+
+	function tags($page_id){
+		$select = 'at_keywords';
+		$where = array( 'at_section'=>$page_id );
+		$args = array( 'where'=>$where, 'sort'=> array('at_id'=>'RANDOM'), 'limit'=>5, 'select'=>$select );
+		$tags = $this->ci->article_model->get_articles($args);
+		$tags1 = array();
+		foreach( $tags as $t )
+		{
+			$t1 = explode( ',', $t['at_keywords'] );
+			foreach( $t1 as $t2 )
+			{
+				if( strlen($t2)>3 ) $tags1[] = $t2;
+			}
+		}
+		$u = array_unique($tags1);
+		return count($u) > 20 ? array_slice( $u, 0, 20 ) : $u;
+	}
+
+	function get_sub_sections($page_id){
+		$sections = $this->ci->pages_model->get_pages(['where'=>['sc_parent'=>$page_id, 'sc_enabled'=>1], 'limit'=>10 ]);
+		if(empty($sections)){
+			$section = $this->ci->pages_model->get_pages($page_id);
+			if( !empty($section) ) $sections = $this->ci->pages_model->get_pages(['where'=>['sc_parent'=>$section['sc_parent'], 'sc_enabled'=>1], 'limit'=>10 ]);
+		}
+		return $sections;
 	}
 }

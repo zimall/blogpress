@@ -44,7 +44,7 @@
 									<div class="input-group input-group-lg">
 										<span class="input-group-addon" id="theme_color"
 											style="background-color:<?php echo $site_theme['color']?>">&nbsp;&nbsp;</span>
-										<select name="color" class="form-control theme_color" required>
+										<select name="color" class="form-control theme_color">
 											<?php if(isset($site_theme['colors'])) $colors = $site_theme['colors'];
 												else $colors = array();
 											foreach($colors as $c):
@@ -77,7 +77,7 @@
 							<div class="form-group">
 								<div class="col-sm-10">
 									<label>Top Bar</label>
-									<select name="header" class="form-control" required>
+									<select name="header" class="form-control">
 										<?php if(isset($site_theme['header_options'])) $options = $site_theme['header_options'];
 											else $options = array();
 										foreach($options as $k=>$v):
@@ -109,7 +109,7 @@
 							<div class="form-group">
 								<div class="col-sm-10">
 									<label>Page Layout</label>
-									<select name="layout" class="form-control" required>
+									<select name="layout" class="form-control">
 										<?php if(isset($site_theme['layout_options'])) $options = $site_theme['layout_options'];
 											else $options = array();
 										foreach($options as $k=>$v):
@@ -128,7 +128,7 @@
 									<div class="input-group input-group-lg">
 										<span class="input-group-addon" id="background_image"
 											style="background-image: url(<?php echo base_url('site/views/'.$site_theme['name'].'/images/patterns/'.$site_theme['background']);?>);background-size:contain;">&nbsp;&nbsp;</span>
-										<select name="background" class="form-control background_image" required>
+										<select name="background" class="form-control background_image">
 											<?php if(isset($site_theme['background_images'])) 
 												$options = $site_theme['background_images'];
 												else $options = array();

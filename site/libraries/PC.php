@@ -6,6 +6,7 @@ class PC
 	private $site_debug = TRUE;
 	private $theme = 'default';
 	private $theme_config = array();
+	private $ci;
 
 	function __construct()
 	{
@@ -111,23 +112,58 @@ class PC
 		$where = array( 'at_permalink'=>1, 'at_section'=>1 );
 		$args = array( 'where'=>$where, 'one'=>1, 'enabled'=>1 );
 		$this->ci->data['required_content']['aboutus'] = $this->ci->article_model->get_articles( $args );
-		$this->ci->data['menu_items'] = $this->ci->article_model->get_sections( ['enabled'=>1, 'menu'=>true] );
+		if( isset($this->theme_config['dropdown_menu']) && $this->theme_config['dropdown_menu'] ){
+			$menu = $this->ci->article_model->get_sections( ['enabled'=>1, 'menu'=>true, 'parent'=>0] );
+			$this->ci->data['menu_items'] = $this->level_2_menu($menu);
+		}
+		else{
+			$this->ci->data['menu_items'] = $this->ci->article_model->get_sections( ['enabled'=>1, 'menu'=>true] );
+		}
 	}
 
 	public function get_route_content( $class, $method=false, $extra_args=[] ){
 		$theme_content = $this->theme_config['required_content'][$class]??[];
 		foreach($theme_content as $k=>$args) {
-			foreach(['where', 'sort', 'limit', 'select', 'one'] as $key ){
-				if(isset($extra_args[$key])) {
-					$args[$key] = isset($args[$key]) && is_array($args[$key]) && is_array($extra_args[$key]) ? array_merge($args[$key], $extra_args[$key]) : $extra_args[$key];
-				}
+			if( isset($args['model']) && isset($args['method']) ){
+				$this->for_other_pages($k, $args, $method);
+			}
+			else {
+				$this->for_articles($k, $args, $method, $extra_args);
+			}
+		}
+	}
+
+	private function for_articles( $k, $args, $method, $extra_args ){
+		foreach(['where', 'sort', 'limit', 'select', 'one'] as $key ){
+			if(isset($extra_args[$key])) {
+				$args[$key] = isset($args[$key]) && is_array($args[$key]) && is_array($extra_args[$key]) ? array_merge($args[$key], $extra_args[$key]) : $extra_args[$key];
+			}
+		}
+
+		$paths = explode('/', $k);
+		if( $method && isset($paths[0]) && isset($paths[1]) && $method===$paths[0] ){
+			$this->ci->data[$paths[1]] = $this->ci->article_model->get_articles($args);
+		}
+		elseif(isset($paths[0])) $this->ci->data[$paths[0]] = $this->ci->article_model->get_articles($args);
+	}
+
+	private function for_other_pages($k, $args, $route){
+		try {
+			$model = $args['model'];
+			$method = $args['method'];
+			$this->ci->load->model($model);
+
+			if( !method_exists( $this->ci->$model, $method ) ){
+				throw new Exception( "The method \"$method\" does not exist in ".get_class($this->ci->$model) );
 			}
 
 			$paths = explode('/', $k);
-			if( $method && isset($paths[0]) && isset($paths[1]) && $method===$paths[0] ){
-				$this->ci->data[$paths[1]] = $this->ci->article_model->get_articles($args);
-			}
-			elseif(isset($paths[0])) $this->ci->data[$paths[0]] = $this->ci->article_model->get_articles($args);
+			if($route && isset($paths[0]) && isset($paths[1]) && $route === $paths[0]) {
+				$this->ci->data[$paths[1]] = $this->ci->$model->$method($args);
+			} elseif(isset($paths[0])) $this->ci->data[$paths[0]] = $this->ci->$model->$method($args);
+		}
+		catch(Exception $exception){
+			sem( $exception->getMessage(), 1, true, $this->ci->flexi_auth->is_admin() );
 		}
 	}
 
@@ -454,6 +490,13 @@ class PC
 			log_message( 'error', $response );
 			return FALSE;
 		}
+	}
+
+	private function level_2_menu( $items ){
+		foreach($items as $k=>$item){
+			$items[$k]['children'] = $this->ci->article_model->get_sections( ['enabled'=>1, 'menu'=>true, 'parent'=>$item['sc_id'] ] );
+		}
+		return $items;
 	}
 
 }

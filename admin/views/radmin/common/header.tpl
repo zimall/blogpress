@@ -26,7 +26,7 @@
 	endif;
 	?>
 	<?php if(isset($uploader)):?>
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url().$views?>css/fineuploader.css">
+	<!--<link rel="stylesheet" type="text/css" media="screen" href="--><?php //echo base_url().$views?><!--css/fineuploader.css">-->
 	<?php endif;?>
 	
 	<!--[if lte IE 7]>

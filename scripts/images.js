@@ -13,6 +13,7 @@ function init_uploader() {
 	}
 	p[csrf_name] = csrf_value;
 	console.log(p);
+	console.log('csrf^^')
 	var btnUpload = $('#upload');
 	var status = $('#status');
 	new AjaxUpload(btnUpload, {

@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');?>
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+	//$this->load->view("$theme/articles/edit_article.tpl");
+?>
 
 <div class="col-sm-12">
 	<h2 class="welcome">
@@ -24,7 +26,7 @@
 <div class="squiggly-border col-sm-12"></div>
 
 
-<?php echo form_open( current_url(), 'class="form form-horizontal" name="blog_post"' );?>
+<?php echo form_open( current_url(), 'class="form form-horizontal article_form" name="blog_post"' );?>
 
 	<div class="col-sm-6">
 		<div class="panel panel-default">

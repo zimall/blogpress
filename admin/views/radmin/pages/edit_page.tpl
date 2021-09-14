@@ -72,11 +72,43 @@
 							</select>
 						</div>
 					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-3">Category Keywords <small>(for SEO)</small></label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="keywords" value="<?php echo $page['sc_keywords']?>">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-3">Description</label>
+						<div class="col-sm-9">
+							<textarea class="form-control" name="description"><?php echo $page['sc_description']?></textarea>
+						</div>
+					</div>
 				
 				</div>
 				<!-- col-md-6 -->
 				
 				<div class="col-md-6">
+
+					<div class="form-group">
+						<label class="control-label col-sm-3">Page Controller</label>
+						<div class="col-sm-9">
+							<?php
+								$controllers = get_controllers( SITEPATH.'/controllers' );
+								echo form_dropdown( 'controller', $controllers, $page['sc_controller']?:'Pages', ['class'=>'form-control'] );
+							?>
+							<div class="form-text">Select "Pages" unless you know what you're doing.</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-3">Template Directory Name</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" name="view" value="<?php echo $page['sc_view']?>" placeholder="Leave blank if you're not sure">
+						</div>
+					</div>
 
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Default Order</label>

@@ -241,13 +241,22 @@ class Pages_Model extends CI_Model
 		$menu = $this->input->post('menu');
 		$order = $this->input->post('order')??'';
 		$items = $this->input->post('items')??'';
+		$keywords = $this->input->post('keywords') ?? strtolower(str_replace(' ',',',$title));
+		$description = $this->input->post('description') ?? $title;
 		$error = array('error'=>TRUE,'error_msg'=>'Could not update page');
+		$controller = $this->input->post('controller')??'';
+		$view = $this->input->post('view')??'';
 		
-		$old_value = $this->get_pages( ['select'=>'sc_value', 'id'=>$id ] );
+		$old_value = $id ? $this->get_pages( ['select'=>'sc_value, sc_parent', 'id'=>$id ] ) : false;
 				
 		if( strlen($segment) < 2 ) {
-			$title = str_replace( '/', '__ignore__', $title );
-			$segment = url_title($title, '-', TRUE);
+			$parent_segment = '';
+			if($parent>0){
+				$parent_node = $this->get_pages( ['select'=>'sc_value', 'id'=>$parent ] );
+				$parent_segment = $parent_node['sc_value'] ?? '';
+			}
+			$url_title = str_replace( '/', '__ignore__',  ($parent_segment?$parent_segment.'/':'').$title );
+			$segment = url_title($url_title, '-', TRUE);
 		}
 		else{
 			$segment = str_replace( '/', '__ignore__', $segment );
@@ -257,13 +266,17 @@ class Pages_Model extends CI_Model
 		
 		$data = array(
 			'sc_name' => $title,
-			'sc_value' => $segment, 
+			'sc_value' => $segment,
+			'sc_keywords' => $keywords,
+			'sc_description' => $description,
 			'sc_menu' => $menu,
 			'sc_parent' => $parent,
 			'sc_enabled' => $this->input->post('enabled'),
 			'sc_has_gallery' => $this->input->post('has_gallery'),
 			'sc_order' => $order,
-			'sc_items' => $items
+			'sc_items' => $items,
+			'sc_controller' => $controller,
+			'sc_view' => $view
 		);
 		for( $i=1; $i<=8; $i++ )
 		{
@@ -276,7 +289,6 @@ class Pages_Model extends CI_Model
 			$e = $this->db->update('sections', $data);
 		}
 		else{
-
 			$this->db->where( 'sc_value', $data['sc_value'] );
 			$n = $this->db->count_all_results('sections');
 			if($n>0){
@@ -362,20 +374,27 @@ class Pages_Model extends CI_Model
 	public function rewrite_routes(){
 		$e = false;
 		// get sections
-		$this->db->select('sc_id,sc_value');
+		$this->db->select('sc_id,sc_value,sc_controller');
 		$this->db->where('sc_enabled',1);
 		$this->db->order_by('sc_menu asc');
 		$r = $this->db->get('sections');
 		if( $r->num_rows()>0 ){
 			$rows = $r->result_array();
-			$routes = "<?php defined('BASEPATH') OR exit('No direct script access allowed');\n";
+			$routes = $admin_routes = "<?php defined('BASEPATH') OR exit('No direct script access allowed');\n";
 			foreach($rows as $k=>$v){
-				$routes .= "\$route['{$v['sc_value']}'] = 'pages/index/{$v['sc_id']}';\n";
-				$routes .= "\$route['{$v['sc_value']}/new'] = 'pages/index/{$v['sc_id']}/new';\n";
-				$routes .= "\$route['{$v['sc_value']}/page'] = 'pages/index/{$v['sc_id']}';\n";
-				$routes .= "\$route['{$v['sc_value']}/page/(.+)'] = 'pages/index/{$v['sc_id']}/\$1';\n";
-				$routes .= "\$route['{$v['sc_value']}/(:num)'] = 'pages/article/{$v['sc_id']}/\$1';\n";
-				$routes .= "\$route['{$v['sc_value']}/(:num)/.+'] = 'pages/article/{$v['sc_id']}/\$1';\n";
+				$controller = !empty($v['sc_controller']) ? strtolower($v['sc_controller']) : 'pages';
+				$routes .= "\$route['{$v['sc_value']}'] = '$controller/index/{$v['sc_id']}';\n";
+				$routes .= "\$route['{$v['sc_value']}/new'] = '$controller/index/{$v['sc_id']}/new';\n";
+				$routes .= "\$route['{$v['sc_value']}/page'] = '$controller/index/{$v['sc_id']}';\n";
+				$routes .= "\$route['{$v['sc_value']}/page/(.+)'] = '$controller/index/{$v['sc_id']}/\$1';\n";
+				$routes .= "\$route['{$v['sc_value']}/(:num)'] = '$controller/article/{$v['sc_id']}/\$1';\n";
+				$routes .= "\$route['{$v['sc_value']}/(:num)/.+'] = '$controller/article/{$v['sc_id']}/\$1';\n";
+				$admin_routes .= "\$route['{$v['sc_value']}'] = 'pages/index/{$v['sc_id']}';\n";
+				$admin_routes .= "\$route['{$v['sc_value']}/new'] = 'pages/index/{$v['sc_id']}/new';\n";
+				$admin_routes .= "\$route['{$v['sc_value']}/page'] = 'pages/index/{$v['sc_id']}';\n";
+				$admin_routes .= "\$route['{$v['sc_value']}/page/(.+)'] = 'pages/index/{$v['sc_id']}/\$1';\n";
+				$admin_routes .= "\$route['{$v['sc_value']}/(:num)'] = 'pages/article/{$v['sc_id']}/\$1';\n";
+				$admin_routes .= "\$route['{$v['sc_value']}/(:num)/.+'] = 'pages/article/{$v['sc_id']}/\$1';\n";
 			}
 
 			try {
@@ -400,7 +419,7 @@ class Pages_Model extends CI_Model
 					$path = $folder."routes.php";
 					if( !is_writable($folder) ) throw new Exception("The directory {$folder} is not writable");
 
-					$data = str_replace("route['", "route['" . APPNAME . "/", $routes);
+					$data = str_replace("route['", "route['" . APPNAME . "/", $admin_routes);
 					$file = fopen($path, "w");
 					if (! $file) {
 						throw new Exception("Could not open the file {$path} for writing");
@@ -419,6 +438,13 @@ class Pages_Model extends CI_Model
 
 	public function get_pages($args=[])
 	{
+		if( is_numeric($args) && $args > 0 ) {
+			$args = [ 'id' => $args ];
+		}
+		elseif( is_string($args) && strlen($args) > 1 ) {
+			$args = [ 'where'=>['sc_value'=>$args], 'one'=>true ];
+		}
+
 		if(! isset($args['where']) ) $args['where'] = FALSE;
 		if(! isset($args['one']) ) $args['one'] = FALSE;
 		if(! isset($args['id']) ) $args['id'] = FALSE;
@@ -428,28 +454,29 @@ class Pages_Model extends CI_Model
 		if(! isset($args['sort']) ) $args['sort'] = FALSE;
 		if(! isset($args['enabled']) ) $args['enabled'] = 'n/a';
 		if(! isset($args['select']) ) $args['select'] = FALSE;
-	
-		if($args['limit']) $this->db->limit($args['limit'], $args['start']);
-		if($args['select']) $this->db->select($args['select']);
-		if($args['where']) $this->db->where($args['where']);
+		if(! isset($args['article_count']) ) $args['article_count'] = FALSE;
+
+		//if($args['limit']) $this->db->limit($args['limit'], $args['start']);
+		//if($args['select']) $this->db->select($args['select']);
+		//if($args['where']) $this->db->where($args['where']);
 		if($args['id']) $this->db->where( 'sections.sc_id', $args['id']);
 		if( is_numeric($args['enabled']) ) $this->db->where( 'sections.sc_enabled', $args['enabled']);
-		
-		
-		
-		if($args['sort'])
-		{
-			$sort = $args['sort'];
-			if( is_array( $sort ) )
-			{
-				foreach( $sort as $k=>$v )
-					$this->db->order_by($k,$v);
-			}
-			else $this->db->order_by($args['sort']);
+
+		query_args( $this->db, $args );
+
+		if( !$args['select'] ){
+			$this->db->select('*');
 		}
-		else
+
+		if($args['article_count']){
+			$a = $this->db->dbprefix('articles');
+			$this->db->select("(select count(at_id) from {$a} where `at_section` = `sc_id`) as article_count");
+		}
+
+		if(!$args['sort'])
 		{
 			$this->db->order_by( 'sc_menu', 'asc' );
+			$this->db->order_by( 'sc_parent', 'asc' );
 			$this->db->order_by( 'sc_id', 'asc' );
 		}
 		
@@ -462,16 +489,18 @@ class Pages_Model extends CI_Model
 			if( $args['one'] || $args['id'] )
 			{
 				$data = $q->row_array();
-				$data['sc_parent_name'] = '';
+				/*$data['sc_parent_name'] = '';
+				$data['sc_parent_value'] = '';
 				if( isset($data['sc_parent']) && $data['sc_parent']>0){
-					$this->db->select('sc_name');
+					$this->db->select('sc_name, sc_value');
 					$this->db->where('sc_id',$data['sc_parent']);
 					$q2 = $this->db->get('sections');
 					if($q2->num_rows()>0){
 						$parent = $q2->row_array();
 						$data['sc_parent_name'] = $parent['sc_name'];
+						$data['sc_parent_value'] = $parent['sc_value'];
 					}
-				}
+				}*/
 				return $data;
 			}
 			$rows = $q->result_array();
@@ -480,8 +509,58 @@ class Pages_Model extends CI_Model
 		return array();
 	}
 
-	public function get_sections()
+	public function delete_category($id){
+		$og = $this->input->post('id');
+		$delete_sub = $this->input->post('delete_sub_categories');
+		$delete_articles = $this->input->post('delete_articles');
+		$stats = ['cats'=>0, 'articles'=>0];
+		$stats = $this->_delete_category($id, $delete_sub, $delete_articles, $stats);
+		$message = "";
+		if($delete_articles){
+			$s = $stats['articles']==1 ? '' : 's';
+			$message = "{$stats['articles']} article{$s} deleted.<br>";
+		}
+		if($stats['cats']>0) {
+			$this->rewrite_routes();
+			$c = $stats['cats']==1 ? 'category' : 'categories';
+			$message .= "{$stats['cats']} $c deleted successfully.";
+		}
+		else{
+			$message .= "Unable to delete category";
+		}
+
+		return [ 'error'=>!$stats['cats'], 'error_msg'=>$message ];
+	}
+
+	private function _delete_category($id, $delete_sub, $delete_articles, $stats){
+		if( $delete_sub ) {
+			$this->db->where('sc_parent', $id);
+			$child = get_field($this->db, 'sc_id', 'sections');
+			if($child) {
+				$stats = $this->_delete_category($child, $delete_sub, $delete_articles, $stats);
+			}
+		}
+
+		if($delete_articles){
+			$this->db->select('at_id')->where('at_section', $id);
+			$articles = get_rows($this->db, 'articles');
+			foreach($articles as $article){
+				$this->article_model->delete_article($article['at_id']);
+			}
+			$stats['articles'] += count($articles);
+		}
+
+		$this->db->where( 'sc_id', $id );
+		$d = $this->db->delete('sections');
+		if($d) $stats['cats'] = $stats['cats']+1;
+		return $stats;
+	}
+
+	public function get_sections($parent=false)
 	{
+		if($parent){
+			$this->db->where('sc_parent',$parent);
+		}
 		$q = $this->db->get('sections');
 		if($q->num_rows()>0) 
 			return $q->result_array();
@@ -576,7 +655,6 @@ class Pages_Model extends CI_Model
 		else return array( 'error'=>TRUE, 'error_msg'=>'No new gallery images were added.' );
 	}
 
-
 	public function get_month_theme()
 	{
 		$m = date('n');
@@ -588,7 +666,6 @@ class Pages_Model extends CI_Model
 		}
 		return array();
 	}
-
 
 	public function contact()
 	{

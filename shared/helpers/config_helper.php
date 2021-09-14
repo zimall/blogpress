@@ -31,3 +31,26 @@ if(!function_exists('get_sort') ){
 			return '????';
 		}
 	}
+
+	if(!function_exists('get_controllers')){
+		function get_controllers($dir){
+			$map = directory_map( $dir, 1, false );
+			$map = array_filter( $map, function($item){
+				return str_ends_with($item, '.php');
+
+			} );
+			$data = [];
+			foreach( $map as $item){
+				$n = str_replace('.php','', $item);
+				$data[$n] = $n;
+			}
+			return $data;
+		}
+	}
+
+	if(!function_exists('str_ends_with')){
+		function str_ends_with($haystack, $needle) {
+			$length = strlen($needle);
+			return $length > 0 ? substr($haystack, -$length) === $needle : true;
+		}
+	}

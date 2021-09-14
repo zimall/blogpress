@@ -1362,3 +1362,12 @@ ul.left-menu li.active {
 td img.thumbnail{
 	max-width: 100px;
 }
+
+#upload-progress{
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+#upload-progress .progress-bar{
+	/*height: 10px;*/
+}

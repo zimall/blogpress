@@ -278,6 +278,13 @@
 							</div>
 							<div class="form-group">
 								<div class="col-sm-10">
+									<label>Google Maps Location <code>map-location</code></label>
+									<input type="text" name="map-location" class="form-control" value="<?php echo $this->config->item('map-location');?>">
+									<div class="help-block">only the src of the iframe, starting with https:://</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-10">
 									<label>Whatsapp Link - <small>full URL</small>  <code>whatsapp</code></label>
 									<input type="url" name="whatsapp" class="form-control" value="<?php echo $this->config->item('whatsapp');?>"
 										   placeholder="e.g https://api.whatsapp.com/send/?phone=2637720123456">
