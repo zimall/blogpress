@@ -19,14 +19,14 @@ function createUploader() {
 			sizeLimit: 2000 * 1024 // 500 kB = 500 * 1024 bytes
 		},
 		callbacks: {
-			onComplete: function (id, fileName, response) {
-				processImage(id, fileName, response);
-			},
-			onUpload: function (id, name) {
+			onSubmit: function (id, name) {
 				createProgressBar(id, name);
 			},
 			onProgress: function (id, name, done, total) {
 				updateProgress(id, done, total)
+			},
+			onComplete: function (id, fileName, response) {
+				processImage(id, fileName, response);
 			},
 			onError: function (id, name, message, xhr) {
 				handleError(id, name, message, xhr)
@@ -40,10 +40,9 @@ window.onload = createUploader;
 
 function createProgressBar(id, name) {
 	const container = document.querySelector('#upload-progress')
-	const row = document.createElement('div')
+	const row = document.createElement('li')
 	row.id = 'img-' + id
-	row.className = 'row'
-	row.innerHTML = '<div class="col-sm-4 upload-name">' + name + ' [<span>0% uploaded</span>]</div><div class="col-sm-8"><div class="progress mb-1"><div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span class="sr-only">0% Complete</span></div></div></div>';
+	row.innerHTML = '<div class="mb-2"><div class="col-sm-6 upload-name ms-0 ps-0">' + name + ' [<span>0% uploaded</span>]</div><div class="col-sm-6 me-0 pe-0"><div class="progress mb-1"><div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span class="sr-only">0% Complete</span></div></div></div></div>';
 	container.appendChild(row)
 }
 

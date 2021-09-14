@@ -42,7 +42,7 @@
 				<div class="form-group">
 					<div class="col-sm-7">
 						<div id="file-uploader" class="form-control">no file chosen...</div>
-						<div id="upload-progress"></div>
+						<ol id="upload-progress"></ol>
 						<div id="messages" class="alert"></div>
 					</div>
 					<div class="col-sm-5" style="text-align:right;">
@@ -102,7 +102,8 @@
 								<li id="li_<?php echo $i['gi_id'];?>" style="margin-bottom:30px;">
 									<div class="thumbnail">
 										<?php $href = base_url("images/articles/lg/{$i['gi_file']}");
-											$src = base_url("images/articles/sm/{$i['gi_file']}");
+											$g = get_image($i['gi_file'],'sm');
+											$src = base_url($g['webp']);
 										?>
 										<a target="_blank" class="fancybox" rel="gp<?php echo $gallery['at_id'];?>" 
 											href="<?php echo $href;?>"><?php echo img($src);?></a>
