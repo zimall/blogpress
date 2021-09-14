@@ -91,6 +91,7 @@ qq.FineUploader = function(o){
     }, true);
 
     // overwrite options with user supplied
+    console.log(o)
     qq.extend(this._options, o, true);
     this._wrapCallbacks();
 

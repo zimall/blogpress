@@ -95,15 +95,17 @@ if(isset($uploader)):
 	<script src="<?php echo base_url() ?>scripts/ajaxupload.js"></script>
 	<script src="<?php echo base_url() ?>scripts/images.js"></script>
 <?php elseif( $uploader=='fine' || $uploader=='music'):?>
-<script src="<?php echo base_url() ?>scripts/fine/header.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/util.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/button.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/handler.base.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/handler.form.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/handler.xhr.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/uploader.basic.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/dnd.js"></script>
-<script src="<?php echo base_url() ?>scripts/fine/uploader.js"></script>
+
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/header.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/util.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/button.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/handler.base.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/handler.form.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/handler.xhr.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/uploader.basic.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/dnd.js"></script>-->
+<!--<script src="--><?php //echo base_url() ?><!--scripts/fine/uploader.js"></script>-->
+<script src="/scripts/fine-uploader/fine-uploader.core.min.js"></script>
 <script src="<?php echo base_url() ?>scripts/<?php echo $uploader;?>.js"></script>
 <?php endif;endif;?>
 

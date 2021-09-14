@@ -40,14 +40,12 @@
 			<div class="panel-body">
 				
 				<div class="form-group">
-					<div class="col-sm-4">
-						<span id="file-uploader" class="btn btn-danger">
-							no file chosen... <small>(recommended 900x623px)</small>
-						<span>
-						<br><br>
+					<div class="col-sm-7">
+						<div id="file-uploader" class="form-control">no file chosen...</div>
+						<div id="upload-progress"></div>
 						<div id="messages" class="alert"></div>
 					</div>
-					<div class="col-sm-7" style="text-align:right;">
+					<div class="col-sm-5" style="text-align:right;">
 						<?php echo anchor( "{$gallery['sc_value']}", 'Cancel', 'class="btn btn-default"' );?>
 						<button type="submit" name="submit" value="1" class="btn btn-primary">Save</button>
 						<input type="hidden" name="form_name" value="gallery_images">
@@ -57,6 +55,7 @@
 						<input type="hidden" name="script" value="images/article_thumbs" id="action_file">
 						<input type="hidden" name="id" value="<?php echo $gallery['at_id'];?>">
 					</div>
+
 				</div>
 				
 			</div>

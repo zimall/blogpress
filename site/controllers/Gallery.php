@@ -30,8 +30,8 @@ class Gallery extends CI_Controller
 	{
 		if( is_numeric($id) && $id>0 )
 		{
-			$this->data['theme_scripts'][] = 'lightgallery-all.min';
-			$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
+			$this->data['scripts'][] = 'hes-gallery/hes-gallery.min';
+			//$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
 			
 			$where = array( 'at_section'=>11, 'at_id'=>$id );
 			$img = array( 'at_id'=>$id );

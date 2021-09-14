@@ -62,8 +62,8 @@
 					$this->data['tags'] = $this->al->tags($d['at_section']);
 					$this->data['images'] = $g = $d['sc_has_gallery'] ? $this->article_model->get_gallery(['at_id'=>$id]) : [];
 					if($g){
-						$this->data['theme_scripts'][] = 'lightgallery-all.min';
-						$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
+						$this->data['scripts'][] = 'hes-gallery/hes-gallery.min';
+						//$this->data['print_scripts'][] = '$(document).ready(function(){ $("#ul-li").lightGallery(); });';
 					}
 				}
 				$view = $this->al->get_view($d['sc_view']??'');
