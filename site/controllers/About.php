@@ -75,7 +75,7 @@ class About extends CI_Controller
 		{
 			$where = array( 'at_enabled'=>1, 'at_id'=>$id );
 			$args = array( 'where'=>$where, 'one'=>TRUE );
-			$this->data['article'] = $this->article_model->get_articles( $args );
+			$this->data['article'] = $d = $this->article_model->get_articles( $args );
 			$this->data['section'] = 'article';
 			if(isset($this->data['article']['at_id']))
 			{
@@ -84,9 +84,14 @@ class About extends CI_Controller
 				$this->data['keywords'] = $this->data['article']['at_keywords'];
 			}
 			$this->data['rotary'] = $this->section_items('about/rotary');
+
+			$this->data['tags'] = $this->al->tags($d['at_section']);
+			$this->data['images'] = $g = $d['sc_has_gallery'] ? $this->article_model->get_gallery(['at_id'=>$id]) : [];
+			$this->pc->get_route_content('About','team');
 		}
 		$this->load->view( "{$this->data['theme']}/about.tpl", $this->data );
 	}
+
 	public function pp($id=FALSE)
 	{
 		if(is_numeric($id)&&$id>0)

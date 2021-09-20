@@ -171,6 +171,17 @@ class Article_Model extends CI_Model
 		return array();
 	}
 
+	public function set_gallery_caption($args){
+		if(! isset($args['caption']) ) return array('error'=>TRUE, 'error_msg'=>'A valid caption is required');
+		if(! isset($args['id']) ) return array('error'=>TRUE, 'error_msg'=>'Image ID is required');
+
+		$data = ['gi_caption'=>$args['caption'] ];
+		$this->db->where( 'gi_id', $args['id'] );
+		$e = $this->db->update( 'gallery_images', $data );
+		if($e) return array( 'success'=>true, 'message'=>'Image caption updated successfully' );
+		return array( 'success'=>false, 'message'=>'Could not update image caption.' );
+	}
+
 	public function post_article()
 	{
 		$title = $this->input->post('title');

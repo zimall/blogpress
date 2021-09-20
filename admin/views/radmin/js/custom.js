@@ -592,4 +592,79 @@ jQuery(function($){
 		$('#dateform').submit();
 	});
 
+
+	$('#caption-modal').on('show.bs.modal', function (e) {
+		const a = $(e.relatedTarget)
+		const id = a.data('id')
+		console.log(id)
+		const form = document.querySelector('#caption-modal form');
+		form.reset();
+		const caption = form.querySelector('.image-caption');
+		const img_id = form.querySelector('.image-id');
+		const alert = form.querySelector('.alert');
+		caption.placeholder = 'loading caption, please wait...';
+		caption.setAttribute('disabled', true);
+
+		alert.className = "alert hidden";
+		// get caption
+		$.ajax({
+			type: "GET",
+			url: "/admin/ajax/get_gallery_caption/"+id,
+			data: {},
+			dataType: 'json',
+			timeout: 60000,
+			success: function(response)
+			{
+				if(response.gi_id)
+				{
+					caption.value = response.gi_caption;
+					img_id.value = response.gi_id;
+					alert.className = "alert hidden";
+				}
+				else
+				{
+					alert.innerHTML = response.message;
+					alert.className = "alert alert-warning";
+				}
+			},
+			complete: function (){
+				caption.placeholder = 'enter caption';
+				caption.removeAttribute('disabled')
+			}
+		});
+
+	})
+
+	$('#caption-modal form').submit( function (e){
+		e.preventDefault();
+		const form = document.querySelector('#caption-modal form');
+		const alert = form.querySelector('.alert');
+		const data = $(this);
+		console.log(data)
+		$.ajax({
+			type: "POST",
+			url: "/admin/ajax/set_gallery_caption",
+			data: data.serialize(),
+			dataType: 'json',
+			timeout: 60000,
+			success: function(response)
+			{
+				alert.innerHTML = response.message;
+				if(response.success)
+				{
+					alert.className = "alert alert-success";
+				}
+				else
+				{
+					alert.className = "alert alert-warning";
+				}
+			},
+			error: function (error){
+				alert.className = "alert error-danger";
+				alert.innerHTML = error;
+				console.log(error)
+			}
+		});
+	});
+
 });

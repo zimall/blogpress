@@ -110,7 +110,11 @@
 										<div class="image_options">
 											<table style="width:100%">
 												<tr>
-													<?php $p = $i['gi_private']?'make public':'make private';?>
+													<?php
+														$p = $i['gi_private']?'make public':'make private';
+														$c = $i['gi_caption']?'edit caption':'add caption';
+														$a = $i['gi_caption']?'pencil':'comments';
+													?>
 													<td>
 														<a data-img_id="<?php echo $i['gi_id']?>" data-file="<?php echo $i['gi_file']?>" 
 															class="delete_img">delete</a> 
@@ -121,6 +125,12 @@
 															class="img_privacy">
 															<?php echo $p;?>
 														</a> 
+													</td>
+													<td>
+														<a href="#" class="caption-modal" data-id="<?php echo $i['gi_id'];?>"
+														   data-toggle="modal" data-target="#caption-modal" title="<?php echo $c;?>">
+															<i class="radimn radmin-<?php echo $a;?>"></i>
+														</a>
 													</td>
 												</tr>
 											</table>
@@ -143,4 +153,28 @@
 		</div>
 	</div>
 
-</form>
+<?php echo form_close()?>
+
+
+<div id="caption-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog" role="document">
+		<?php echo form_open( "/admin/ajax/gallery_caption", ['class'=>'modal-content'] )?>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Add / Edit Image Caption</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert hidden"></div>
+				<fieldset class="form-group">
+					<label class="control-label">Image Caption</label>
+					<input type="text" name="caption" class="image-caption form-control">
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" class="image-id" name="id">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Save changes</button>
+			</div>
+		<?php echo form_close()?>
+	</div>
+</div>

@@ -62,7 +62,7 @@ function handleError(id, name, message, xhr){
 	const div = document.createElement('div');
 	div.className = 'col-sm-12';
 	div.innerHTML = '<div class="alert alert-danger py-0 px-2 mb-3">' + message + '</div>';
-	if (row) row.appendChild(div); else console.log(message)
+	if (row) row.appendChild(div); else window.alert(message)
 }
 
 function remove_item(i) {

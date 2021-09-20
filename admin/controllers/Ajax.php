@@ -110,6 +110,23 @@ class Ajax extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function get_gallery_caption($id){
+		$this->load->model('article_model');
+		$data = $this->article_model->get_image_privacy($id);
+		if(!empty($data['gi_id'])) echo json_encode($data);
+		else echo json_encode(['success'=>false, 'message'=>'Unable to find image']);
+	}
+
+	public function set_gallery_caption()
+	{
+		$this->load->model('article_model');
+		$img_id = $this->input->post('id');
+		$caption = $this->input->post('caption');
+
+		$error = $this->article_model->set_gallery_caption(['id'=>$img_id,'caption'=>$caption]);
+		echo json_encode($error);
+	}
+
 	public function delete_gallery_img()
 	{
 		$file = $this->input->get('file');
