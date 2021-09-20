@@ -60,19 +60,12 @@ class PC
 		}
 		$this->theme_scripts = array();
 
-		if( $this->ci->input->get('toggle_debug_mode') )
-		{
-			$this->ci->session->set_userdata( 'site_debug', !$this->site_debug );
-			redirect( current_url() );
-		}
+
 		
 		$this->ci->data = array(
 			'theme'=>$this->theme, 'section' => 'login', 'error_msg'=>'',
 			'theme_scripts'=>$this->theme_scripts, 'theme_config'=>$this->theme_config
 		);
-
-		$bool = $this->ci->config->item('enable_profiler') ? $this->ci->config->item('enable_profiler') : false;
-		$this->ci->output->enable_profiler($bool);
 		
 		
 		if( $this->ci->input->post('contact_us') )
@@ -108,6 +101,26 @@ class PC
 
 	public function required_content()
 	{
+
+		if( $this->ci->flexi_auth->is_privileged('Run Debug Mode') )
+		{
+			if( $this->ci->input->get('toggle_debug_mode') )
+			{
+				$this->ci->session->set_userdata( 'site_debug', !$this->site_debug );
+				redirect( current_url() );
+			}
+
+			$ds = $this->site_debug?TRUE:FALSE;
+			$this->ci->output->enable_profiler( $ds );
+		}
+		elseif( $this->ci->input->get('toggle_debug_mode') )
+		{
+			$this->ci->session->set_userdata( 'site_debug', FALSE );
+			sem('You have no permission to run debug mode.');
+			redirect( current_url() );
+		}
+		else $this->ci->output->enable_profiler(FALSE);
+
 		$this->ci->load->model('article_model');
 		$where = array( 'at_permalink'=>1, 'at_section'=>1 );
 		$args = array( 'where'=>$where, 'one'=>1, 'enabled'=>1 );
