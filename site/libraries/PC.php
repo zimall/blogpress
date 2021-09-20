@@ -107,6 +107,8 @@ class PC
 			if( $this->ci->input->get('toggle_debug_mode') )
 			{
 				$this->ci->session->set_userdata( 'site_debug', !$this->site_debug );
+				$msg = $this->site_debug ? 'Debug mode has been disabled' : 'Debug mode has been enabled';
+				sem( $msg, 2);
 				redirect( current_url() );
 			}
 

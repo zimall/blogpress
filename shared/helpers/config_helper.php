@@ -54,3 +54,10 @@ if(!function_exists('get_sort') ){
 			return $length > 0 ? substr($haystack, -$length) === $needle : true;
 		}
 	}
+
+	if(!function_exists('is_allowed')){
+		function is_allowed($action){
+			$ci = &get_instance();
+			return $ci->flexi_auth->is_privileged($action);
+		}
+	}
