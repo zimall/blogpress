@@ -37,8 +37,8 @@ class Imagier
 		$data['error'] = TRUE;
 		$data['form'] = 'blog_article';
 		$temp = $_FILES[$index]['tmp_name'];
-		$file = basename($_FILES[$index]['name']);
-		$ext = pathinfo($file, PATHINFO_EXTENSION);
+		$file = strtolower(basename($_FILES[$index]['name']));
+		$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 		$file = $this->safe_file_name($file,'-',TRUE,$ext); 
 		$stamp = time();
 		$folder = realpath('./images/articles/').'/';
@@ -202,13 +202,16 @@ class Imagier
 			if($ext == 'jpeg' || $ext == 'jpg') $image = @imagecreatefromjpeg($file);
 			elseif($ext == 'gif') $image = @imagecreatefromgif($file);
 			elseif($ext == 'png') $image = @imagecreatefrompng($file);
+
 			if(!$image){
 				$error = error_get_last();
 				$m = $error['message']??'Unable to create Webp image from '.$file;
 				throw new Exception($m);
 			}
 			$e = imagewebp($image, $f, $quality);
-			if($output) imagewebp($image, null, $quality);
+			if($output){
+				$this->ci->output->set_content_type('image/webp')->set_output(file_get_contents($f));
+			}
 			else return $e;
 		}
 		catch(Exception $e){

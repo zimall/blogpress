@@ -69,7 +69,9 @@
 			}
 		}
 
-
+		public function i($id){
+			$this->details($id);
+		}
 
 
 		private function tags($page_id){
