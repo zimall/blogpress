@@ -149,6 +149,12 @@ class Auth_admin_model extends CI_Model
 	 */
 	function update_user_account($user_id)
 	{
+        // only allow update if user has privileges or is updating their own account.
+        if( !$this->flexi_auth->is_privileged('Update Users') && $user_id != $this->flexi_auth->get_user_id() ) {
+            sem("You do not have access to update this user.");
+            return false;
+        }
+        
 		$this->load->library('form_validation');
 
 		// Set validation rules.
