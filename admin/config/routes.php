@@ -54,6 +54,9 @@ $route['admin/articles/new'] = 'articles/new_article';
 $route['admin/articles/page'] = 'articles/index';
 $route['admin/articles/page/(.+)'] = 'articles/index';
 
+$route['admin/users/page'] = 'users/index';
+$route['admin/users/page/(.+)'] = 'users/index';
+
 $route['admin/(.+)'] = '$1';
 
 $route['default_controller'] = 'home';
