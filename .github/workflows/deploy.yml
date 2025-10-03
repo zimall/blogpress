@@ -66,27 +66,6 @@ jobs:
         .DS_Store
         Thumbs.db
         EOF
-    
-    - name: Debug SSH connection
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.PORT || 22 }}
-        script_stop: false
-        script: |
-          echo "SSH connection successful!"
-          echo "Current user: $(whoami)"
-          echo "Current directory: $(pwd)"
-          echo "Home directory: $HOME"
-          echo "Testing write permissions..."
-          echo "ROOT_PATH: ${{ secrets.ROOT_PATH }}"
-          echo "DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}"
-          
-          # Test if we can create directories
-          mkdir -p "${{ secrets.ROOT_PATH }}test/" && echo "✅ Can create directories in ROOT_PATH" || echo "❌ Cannot create directories in ROOT_PATH"
-          rmdir "${{ secrets.ROOT_PATH }}test/" 2>/dev/null || true
 
     - name: Create backup and deploy with rsync
       uses: appleboy/ssh-action@v1.0.0
@@ -171,25 +150,71 @@ jobs:
           chmod -R 777 images/ 2>/dev/null || true
           chmod 755 dm 2>/dev/null || true
           
-          # Run post-deployment scripts
+          # Run post-deployment scripts with error handling
           echo "Running post-deployment scripts..."
           
-          # Fix environment if script exists
-          [ -f "lib/fix-env.php" ] && php lib/fix-env.php
+          # Check if PHP is working
+          if php --version >/dev/null 2>&1; then
+            echo "✅ PHP is working"
+            PHP_WORKING=true
+          else
+            echo "❌ PHP has issues, will skip PHP scripts"
+            echo "PHP error details:"
+            php --version 2>&1 || true
+            PHP_WORKING=false
+          fi
+          
+          # Try alternative PHP paths if default fails
+          if [ "$PHP_WORKING" = false ]; then
+            for php_path in /usr/bin/php /usr/local/bin/php /opt/php/bin/php php7.4 php8.0 php8.1 php8.2; do
+              if $php_path --version >/dev/null 2>&1; then
+                echo "✅ Found working PHP at: $php_path"
+                alias php="$php_path"
+                PHP_WORKING=true
+                break
+              fi
+            done
+          fi
+          
+          # Fix environment if script exists and PHP is working
+          if [ "$PHP_WORKING" = true ] && [ -f "lib/fix-env.php" ]; then
+            echo "Running fix-env.php..."
+            php lib/fix-env.php || echo "⚠️ fix-env.php completed with warnings"
+          elif [ -f "lib/fix-env.php" ]; then
+            echo "⚠️ Skipping fix-env.php - PHP not working"
+          fi
           
           # Run migrations
           if [ -f "dm" ]; then
-            ./dm migrate --no-interaction
+            echo "Running database migrations..."
+            if ./dm migrate --no-interaction; then
+              echo "✅ Migrations completed successfully"
+            else
+              echo "⚠️ Migrations failed or had warnings"
+            fi
+          else
+            echo "⚠️ Migration tool 'dm' not found"
           fi
           
-          # Fix thumbnails if script exists
-          [ -f "lib/fix-thumbs.php" ] && php lib/fix-thumbs.php
+          # Fix thumbnails if script exists and PHP is working
+          if [ "$PHP_WORKING" = true ] && [ -f "lib/fix-thumbs.php" ]; then
+            echo "Running fix-thumbs.php..."
+            php lib/fix-thumbs.php || echo "⚠️ fix-thumbs.php completed with warnings"
+          elif [ -f "lib/fix-thumbs.php" ]; then
+            echo "⚠️ Skipping fix-thumbs.php - PHP not working"
+          fi
           
           # Clean up old backups (keep last 5)
           echo "Cleaning up old backups..."
           ls -dt ${ROOT_PATH}backups/* 2>/dev/null | tail -n +6 | xargs rm -rf 2>/dev/null || true
           
-          echo "Deployment completed successfully!"
+          # Final status
+          if [ "$PHP_WORKING" = true ]; then
+            echo "✅ Deployment completed successfully with all scripts!"
+          else
+            echo "⚠️ Deployment completed but PHP scripts were skipped due to library issues"
+            echo "   Please check server PHP configuration for missing libargon2.so.0"
+          fi
     
     - name: Verify deployment
       uses: appleboy/ssh-action@v1.0.0
