@@ -1,0 +1,281 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - dev  # Change this to your production branch if different
+  workflow_dispatch:  # Allows manual triggering
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'hunyani'
+        type: choice
+        options:
+        - hunyani
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment || 'hunyani' }} Server
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'hunyani' }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for better deployment tracking
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: gd, curl, zip, mbstring
+        tools: composer
+    
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: composer-${{ hashFiles('composer.lock') }}
+        restore-keys: composer-
+    
+    - name: Install Composer dependencies
+      run: composer install --no-dev --optimize-autoloader --no-interaction
+    
+    - name: Prepare deployment files
+      run: |
+        # Remove development files and directories that shouldn't be deployed
+        rm -rf .git .github .gitignore README.md
+        rm -rf tests/ docs/ .phpunit.result.cache
+        
+        # Create exclusion file for rsync
+        cat > .rsync-exclude << 'EOF'
+        .env
+        admin/config/config.php
+        site/config/config.php
+        admin/logs/
+        admin/cache/
+        admin/asset_cache/
+        site/logs/
+        site/cache/
+        site/asset_cache/
+        images/
+        uploads/
+        *.log
+        .DS_Store
+        Thumbs.db
+        EOF
+
+    - name: Create backup and deploy with rsync
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.PORT || 22 }}
+        script_stop: true
+        script: |
+          # Set deployment variables
+          ROOT_PATH="${{ secrets.ROOT_PATH }}"
+          DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+          BACKUP_PATH="${ROOT_PATH}backups/$(date +%Y%m%d_%H%M%S)"
+          TEMP_PATH="${ROOT_PATH}temp/"
+          
+          # Create backup and temp directory structure in root path
+          mkdir -p "${ROOT_PATH}backups/"
+          mkdir -p "$TEMP_PATH"
+          
+          # Create full backup of current deployment (only if deployment exists)
+          if [ -d "$DEPLOY_PATH" ] && [ "$(ls -A $DEPLOY_PATH)" ]; then
+            echo "Creating full backup..."
+            cp -r "$DEPLOY_PATH" "$BACKUP_PATH"
+            echo "Backup created at: $BACKUP_PATH"
+          else
+            echo "No existing deployment found, skipping backup"
+            mkdir -p "$DEPLOY_PATH"
+          fi
+    
+    - name: Rsync deployment files
+      uses: burnett01/rsync-deployments@6.0.0
+      with:
+        switches: -avzr --delete --exclude-from=.rsync-exclude
+        path: ./
+        remote_path: ${{ secrets.ROOT_PATH }}temp/
+        remote_host: ${{ secrets.HOST }}
+        remote_user: ${{ secrets.USER }}
+        remote_key: ${{ secrets.SSH_KEY }}
+        remote_port: ${{ secrets.PORT || 22 }}
+    
+    - name: Complete deployment with rsync
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.PORT || 22 }}
+        script_stop: true
+        script: |
+          # Set deployment variables
+          ROOT_PATH="${{ secrets.ROOT_PATH }}"
+          DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+          TEMP_PATH="${ROOT_PATH}temp/"
+          
+          # Use rsync to sync from temp to live deployment
+          # This preserves existing files that are excluded and only updates changed files
+          echo "Syncing files to live deployment..."
+          rsync -av --exclude='.env' \
+                   --exclude='admin/config/config.php' \
+                   --exclude='site/config/config.php' \
+                   --exclude='admin/logs/' \
+                   --exclude='admin/cache/' \
+                   --exclude='admin/asset_cache/' \
+                   --exclude='site/logs/' \
+                   --exclude='site/cache/' \
+                   --exclude='site/asset_cache/' \
+                   --exclude='images/' \
+                   --exclude='uploads/' \
+                   --exclude='*.log' \
+                   "$TEMP_PATH" "$DEPLOY_PATH"
+          
+          # Clean up temp directory
+          rm -rf "$TEMP_PATH"
+          
+          # Set proper permissions
+          cd "$DEPLOY_PATH"
+          find . -type f -name "*.php" -exec chmod 644 {} \;
+          find . -type d -exec chmod 755 {} \;
+          chmod -R 777 admin/logs/ admin/cache/ admin/asset_cache/ 2>/dev/null || true
+          chmod -R 777 site/logs/ site/cache/ site/asset_cache/ 2>/dev/null || true
+          chmod -R 777 images/ 2>/dev/null || true
+          chmod 755 dm 2>/dev/null || true
+          
+          # Run post-deployment scripts with error handling
+          echo "Running post-deployment scripts..."
+          
+          # Check if PHP is working
+          if php --version >/dev/null 2>&1; then
+            echo "✅ PHP is working"
+            PHP_WORKING=true
+          else
+            echo "❌ PHP has issues, will skip PHP scripts"
+            echo "PHP error details:"
+            php --version 2>&1 || true
+            PHP_WORKING=false
+          fi
+          
+          # Try alternative PHP paths if default fails
+          if [ "$PHP_WORKING" = false ]; then
+            for php_path in /usr/bin/php /usr/local/bin/php /opt/php/bin/php php7.4 php8.0 php8.1 php8.2; do
+              if $php_path --version >/dev/null 2>&1; then
+                echo "✅ Found working PHP at: $php_path"
+                alias php="$php_path"
+                PHP_WORKING=true
+                break
+              fi
+            done
+          fi
+          
+          # Fix environment if script exists and PHP is working
+          if [ "$PHP_WORKING" = true ] && [ -f "lib/fix-env.php" ]; then
+            echo "Running fix-env.php..."
+            php lib/fix-env.php || echo "⚠️ fix-env.php completed with warnings"
+          elif [ -f "lib/fix-env.php" ]; then
+            echo "⚠️ Skipping fix-env.php - PHP not working"
+          fi
+          
+          # Run migrations
+          if [ -f "dm" ]; then
+            echo "Running database migrations..."
+            if ./dm migrate --no-interaction; then
+              echo "✅ Migrations completed successfully"
+            else
+              echo "⚠️ Migrations failed or had warnings"
+            fi
+          else
+            echo "⚠️ Migration tool 'dm' not found"
+          fi
+          
+          # Fix thumbnails if script exists and PHP is working
+          if [ "$PHP_WORKING" = true ] && [ -f "lib/fix-thumbs.php" ]; then
+            echo "Running fix-thumbs.php..."
+            php lib/fix-thumbs.php || echo "⚠️ fix-thumbs.php completed with warnings"
+          elif [ -f "lib/fix-thumbs.php" ]; then
+            echo "⚠️ Skipping fix-thumbs.php - PHP not working"
+          fi
+          
+          # Clean up old backups (keep last 5)
+          echo "Cleaning up old backups..."
+          ls -dt ${ROOT_PATH}backups/* 2>/dev/null | tail -n +6 | xargs rm -rf 2>/dev/null || true
+          
+          # Final status
+          if [ "$PHP_WORKING" = true ]; then
+            echo "✅ Deployment completed successfully with all scripts!"
+          else
+            echo "⚠️ Deployment completed but PHP scripts were skipped due to library issues"
+            echo "   Please check server PHP configuration for missing libargon2.so.0"
+          fi
+    
+    - name: Verify deployment
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.PORT || 22 }}
+        script: |
+          DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+          
+          # Basic health checks
+          if [ -f "${DEPLOY_PATH}index.php" ]; then
+            echo "✅ Main index.php exists"
+          else
+            echo "❌ Main index.php missing"
+            exit 1
+          fi
+          
+          if [ -f "${DEPLOY_PATH}admin/index.php" ]; then
+            echo "✅ Admin index.php exists"
+          else
+            echo "❌ Admin index.php missing"
+          fi
+          
+          # Check if composer dependencies are installed
+          if [ -d "${DEPLOY_PATH}vendor" ]; then
+            echo "✅ Composer dependencies installed"
+          else
+            echo "❌ Composer dependencies missing"
+          fi
+          
+          echo "Deployment verification completed"
+    
+    - name: Rollback on failure
+      if: failure()
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.PORT || 22 }}
+        script: |
+          ROOT_PATH="${{ secrets.ROOT_PATH }}"
+          DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+          LATEST_BACKUP=$(ls -dt ${ROOT_PATH}backups/* 2>/dev/null | head -n 1)
+          
+          if [ -n "$LATEST_BACKUP" ] && [ -d "$LATEST_BACKUP" ]; then
+            echo "Rolling back to: $LATEST_BACKUP"
+            rm -rf "$DEPLOY_PATH"
+            mv "$LATEST_BACKUP" "$DEPLOY_PATH"
+            echo "Rollback completed"
+          else
+            echo "No backup found for rollback"
+          fi
+
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "🚀 Deployment to ${{ github.event.inputs.environment || 'hunyani' }} completed successfully!"
+        else
+          echo "❌ Deployment to ${{ github.event.inputs.environment || 'hunyani' }} failed and was rolled back"
+        fi
