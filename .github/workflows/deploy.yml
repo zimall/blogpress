@@ -16,9 +16,9 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to ${{ github.event.inputs.environment }} Server
+    name: Deploy to ${{ github.event.inputs.environment || 'hunyani' }} Server
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment || 'hunyani' }}
     
     steps:
     - name: Checkout code
@@ -229,7 +229,7 @@ jobs:
       if: always()
       run: |
         if [ "${{ job.status }}" == "success" ]; then
-          echo "🚀 Deployment to ${{ github.event.inputs.environment || 'production' }} completed successfully!"
+          echo "🚀 Deployment to ${{ github.event.inputs.environment || 'hunyani' }} completed successfully!"
         else
-          echo "❌ Deployment to ${{ github.event.inputs.environment || 'production' }} failed and was rolled back"
+          echo "❌ Deployment to ${{ github.event.inputs.environment || 'hunyani' }} failed and was rolled back"
         fi
