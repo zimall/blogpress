@@ -67,6 +67,27 @@ jobs:
         Thumbs.db
         EOF
     
+    - name: Debug SSH connection
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.PORT || 22 }}
+        script_stop: false
+        script: |
+          echo "SSH connection successful!"
+          echo "Current user: $(whoami)"
+          echo "Current directory: $(pwd)"
+          echo "Home directory: $HOME"
+          echo "Testing write permissions..."
+          echo "ROOT_PATH: ${{ secrets.ROOT_PATH }}"
+          echo "DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}"
+          
+          # Test if we can create directories
+          mkdir -p "${{ secrets.ROOT_PATH }}test/" && echo "✅ Can create directories in ROOT_PATH" || echo "❌ Cannot create directories in ROOT_PATH"
+          rmdir "${{ secrets.ROOT_PATH }}test/" 2>/dev/null || true
+
     - name: Create backup and deploy with rsync
       uses: appleboy/ssh-action@v1.0.0
       with:
